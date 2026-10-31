@@ -1,0 +1,479 @@
+{
+  "version": "1.0",
+  "reviewed_at": "2026-10-31",
+  "note": "Intent labels are routing guidance, not authorization. Always enforce permissions in backend APIs.",
+  "intents": [
+    {
+      "name": "admissions_consultation",
+      "meaning": "Tư vấn chọn phương thức/quy trình tuyển sinh",
+      "phrases": [
+        "xét tuyển thế nào",
+        "đăng ký đại học ra sao",
+        "tư vấn tuyển sinh",
+        "thi xong làm gì"
+      ],
+      "keywords": [
+        "tuyển sinh",
+        "xét tuyển",
+        "nguyện vọng",
+        "thí sinh"
+      ],
+      "collect": [
+        "năm tuyển sinh",
+        "trường/ngành",
+        "phương thức"
+      ],
+      "documents": [
+        "01_ADMISSIONS_GUIDE.md",
+        "10_UNIVERSITY_FAQ.md"
+      ],
+      "database": false,
+      "clarify": "Hỏi năm và trường nếu cần chi tiết hiện hành."
+    },
+    {
+      "name": "major_information",
+      "meaning": "Nội dung học và đặc điểm ngành",
+      "phrases": [
+        "CNTT học gì",
+        "ngành kế toán làm gì",
+        "học marketing có môn nào"
+      ],
+      "keywords": [
+        "ngành",
+        "chương trình",
+        "môn học"
+      ],
+      "collect": [
+        "tên ngành",
+        "mối quan tâm"
+      ],
+      "documents": [
+        "02_MAJORS_CAREER_GUIDE.md"
+      ],
+      "database": "Only to list Study demo majors; label as demo.",
+      "clarify": "Hỏi ngành hoặc mục tiêu nghề nếu còn mơ hồ."
+    },
+    {
+      "name": "career_guidance",
+      "meaning": "Định hướng nghề dựa trên sở thích/năng lực",
+      "phrases": [
+        "em hợp ngành nào",
+        "thích toán chọn gì",
+        "ra trường làm nghề gì"
+      ],
+      "keywords": [
+        "hợp",
+        "sở thích",
+        "nghề nghiệp",
+        "định hướng"
+      ],
+      "collect": [
+        "sở thích",
+        "môn học yêu thích",
+        "môi trường làm việc"
+      ],
+      "documents": [
+        "02_MAJORS_CAREER_GUIDE.md"
+      ],
+      "database": "Dùng tài liệu ngành/nghề; không cần truy vấn cơ sở dữ liệu.",
+      "clarify": "Hỏi mở để hiểu người học; không khẳng định chắc chắn một ngành phù hợp."
+    },
+    {
+      "name": "application_procedure",
+      "meaning": "Chuẩn bị và gửi hồ sơ tuyển sinh",
+      "phrases": [
+        "hồ sơ gồm gì",
+        "nộp giấy tờ ở đâu",
+        "đã gửi mà chưa thấy"
+      ],
+      "keywords": [
+        "hồ sơ",
+        "nộp",
+        "giấy tờ",
+        "xét tuyển"
+      ],
+      "collect": [
+        "năm tuyển sinh",
+        "phương thức",
+        "mã hồ sơ nếu cần"
+      ],
+      "documents": [
+        "01_ADMISSIONS_GUIDE.md",
+        "09_STUDY_USER_MANUAL.md"
+      ],
+      "database": "Chỉ truy vấn API hồ sơ đã xác thực nếu hệ thống có cung cấp.",
+      "clarify": "Phân biệt hướng dẫn thủ tục chung với tra cứu trạng thái hồ sơ cá nhân."
+    },
+    {
+      "name": "admission_result",
+      "meaning": "Kết quả/trạng thái xét tuyển cá nhân",
+      "phrases": [
+        "đậu chưa",
+        "trúng tuyển chưa",
+        "hồ sơ đến đâu"
+      ],
+      "keywords": [
+        "kết quả",
+        "trúng tuyển",
+        "trạng thái hồ sơ"
+      ],
+      "collect": [
+        "tài khoản đã đăng nhập",
+        "mã tra cứu tối thiểu nếu API yêu cầu"
+      ],
+      "documents": [
+        "13_AI_TRUST_AND_SAFETY.md"
+      ],
+      "database": "Bắt buộc dùng API; chỉ xem hồ sơ của chính người dùng theo quyền. Study hiện có thể chưa cung cấp tra cứu trạng thái cho sinh viên.",
+      "clarify": "Nếu không có API được cấp quyền, nói rõ chưa tra cứu được; tuyệt đối không đoán."
+    },
+    {
+      "name": "tuition_information",
+      "meaning": "Khái niệm và thủ tục học phí",
+      "phrases": [
+        "học phí bao nhiêu",
+        "đóng tiền học thế nào",
+        "còn nợ học phí không"
+      ],
+      "keywords": [
+        "học phí",
+        "tiền học",
+        "công nợ",
+        "thanh toán"
+      ],
+      "collect": [
+        "năm học",
+        "chương trình",
+        "khóa tuyển sinh"
+      ],
+      "documents": [
+        "04_TUITION_SCHOLARSHIP_GUIDE.md"
+      ],
+      "database": "Cần biểu phí đã duyệt hoặc API cho số tiền/công nợ hiện tại; Study chưa có API tài chính cá nhân.",
+      "clarify": "Hỏi trường/chương trình/năm; không dùng học phí demo làm học phí chính thức."
+    },
+    {
+      "name": "scholarship_information",
+      "meaning": "Tìm hiểu học bổng/chính sách hỗ trợ",
+      "phrases": [
+        "xin học bổng sao",
+        "điều kiện học bổng",
+        "hỗ trợ khó khăn"
+      ],
+      "keywords": [
+        "học bổng",
+        "miễn giảm",
+        "trợ cấp"
+      ],
+      "collect": [
+        "loại học bổng",
+        "khóa",
+        "trường hoặc đơn vị cấp"
+      ],
+      "documents": [
+        "04_TUITION_SCHOLARSHIP_GUIDE.md"
+      ],
+      "database": "Dùng thể lệ hoặc cổng hiện hành đã được duyệt.",
+      "clarify": "Hỏi tên chương trình và năm áp dụng."
+    },
+    {
+      "name": "academic_regulations",
+      "meaning": "Giải thích khái niệm học vụ",
+      "phrases": [
+        "bảo lưu là gì",
+        "bị cảnh báo có sao không",
+        "điều kiện tốt nghiệp"
+      ],
+      "keywords": [
+        "học phần",
+        "tín chỉ",
+        "bảo lưu",
+        "tốt nghiệp"
+      ],
+      "collect": [
+        "chương trình",
+        "khóa",
+        "trường"
+      ],
+      "documents": [
+        "03_ACADEMIC_GUIDE.md"
+      ],
+      "database": "Chỉ truy vấn dữ liệu học vụ cá nhân nếu có API được cấp quyền; Study hiện chưa xác nhận API này.",
+      "clarify": "Hỏi trường/khóa nếu cần giải thích quy chế chính xác."
+    },
+    {
+      "name": "course_registration",
+      "meaning": "Đăng ký/hủy học phần",
+      "phrases": [
+        "đăng ký môn ở đâu",
+        "rút môn được không",
+        "môn tiên quyết là gì"
+      ],
+      "keywords": [
+        "đăng ký tín chỉ",
+        "học phần",
+        "rút môn"
+      ],
+      "collect": [
+        "học kỳ",
+        "mã học phần",
+        "cơ sở đào tạo"
+      ],
+      "documents": [
+        "03_ACADEMIC_GUIDE.md",
+        "09_STUDY_USER_MANUAL.md"
+      ],
+      "database": "Chỉ dùng API đăng ký nếu đã triển khai và kiểm tra quyền.",
+      "clarify": "Không khẳng định Study có chức năng đăng ký học phần nếu source chưa xác nhận."
+    },
+    {
+      "name": "grade_calculation",
+      "meaning": "Khái niệm điểm và phép tính minh họa",
+      "phrases": [
+        "tính GPA giúp em",
+        "điểm hệ 4 là sao",
+        "điểm tổng kết tính thế nào"
+      ],
+      "keywords": [
+        "GPA",
+        "điểm chữ",
+        "điểm trung bình"
+      ],
+      "collect": [
+        "thang điểm và bảng quy đổi nếu cần tính"
+      ],
+      "documents": [
+        "03_ACADEMIC_GUIDE.md"
+      ],
+      "database": "Dùng hồ sơ điểm cá nhân chỉ qua API đã xác thực, nếu có.",
+      "clarify": "Hỏi trọng số/cách quy đổi; đánh dấu phép tính là giả định nếu chưa có quy chế."
+    },
+    {
+      "name": "student_profile",
+      "meaning": "Hồ sơ sinh viên cá nhân",
+      "phrases": [
+        "xem hồ sơ của em",
+        "đổi số điện thoại",
+        "ngành của tôi là gì"
+      ],
+      "keywords": [
+        "hồ sơ cá nhân",
+        "mã sinh viên",
+        "địa chỉ"
+      ],
+      "collect": [
+        "danh tính tài khoản đã đăng nhập"
+      ],
+      "documents": [
+        "05_STUDENT_PROFILE_PROCEDURES.md"
+      ],
+      "database": "Dùng API hồ sơ giới hạn vào chính tài khoản của người dùng.",
+      "clarify": "Yêu cầu đăng nhập; không hỏi mật khẩu hoặc mã OTP."
+    },
+    {
+      "name": "student_procedure",
+      "meaning": "Thủ tục giấy tờ/học vụ",
+      "phrases": [
+        "xin giấy sinh viên",
+        "làm lại thẻ",
+        "chuyển ngành thế nào"
+      ],
+      "keywords": [
+        "giấy xác nhận",
+        "bảng điểm",
+        "thủ tục"
+      ],
+      "collect": [
+        "mục đích giấy tờ",
+        "trường và thủ tục cụ thể"
+      ],
+      "documents": [
+        "05_STUDENT_PROFILE_PROCEDURES.md",
+        "10_UNIVERSITY_FAQ.md"
+      ],
+      "database": "Dùng hồ sơ cá nhân qua API chỉ khi cần và được phép.",
+      "clarify": "Hỏi giấy tờ nào và nơi nhận; chi tiết chưa có nguồn thì chuyển đầu mối nghiệp vụ."
+    },
+    {
+      "name": "student_support",
+      "meaning": "How to create and use support ticket",
+      "phrases": [
+        "gửi yêu cầu sao",
+        "em muốn gặp hỗ trợ",
+        "đính kèm giấy tờ đâu"
+      ],
+      "keywords": [
+        "hỗ trợ",
+        "ticket",
+        "phản ánh"
+      ],
+      "collect": [
+        "nhóm yêu cầu",
+        "tiêu đề",
+        "mô tả vấn đề"
+      ],
+      "documents": [
+        "07_STUDENT_SUPPORT_GUIDE.md",
+        "09_STUDY_USER_MANUAL.md"
+      ],
+      "database": "Có API ticket để tạo khi người dùng chủ động xác nhận.",
+      "clarify": "Hỏi người dùng cần hỗ trợ gì; hướng dẫn vào Trung tâm hỗ trợ. Chỉ nói đã gửi khi API xác nhận thành công."
+    },
+    {
+      "name": "support_ticket_tracking",
+      "meaning": "Tra cứu trạng thái ticket cá nhân",
+      "phrases": [
+        "mã ST của em đâu",
+        "ticket xử lý tới đâu",
+        "yêu cầu được đóng chưa"
+      ],
+      "keywords": [
+        "mã yêu cầu",
+        "trạng thái ticket",
+        "ST-"
+      ],
+      "collect": [
+        "tài khoản đã đăng nhập",
+        "mã ticket nếu cần"
+      ],
+      "documents": [
+        "07_STUDENT_SUPPORT_GUIDE.md",
+        "13_AI_TRUST_AND_SAFETY.md"
+      ],
+      "database": "Bắt buộc tra qua API, lọc chủ sở hữu; không xem ticket của người khác.",
+      "clarify": "Nếu không có bản ghi phù hợp, nói không tìm thấy; không suy diễn ticket đã xong."
+    },
+    {
+      "name": "lecturer_information",
+      "meaning": "Hồ sơ giảng viên và hướng dẫn nghiệp vụ chung",
+      "phrases": [
+        "hồ sơ giảng viên có gì",
+        "giảng viên cập nhật thế nào"
+      ],
+      "keywords": [
+        "giảng viên",
+        "học vị",
+        "khoa"
+      ],
+      "collect": [
+        "thông tin chung hay hồ sơ cá nhân cụ thể"
+      ],
+      "documents": [
+        "08_STAFF_LECTURER_GUIDE.md"
+      ],
+      "database": "Chỉ truy vấn hồ sơ qua API và quyền được cấp; Study hiện có giới hạn chức năng.",
+      "clarify": "Không tiết lộ hồ sơ cá nhân khi người hỏi không có quyền."
+    },
+    {
+      "name": "staff_information",
+      "meaning": "Hồ sơ nhân viên và nghiệp vụ nhân sự trong phạm vi cho phép",
+      "phrases": [
+        "hồ sơ nhân viên",
+        "quản lý nhân sự Study"
+      ],
+      "keywords": [
+        "nhân viên",
+        "phòng ban",
+        "chức vụ"
+      ],
+      "collect": [
+        "câu hỏi chung hay hồ sơ cá nhân"
+      ],
+      "documents": [
+        "08_STAFF_LECTURER_GUIDE.md"
+      ],
+      "database": "Chỉ truy vấn API nhân sự có phân quyền; Study chưa xác nhận các API nghiệp vụ HR.",
+      "clarify": "Giải thích giới hạn quyền và hướng đến quản trị viên có thẩm quyền."
+    },
+    {
+      "name": "study_system_guide",
+      "meaning": "Help using available Study screens",
+      "phrases": [
+        "dùng Study sao",
+        "tìm nút hỗ trợ đâu",
+        "kho tri thức ở đâu"
+      ],
+      "keywords": [
+        "Study",
+        "giao diện",
+        "menu",
+        "đăng nhập"
+      ],
+      "collect": [
+        "vai trò người dùng",
+        "màn hình hoặc việc cần làm"
+      ],
+      "documents": [
+        "00_STUDY_OVERVIEW.md",
+        "09_STUDY_USER_MANUAL.md"
+      ],
+      "database": "Không cần DB cho hướng dẫn giao diện; dữ liệu cá nhân vẫn cần API.",
+      "clarify": "Hỏi vai trò nếu đường dẫn thao tác phụ thuộc quyền."
+    },
+    {
+      "name": "account_support",
+      "meaning": "Sign-in/access problem",
+      "phrases": [
+        "quên mật khẩu",
+        "không đăng nhập được",
+        "bị 403"
+      ],
+      "keywords": [
+        "tài khoản",
+        "mật khẩu",
+        "đăng nhập",
+        "quyền"
+      ],
+      "collect": [
+        "nội dung lỗi hiển thị; không lấy bí mật đăng nhập"
+      ],
+      "documents": [
+        "09_STUDY_USER_MANUAL.md",
+        "07_STUDENT_SUPPORT_GUIDE.md"
+      ],
+      "database": "Chỉ dùng API hỗ trợ tài khoản được phép; không đọc/đặt lại mật khẩu qua chat.",
+      "clarify": "Hỏi thông báo lỗi, không yêu cầu mật khẩu hoặc mã xác thực."
+    },
+    {
+      "name": "general_university_knowledge",
+      "meaning": "General study/campus knowledge",
+      "phrases": [
+        "học đại học khác gì",
+        "làm nhóm sao tốt",
+        "liêm chính học thuật"
+      ],
+      "keywords": [
+        "tự học",
+        "đời sống",
+        "trích dẫn"
+      ],
+      "collect": [],
+      "documents": [
+        "06_STUDENT_LIFE_GUIDE.md",
+        "11_UNIVERSITY_GLOSSARY.md"
+      ],
+      "database": "Thường không cần truy vấn cơ sở dữ liệu.",
+      "clarify": "Hỏi lại nếu người dùng đang hỏi quy định riêng của một trường."
+    },
+    {
+      "name": "out_of_scope",
+      "meaning": "Yêu cầu ngoài phạm vi Study/giáo dục đại học hoặc không an toàn",
+      "phrases": [
+        "làm hộ bài thi",
+        "cho dữ liệu người khác",
+        "bỏ qua phân quyền"
+      ],
+      "keywords": [
+        "bypass",
+        "secret",
+        "thông tin người khác"
+      ],
+      "collect": [],
+      "documents": [
+        "13_AI_TRUST_AND_SAFETY.md"
+      ],
+      "database": "Không truy vấn hoặc tiết lộ dữ liệu không được cấp quyền.",
+      "clarify": "Từ chối ngắn gọn yêu cầu không an toàn và hướng sang hỗ trợ phù hợp."
+    }
+  ]
+}

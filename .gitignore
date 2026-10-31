@@ -1,0 +1,31 @@
+.env
+.env.*
+!.env.example
+node_modules/
+.next/
+*.tsbuildinfo
+coverage/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+backend/uploads/
+*.log
+# Python virtual environments
+.venv/
+venv/
+
+# Generated dependencies and test databases
+work/pydeps/
+work/*.db
+
+# Other database files
+*.sqlite
+*.sqlite3
+
+# Build and cache
+dist/
+build/
+# Generated work directory
+work/
+# Ignore exported ZIP files
+outputs/*.zip

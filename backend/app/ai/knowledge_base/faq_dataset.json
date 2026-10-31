@@ -1,0 +1,3257 @@
+[
+  {
+    "id": "STUDY-FAQ-001",
+    "category": "Tuyển sinh",
+    "question": "Điểm chuẩn 2026 của ngành CNTT là bao nhiêu?",
+    "answer": "Chưa có điểm chuẩn 2026 của Study được xác nhận trong kho nguồn. Tra đúng ngành, phương thức và năm trên thông báo chính thức; không dùng năm trước để cam kết.",
+    "keywords": [
+      "điểm",
+      "chuẩn",
+      "2026",
+      "của",
+      "ngành",
+      "cntt",
+      "bao",
+      "nhiêu"
+    ],
+    "source_document": "01_ADMISSIONS_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-002",
+    "category": "Tuyển sinh",
+    "question": "Điểm sàn có phải điểm chuẩn không?",
+    "answer": "Không. Điểm sàn là ngưỡng tối thiểu theo điều kiện; điểm chuẩn là ngưỡng trúng tuyển công bố cho ngành, phương thức và năm.",
+    "keywords": [
+      "điểm",
+      "sàn",
+      "phải",
+      "chuẩn",
+      "không"
+    ],
+    "source_document": "01_ADMISSIONS_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-003",
+    "category": "Tuyển sinh",
+    "question": "Em 24 điểm thì chắc đỗ Marketing chứ?",
+    "answer": "Chưa thể kết luận nếu thiếu trường, năm, phương thức, tổ hợp và ưu tiên. Đối chiếu đề án/kết quả chính thức.",
+    "keywords": [
+      "điểm",
+      "thì",
+      "chắc",
+      "marketing",
+      "chứ"
+    ],
+    "source_document": "01_ADMISSIONS_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-004",
+    "category": "Tuyển sinh",
+    "question": "Xét tuyển kết hợp là cộng mọi điểm lại à?",
+    "answer": "Không mặc định. Đề án quy định thành phần, trọng số, quy đổi và điều kiện riêng; xem đúng năm/ngành.",
+    "keywords": [
+      "xét",
+      "tuyển",
+      "kết",
+      "hợp",
+      "cộng",
+      "mọi",
+      "điểm",
+      "lại"
+    ],
+    "source_document": "01_ADMISSIONS_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-005",
+    "category": "Tuyển sinh",
+    "question": "Xét học bạ dùng điểm cả ba năm hay lớp 12?",
+    "answer": "Tùy đề án từng trường, ngành và năm. Không áp dụng công thức phổ biến khi chưa kiểm tra hướng dẫn chính thức.",
+    "keywords": [
+      "xét",
+      "học",
+      "dùng",
+      "điểm",
+      "năm",
+      "hay",
+      "lớp"
+    ],
+    "source_document": "01_ADMISSIONS_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-006",
+    "category": "Tuyển sinh",
+    "question": "Em đổi thứ tự nguyện vọng ở đâu?",
+    "answer": "Phụ thuộc cổng và lịch điều chỉnh năm hiện hành. Study chưa kết nối để sửa nguyện vọng trên cổng bên ngoài.",
+    "keywords": [
+      "đổi",
+      "thứ",
+      "nguyện",
+      "vọng",
+      "đâu"
+    ],
+    "source_document": "01_ADMISSIONS_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-007",
+    "category": "Tuyển sinh",
+    "question": "Bộ hồ sơ xét tuyển thường gồm những gì?",
+    "answer": "Phụ thuộc phương thức và đề án. Dùng checklist năm áp dụng, chuẩn bị minh chứng cần thiết và kiểm tra hạn/định dạng.",
+    "keywords": [
+      "xét",
+      "tuyển",
+      "thường",
+      "gồm",
+      "những"
+    ],
+    "source_document": "01_ADMISSIONS_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-008",
+    "category": "Tuyển sinh",
+    "question": "Học bạ photo có cần công chứng không?",
+    "answer": "Chưa thể khẳng định nếu chưa biết đề án và yêu cầu giấy hay điện tử. Đối chiếu danh mục do tuyển sinh phát hành.",
+    "keywords": [
+      "học",
+      "photo",
+      "cần",
+      "công",
+      "chứng",
+      "không"
+    ],
+    "source_document": "01_ADMISSIONS_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-009",
+    "category": "Tuyển sinh",
+    "question": "Em có được cộng điểm khu vực không?",
+    "answer": "Có thể có ưu tiên nếu đủ tiêu chí và minh chứng. Khu vực, đối tượng, cách tính phải xác minh theo quy định năm đó.",
+    "keywords": [
+      "được",
+      "cộng",
+      "điểm",
+      "khu",
+      "vực",
+      "không"
+    ],
+    "source_document": "01_ADMISSIONS_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-010",
+    "category": "Tuyển sinh",
+    "question": "Quên tải minh chứng thì sửa hồ sơ được không?",
+    "answer": "Tùy trạng thái và hạn. Kiểm tra thông báo; nếu không có nút bổ sung hoặc quá hạn, liên hệ tuyển sinh ngay.",
+    "keywords": [
+      "quên",
+      "tải",
+      "minh",
+      "chứng",
+      "thì",
+      "sửa",
+      "được",
+      "không"
+    ],
+    "source_document": "01_ADMISSIONS_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-011",
+    "category": "Tuyển sinh",
+    "question": "Tra kết quả trúng tuyển ở đâu?",
+    "answer": "Dùng cổng/kênh chính thức trong đề án. Study chỉ xác nhận cá nhân nếu có API được cấp quyền; dữ liệu mẫu không phải kết quả thật.",
+    "keywords": [
+      "tra",
+      "kết",
+      "quả",
+      "trúng",
+      "tuyển",
+      "đâu"
+    ],
+    "source_document": "01_ADMISSIONS_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-012",
+    "category": "Tuyển sinh",
+    "question": "Đã trúng tuyển thì còn cần xác nhận nhập học không?",
+    "answer": "Có thể còn bước xác nhận riêng có hạn. Làm theo thông báo; trúng tuyển và hoàn tất xác nhận không đồng nghĩa.",
+    "keywords": [
+      "trúng",
+      "tuyển",
+      "thì",
+      "còn",
+      "cần",
+      "xác",
+      "nhận",
+      "nhập",
+      "học",
+      "không"
+    ],
+    "source_document": "01_ADMISSIONS_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-013",
+    "category": "Tuyển sinh",
+    "question": "Thông báo trúng tuyển qua tin nhắn có đủ chưa?",
+    "answer": "Xác minh trên cổng/văn bản chính thức; tin nhắn không tự thay kết quả có thẩm quyền.",
+    "keywords": [
+      "thông",
+      "báo",
+      "trúng",
+      "tuyển",
+      "qua",
+      "tin",
+      "nhắn",
+      "chưa"
+    ],
+    "source_document": "01_ADMISSIONS_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-014",
+    "category": "Tuyển sinh",
+    "question": "Study có biết hồ sơ em thiếu gì không?",
+    "answer": "Chỉ khi hồ sơ liên kết tài khoản và backend cho phép. Không gửi giấy tờ nhạy cảm trong chat; xem cổng hoặc gửi ticket.",
+    "keywords": [
+      "study",
+      "biết",
+      "thiếu",
+      "không"
+    ],
+    "source_document": "01_ADMISSIONS_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-015",
+    "category": "Tuyển sinh",
+    "question": "Em nộp hai ngành cùng trường được không?",
+    "answer": "Phụ thuộc đề án, cổng và quy tắc nguyện vọng năm đó. Xem giới hạn lựa chọn từng phương thức.",
+    "keywords": [
+      "nộp",
+      "hai",
+      "ngành",
+      "cùng",
+      "trường",
+      "được",
+      "không"
+    ],
+    "source_document": "01_ADMISSIONS_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-016",
+    "category": "Tuyển sinh",
+    "question": "Không trúng đợt đầu còn cơ hội không?",
+    "answer": "Có thể có đợt bổ sung nếu trường công bố; không phải trường nào cũng mở. Theo dõi thông báo chính thức.",
+    "keywords": [
+      "không",
+      "trúng",
+      "đợt",
+      "đầu",
+      "còn",
+      "hội"
+    ],
+    "source_document": "01_ADMISSIONS_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-017",
+    "category": "Tuyển sinh",
+    "question": "Bằng THPT nước ngoài có dùng xét tuyển được không?",
+    "answer": "Có thể cần công nhận/tương đương và điều kiện riêng. Hỏi tuyển sinh về giấy tờ, dịch thuật, xác minh.",
+    "keywords": [
+      "bằng",
+      "thpt",
+      "nước",
+      "ngoài",
+      "dùng",
+      "xét",
+      "tuyển",
+      "được",
+      "không"
+    ],
+    "source_document": "01_ADMISSIONS_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-018",
+    "category": "Tuyển sinh",
+    "question": "Chứng chỉ quốc tế quy đổi sang điểm gì?",
+    "answer": "Phụ thuộc trường, ngành, năm và chứng chỉ. Chỉ dùng bảng quy đổi trong đề án đã công bố.",
+    "keywords": [
+      "chứng",
+      "chỉ",
+      "quốc",
+      "quy",
+      "đổi",
+      "sang",
+      "điểm"
+    ],
+    "source_document": "01_ADMISSIONS_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-019",
+    "category": "Tuyển sinh",
+    "question": "Văn bằng hai có phải xét tuyển đầu vào mới?",
+    "answer": "Quy trình khác nhau theo cơ sở/ngành/điều kiện. Study chưa có chính sách cụ thể; hỏi đơn vị phụ trách.",
+    "keywords": [
+      "văn",
+      "bằng",
+      "hai",
+      "phải",
+      "xét",
+      "tuyển",
+      "đầu",
+      "vào",
+      "mới"
+    ],
+    "source_document": "01_ADMISSIONS_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-020",
+    "category": "Tuyển sinh",
+    "question": "Muốn khiếu nại kết quả tuyển sinh gửi đâu?",
+    "answer": "Theo kênh và hạn trong thông báo năm đó. Nêu mã hồ sơ qua kênh bảo mật và lưu xác nhận.",
+    "keywords": [
+      "muốn",
+      "khiếu",
+      "nại",
+      "kết",
+      "quả",
+      "tuyển",
+      "sinh",
+      "gửi",
+      "đâu"
+    ],
+    "source_document": "01_ADMISSIONS_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-021",
+    "category": "Ngành học và nghề nghiệp",
+    "question": "CNTT có chỉ học lập trình không?",
+    "answer": "Không; có thể gồm hệ thống, mạng, dữ liệu, bảo mật và ứng dụng. Tỷ trọng tùy chương trình.",
+    "keywords": [
+      "cntt",
+      "chỉ",
+      "học",
+      "lập",
+      "trình",
+      "không"
+    ],
+    "source_document": "02_MAJORS_CAREER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-022",
+    "category": "Ngành học và nghề nghiệp",
+    "question": "Khoa học máy tính khác kỹ thuật phần mềm thế nào?",
+    "answer": "Khoa học máy tính thường nhấn nền tảng tính toán/thuật toán; kỹ thuật phần mềm tập trung quy trình xây dựng, kiểm thử, bảo trì.",
+    "keywords": [
+      "khoa",
+      "học",
+      "máy",
+      "tính",
+      "khác",
+      "thuật",
+      "phần",
+      "mềm",
+      "thế",
+      "nào"
+    ],
+    "source_document": "02_MAJORS_CAREER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-023",
+    "category": "Ngành học và nghề nghiệp",
+    "question": "Hệ thống thông tin có phải ngành kinh doanh không?",
+    "answer": "Thường là giao điểm công nghệ, dữ liệu và quy trình nghiệp vụ; tỷ trọng tùy CTĐT.",
+    "keywords": [
+      "thống",
+      "thông",
+      "tin",
+      "phải",
+      "ngành",
+      "kinh",
+      "doanh",
+      "không"
+    ],
+    "source_document": "02_MAJORS_CAREER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-024",
+    "category": "Ngành học và nghề nghiệp",
+    "question": "An toàn thông tin cần học gì?",
+    "answer": "Nền tảng thường gồm mạng, hệ điều hành, lập trình, bảo mật và thực hành có trách nhiệm. Xem CTĐT trường.",
+    "keywords": [
+      "toàn",
+      "thông",
+      "tin",
+      "cần",
+      "học"
+    ],
+    "source_document": "02_MAJORS_CAREER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-025",
+    "category": "Ngành học và nghề nghiệp",
+    "question": "Quản trị kinh doanh có chung chung quá không?",
+    "answer": "Ngành bao quát quản trị/vận hành/marketing/tài chính/nhân sự; chiều sâu tùy môn tự chọn, dự án và thực tập.",
+    "keywords": [
+      "quản",
+      "trị",
+      "kinh",
+      "doanh",
+      "chung",
+      "quá",
+      "không"
+    ],
+    "source_document": "02_MAJORS_CAREER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-026",
+    "category": "Ngành học và nghề nghiệp",
+    "question": "Marketing có phải chỉ làm mạng xã hội?",
+    "answer": "Không. Còn nghiên cứu khách hàng, định vị, thương hiệu, kênh, chiến dịch, đo lường; content là một hướng.",
+    "keywords": [
+      "marketing",
+      "phải",
+      "chỉ",
+      "làm",
+      "mạng",
+      "hội"
+    ],
+    "source_document": "02_MAJORS_CAREER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-027",
+    "category": "Ngành học và nghề nghiệp",
+    "question": "Kế toán có cần giỏi toán cao cấp?",
+    "answer": "Cần cẩn thận với số liệu/quy tắc; mức toán tùy CTĐT. Xem môn kế toán, kiểm toán, thuế.",
+    "keywords": [
+      "toán",
+      "cần",
+      "giỏi",
+      "cao",
+      "cấp"
+    ],
+    "source_document": "02_MAJORS_CAREER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-028",
+    "category": "Ngành học và nghề nghiệp",
+    "question": "Tài chính–Ngân hàng ra trường phải làm ngân hàng?",
+    "answer": "Không bắt buộc; có thể theo tài chính doanh nghiệp, phân tích, tín dụng hoặc dịch vụ tùy kỹ năng/cơ hội.",
+    "keywords": [
+      "tài",
+      "chính",
+      "ngân",
+      "hàng",
+      "trường",
+      "phải",
+      "làm"
+    ],
+    "source_document": "02_MAJORS_CAREER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-029",
+    "category": "Ngành học và nghề nghiệp",
+    "question": "Ngôn ngữ Anh ngoài dạy học còn làm gì?",
+    "answer": "Có thể tìm hiểu biên/phiên dịch, nội dung, truyền thông, dịch vụ hoặc doanh nghiệp dùng tiếng Anh; phụ thuộc năng lực/trải nghiệm.",
+    "keywords": [
+      "ngôn",
+      "ngữ",
+      "anh",
+      "ngoài",
+      "dạy",
+      "học",
+      "còn",
+      "làm"
+    ],
+    "source_document": "02_MAJORS_CAREER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-030",
+    "category": "Ngành học và nghề nghiệp",
+    "question": "Ngành nào dễ xin việc nhất hiện nay?",
+    "answer": "Không thể khẳng định nếu thiếu dữ liệu thị trường cập nhật. Có thể so sánh kỹ năng và môi trường làm việc.",
+    "keywords": [
+      "ngành",
+      "nào",
+      "xin",
+      "việc",
+      "nhất",
+      "hiện",
+      "nay"
+    ],
+    "source_document": "02_MAJORS_CAREER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-031",
+    "category": "Ngành học và nghề nghiệp",
+    "question": "Toán không tốt có học CNTT được không?",
+    "answer": "Tùy nền tảng và hướng; tư duy logic quan trọng, một số môn có toán. Thử nội dung nhập môn và xem CTĐT.",
+    "keywords": [
+      "toán",
+      "không",
+      "tốt",
+      "học",
+      "cntt",
+      "được"
+    ],
+    "source_document": "02_MAJORS_CAREER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-032",
+    "category": "Ngành học và nghề nghiệp",
+    "question": "Hướng nội có hợp Marketing không?",
+    "answer": "Tính cách không tự quyết định; có vai trò thiên phân tích, nội dung, nghiên cứu hoặc giao tiếp.",
+    "keywords": [
+      "hướng",
+      "nội",
+      "hợp",
+      "marketing",
+      "không"
+    ],
+    "source_document": "02_MAJORS_CAREER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-033",
+    "category": "Ngành học và nghề nghiệp",
+    "question": "Chọn ngành theo sở thích hay lương?",
+    "answer": "Cân nhắc sở thích, năng lực, nội dung học, chi phí, cơ hội và môi trường. Tên ngành không bảo đảm thu nhập.",
+    "keywords": [
+      "chọn",
+      "ngành",
+      "theo",
+      "thích",
+      "hay",
+      "lương"
+    ],
+    "source_document": "02_MAJORS_CAREER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-034",
+    "category": "Ngành học và nghề nghiệp",
+    "question": "HTTT khác khoa học dữ liệu ra sao?",
+    "answer": "HTTT thường xét dùng hệ thống/dữ liệu cho nghiệp vụ; khoa học dữ liệu nhấn phương pháp phân tích/mô hình. Ranh giới tùy CTĐT.",
+    "keywords": [
+      "httt",
+      "khác",
+      "khoa",
+      "học",
+      "liệu",
+      "sao"
+    ],
+    "source_document": "02_MAJORS_CAREER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-035",
+    "category": "Ngành học và nghề nghiệp",
+    "question": "Kỹ thuật phần mềm có thể làm kiểm thử không?",
+    "answer": "Có thể nếu rèn kỹ năng phù hợp; ngành cũng liên quan yêu cầu, thiết kế, phát triển và bảo trì.",
+    "keywords": [
+      "thuật",
+      "phần",
+      "mềm",
+      "thể",
+      "làm",
+      "kiểm",
+      "thử",
+      "không"
+    ],
+    "source_document": "02_MAJORS_CAREER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-036",
+    "category": "Ngành học và nghề nghiệp",
+    "question": "Kế toán có phải dùng phần mềm không?",
+    "answer": "Thường cần công cụ số/hệ thống kế toán; xem môn học và rèn kỹ năng bảng tính, đọc dữ liệu.",
+    "keywords": [
+      "toán",
+      "phải",
+      "dùng",
+      "phần",
+      "mềm",
+      "không"
+    ],
+    "source_document": "02_MAJORS_CAREER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-037",
+    "category": "Ngành học và nghề nghiệp",
+    "question": "Thích tiếng Anh và kinh doanh nên xem ngành nào?",
+    "answer": "So sánh Ngôn ngữ Anh với Marketing/Quản trị kinh doanh và chương trình kết hợp nếu có; đối chiếu môn học/mục tiêu nghề.",
+    "keywords": [
+      "thích",
+      "tiếng",
+      "anh",
+      "kinh",
+      "doanh",
+      "nên",
+      "xem",
+      "ngành",
+      "nào"
+    ],
+    "source_document": "02_MAJORS_CAREER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-038",
+    "category": "Ngành học và nghề nghiệp",
+    "question": "Cơ hội thực tập ngành này ở đâu?",
+    "answer": "Tùy trường, đối tác, vị trí, năng lực. Hỏi khoa; danh sách nghề chung không bảo đảm chỗ thực tập.",
+    "keywords": [
+      "hội",
+      "thực",
+      "tập",
+      "ngành",
+      "này",
+      "đâu"
+    ],
+    "source_document": "02_MAJORS_CAREER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-039",
+    "category": "Ngành học và nghề nghiệp",
+    "question": "Ngành học có chắc bảo đảm việc làm không?",
+    "answer": "Không ngành nào bảo đảm. Kết quả phụ thuộc kỹ năng, trải nghiệm, thị trường và yêu cầu tuyển dụng.",
+    "keywords": [
+      "ngành",
+      "học",
+      "chắc",
+      "bảo",
+      "đảm",
+      "việc",
+      "làm",
+      "không"
+    ],
+    "source_document": "02_MAJORS_CAREER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-040",
+    "category": "Ngành học và nghề nghiệp",
+    "question": "Chưa biết hợp ngành nào bắt đầu sao?",
+    "answer": "Liệt kê môn yêu thích, hoạt động hứng thú, kỹ năng và môi trường mong muốn; so sánh CTĐT rồi thử trải nghiệm.",
+    "keywords": [
+      "chưa",
+      "biết",
+      "hợp",
+      "ngành",
+      "nào",
+      "bắt",
+      "đầu",
+      "sao"
+    ],
+    "source_document": "02_MAJORS_CAREER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-041",
+    "category": "Học tập và đào tạo",
+    "question": "Một tín chỉ là bao nhiêu tiết?",
+    "answer": "Tín chỉ biểu thị khối lượng học, không luôn tương đương số tiết cố định. Xem quy chế trường.",
+    "keywords": [
+      "một",
+      "tín",
+      "chỉ",
+      "bao",
+      "nhiêu",
+      "tiết"
+    ],
+    "source_document": "03_ACADEMIC_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-042",
+    "category": "Học tập và đào tạo",
+    "question": "Học phần bắt buộc khác tự chọn?",
+    "answer": "Bắt buộc phải hoàn thành; tự chọn được lấy trong danh mục theo điều kiện CTĐT.",
+    "keywords": [
+      "học",
+      "phần",
+      "bắt",
+      "buộc",
+      "khác",
+      "chọn"
+    ],
+    "source_document": "03_ACADEMIC_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-043",
+    "category": "Học tập và đào tạo",
+    "question": "Điều kiện tiên quyết là gì?",
+    "answer": "Yêu cầu phải đạt/hoàn thành trước khi đăng ký học phần sau. Xem mô tả môn.",
+    "keywords": [
+      "điều",
+      "kiện",
+      "tiên",
+      "quyết"
+    ],
+    "source_document": "03_ACADEMIC_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-044",
+    "category": "Học tập và đào tạo",
+    "question": "Học song hành nghĩa là cùng lúc?",
+    "answer": "Thường là yêu cầu đăng ký/học đồng thời hai môn nếu CTĐT quy định; kiểm tra danh mục.",
+    "keywords": [
+      "học",
+      "song",
+      "hành",
+      "nghĩa",
+      "cùng",
+      "lúc"
+    ],
+    "source_document": "03_ACADEMIC_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-045",
+    "category": "Học tập và đào tạo",
+    "question": "Đăng ký môn báo hết chỗ?",
+    "answer": "Kiểm tra lớp khác, lịch và thông báo đợt; nếu không có lựa chọn, hỏi đào tạo/cố vấn.",
+    "keywords": [
+      "đăng",
+      "môn",
+      "báo",
+      "hết",
+      "chỗ"
+    ],
+    "source_document": "03_ACADEMIC_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-046",
+    "category": "Học tập và đào tạo",
+    "question": "Hủy học phần có bị tính phí?",
+    "answer": "Tùy thời điểm rút và chính sách kỳ. Kiểm tra xác nhận hủy cùng quy định tài chính.",
+    "keywords": [
+      "hủy",
+      "học",
+      "phần",
+      "tính",
+      "phí"
+    ],
+    "source_document": "03_ACADEMIC_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-047",
+    "category": "Học tập và đào tạo",
+    "question": "GPA học kỳ và tích lũy khác sao?",
+    "answer": "GPA học kỳ tính một kỳ; tích lũy tổng hợp học phần qua nhiều kỳ theo quy định.",
+    "keywords": [
+      "gpa",
+      "học",
+      "tích",
+      "lũy",
+      "khác",
+      "sao"
+    ],
+    "source_document": "03_ACADEMIC_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-048",
+    "category": "Học tập và đào tạo",
+    "question": "Có công thức GPA chung mọi trường không?",
+    "answer": "Không nên mặc định. Thang quy đổi, trọng số, làm tròn và môn được tính khác nhau.",
+    "keywords": [
+      "công",
+      "thức",
+      "gpa",
+      "chung",
+      "mọi",
+      "trường",
+      "không"
+    ],
+    "source_document": "03_ACADEMIC_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-049",
+    "category": "Học tập và đào tạo",
+    "question": "Điểm chữ B bằng bao nhiêu điểm 10?",
+    "answer": "Bảng quy đổi do trường/chương trình quy định. Tra quy chế áp dụng.",
+    "keywords": [
+      "điểm",
+      "chữ",
+      "bằng",
+      "bao",
+      "nhiêu"
+    ],
+    "source_document": "03_ACADEMIC_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-050",
+    "category": "Học tập và đào tạo",
+    "question": "Điểm rèn luyện có cộng GPA không?",
+    "answer": "Thường là hai đánh giá khác nhau; xem quy chế. Không tự cộng vào GPA.",
+    "keywords": [
+      "điểm",
+      "rèn",
+      "luyện",
+      "cộng",
+      "gpa",
+      "không"
+    ],
+    "source_document": "03_ACADEMIC_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-051",
+    "category": "Học tập và đào tạo",
+    "question": "Thi lại và học lại khác nhau sao?",
+    "answer": "Thi lại thường là cơ hội đánh giá lại; học lại thường phải đăng ký/học lại. Quy tắc điểm/phí khác nhau.",
+    "keywords": [
+      "thi",
+      "lại",
+      "học",
+      "khác",
+      "nhau",
+      "sao"
+    ],
+    "source_document": "03_ACADEMIC_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-052",
+    "category": "Học tập và đào tạo",
+    "question": "Qua môn có được học cải thiện không?",
+    "answer": "Có thể nếu quy chế cho phép; xác minh điều kiện đăng ký và cách ghi điểm.",
+    "keywords": [
+      "qua",
+      "môn",
+      "được",
+      "học",
+      "cải",
+      "thiện",
+      "không"
+    ],
+    "source_document": "03_ACADEMIC_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-053",
+    "category": "Học tập và đào tạo",
+    "question": "Cảnh báo học tập là bị thôi học?",
+    "answer": "Không đồng nghĩa tự động. Xem lý do, mức cảnh báo, bước khắc phục; hỏi cố vấn/đào tạo.",
+    "keywords": [
+      "cảnh",
+      "báo",
+      "học",
+      "tập",
+      "thôi"
+    ],
+    "source_document": "03_ACADEMIC_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-054",
+    "category": "Học tập và đào tạo",
+    "question": "Nghỉ vài buổi có thành bảo lưu không?",
+    "answer": "Không. Bảo lưu thường cần đơn và quyết định; vắng học không tự đổi trạng thái.",
+    "keywords": [
+      "nghỉ",
+      "vài",
+      "buổi",
+      "thành",
+      "bảo",
+      "lưu",
+      "không"
+    ],
+    "source_document": "03_ACADEMIC_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-055",
+    "category": "Học tập và đào tạo",
+    "question": "Muốn phúc khảo điểm làm gì?",
+    "answer": "Tìm thông báo đúng kỳ/môn, làm theo biểu mẫu và thời hạn. Hỏi đào tạo sớm nếu thiếu hướng dẫn.",
+    "keywords": [
+      "muốn",
+      "phúc",
+      "khảo",
+      "điểm",
+      "làm"
+    ],
+    "source_document": "03_ACADEMIC_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-056",
+    "category": "Học tập và đào tạo",
+    "question": "Lịch học và lịch thi xem ở đâu?",
+    "answer": "Dùng cổng đào tạo/thông báo chính thức. Study demo chưa xác nhận API lịch cá nhân.",
+    "keywords": [
+      "lịch",
+      "học",
+      "thi",
+      "xem",
+      "đâu"
+    ],
+    "source_document": "03_ACADEMIC_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-057",
+    "category": "Học tập và đào tạo",
+    "question": "Đủ tín chỉ là chắc tốt nghiệp?",
+    "answer": "Chưa chắc; có thể còn môn bắt buộc, chuẩn đầu ra, thực tập/khóa luận và nghĩa vụ khác.",
+    "keywords": [
+      "tín",
+      "chỉ",
+      "chắc",
+      "tốt",
+      "nghiệp"
+    ],
+    "source_document": "03_ACADEMIC_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-058",
+    "category": "Học tập và đào tạo",
+    "question": "Chuyển tín chỉ từ trường khác được không?",
+    "answer": "Có thể cần hồ sơ và quyết định công nhận. Hỏi đào tạo; không tự quy đổi.",
+    "keywords": [
+      "chuyển",
+      "tín",
+      "chỉ",
+      "trường",
+      "khác",
+      "được",
+      "không"
+    ],
+    "source_document": "03_ACADEMIC_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-059",
+    "category": "Học tập và đào tạo",
+    "question": "Học vượt có chắc tốt nghiệp sớm?",
+    "answer": "Không. Còn phụ thuộc môn mở, tiên quyết, giới hạn tín chỉ, tiến độ và thủ tục.",
+    "keywords": [
+      "học",
+      "vượt",
+      "chắc",
+      "tốt",
+      "nghiệp",
+      "sớm"
+    ],
+    "source_document": "03_ACADEMIC_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-060",
+    "category": "Học tập và đào tạo",
+    "question": "Khóa luận và đồ án khác nhau?",
+    "answer": "Tùy CTĐT; khóa luận thường thiên nghiên cứu, đồ án thiên thiết kế/triển khai.",
+    "keywords": [
+      "khóa",
+      "luận",
+      "khác",
+      "nhau"
+    ],
+    "source_document": "03_ACADEMIC_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-061",
+    "category": "Học phí và học bổng",
+    "question": "Học phí Study mỗi tín chỉ bao nhiêu?",
+    "answer": "Study chưa có đơn giá chính thức. Tra biểu phí theo ngành/khóa/năm; dữ liệu demo không dùng thu tiền.",
+    "keywords": [
+      "học",
+      "phí",
+      "study",
+      "mỗi",
+      "tín",
+      "chỉ",
+      "bao",
+      "nhiêu"
+    ],
+    "source_document": "04_TUITION_SCHOLARSHIP_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-062",
+    "category": "Học phí và học bổng",
+    "question": "Học phí tín chỉ tính thế nào?",
+    "answer": "Nếu trường áp dụng, phụ thuộc số tín chỉ và đơn giá; dịch vụ/khoản khác có thể tách riêng.",
+    "keywords": [
+      "học",
+      "phí",
+      "tín",
+      "chỉ",
+      "tính",
+      "thế",
+      "nào"
+    ],
+    "source_document": "04_TUITION_SCHOLARSHIP_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-063",
+    "category": "Học phí và học bổng",
+    "question": "Học phí một kỳ có thể đổi không?",
+    "answer": "Có thể phụ thuộc số tín chỉ, chương trình và thông báo. Cổng tài chính mới xác nhận số phải nộp.",
+    "keywords": [
+      "học",
+      "phí",
+      "một",
+      "thể",
+      "đổi",
+      "không"
+    ],
+    "source_document": "04_TUITION_SCHOLARSHIP_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-064",
+    "category": "Học phí và học bổng",
+    "question": "Đã chuyển tiền nhưng cổng chưa cập nhật?",
+    "answer": "Giữ chứng từ/mã giao dịch và liên hệ tài chính qua kênh chính thức. Không chia sẻ thẻ, mật khẩu, OTP.",
+    "keywords": [
+      "chuyển",
+      "tiền",
+      "nhưng",
+      "cổng",
+      "chưa",
+      "cập",
+      "nhật"
+    ],
+    "source_document": "04_TUITION_SCHOLARSHIP_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-065",
+    "category": "Học phí và học bổng",
+    "question": "Chuyển khoản học phí ghi nội dung gì?",
+    "answer": "Dùng cú pháp/tài khoản trong thông báo chính thức; tránh thông tin chuyển khoản chưa xác minh.",
+    "keywords": [
+      "chuyển",
+      "khoản",
+      "học",
+      "phí",
+      "ghi",
+      "nội",
+      "dung"
+    ],
+    "source_document": "04_TUITION_SCHOLARSHIP_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-066",
+    "category": "Học phí và học bổng",
+    "question": "Đóng trễ bị phạt bao nhiêu?",
+    "answer": "Kho chưa có mức phạt được duyệt. Kiểm tra thông báo kỳ hoặc hỏi tài chính.",
+    "keywords": [
+      "đóng",
+      "trễ",
+      "phạt",
+      "bao",
+      "nhiêu"
+    ],
+    "source_document": "04_TUITION_SCHOLARSHIP_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-067",
+    "category": "Học phí và học bổng",
+    "question": "Rút môn có được hoàn phí?",
+    "answer": "Phụ thuộc thời điểm, loại phí, quy định kỳ. Kiểm tra hủy và gửi đề nghị tài chính.",
+    "keywords": [
+      "rút",
+      "môn",
+      "được",
+      "hoàn",
+      "phí"
+    ],
+    "source_document": "04_TUITION_SCHOLARSHIP_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-068",
+    "category": "Học phí và học bổng",
+    "question": "Học bổng khuyến khích xét tiêu chí gì?",
+    "answer": "Thông báo kỳ nêu tiêu chí, có thể gồm kết quả và điều kiện khác. Không áp dụng tiêu chí chung khi chưa có quy chế.",
+    "keywords": [
+      "học",
+      "bổng",
+      "khuyến",
+      "khích",
+      "xét",
+      "tiêu",
+      "chí"
+    ],
+    "source_document": "04_TUITION_SCHOLARSHIP_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-069",
+    "category": "Học phí và học bổng",
+    "question": "Học bổng đầu vào có tự cấp?",
+    "answer": "Không mặc định. Kiểm tra điều kiện, hồ sơ, thời hạn và xác nhận chương trình.",
+    "keywords": [
+      "học",
+      "bổng",
+      "đầu",
+      "vào",
+      "cấp"
+    ],
+    "source_document": "04_TUITION_SCHOLARSHIP_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-070",
+    "category": "Học phí và học bổng",
+    "question": "Học bổng doanh nghiệp có phỏng vấn không?",
+    "answer": "Tùy nhà tài trợ/thể lệ. Đọc thông báo; không giả định có vòng phỏng vấn.",
+    "keywords": [
+      "học",
+      "bổng",
+      "doanh",
+      "nghiệp",
+      "phỏng",
+      "vấn",
+      "không"
+    ],
+    "source_document": "04_TUITION_SCHOLARSHIP_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-071",
+    "category": "Học phí và học bổng",
+    "question": "Học bổng khó khăn cần giấy tờ gì?",
+    "answer": "Theo thông báo quỹ/trường và đối tượng xét. Nộp giấy tờ cần thiết qua kênh chính thức.",
+    "keywords": [
+      "học",
+      "bổng",
+      "khó",
+      "khăn",
+      "cần",
+      "giấy"
+    ],
+    "source_document": "04_TUITION_SCHOLARSHIP_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-072",
+    "category": "Học phí và học bổng",
+    "question": "Học bổng và khoản vay giống nhau?",
+    "answer": "Không. Học bổng là hỗ trợ theo điều kiện; khoản vay thường phải hoàn trả.",
+    "keywords": [
+      "học",
+      "bổng",
+      "khoản",
+      "vay",
+      "giống",
+      "nhau"
+    ],
+    "source_document": "04_TUITION_SCHOLARSHIP_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-073",
+    "category": "Học phí và học bổng",
+    "question": "Được hai học bổng cùng lúc không?",
+    "answer": "Cộng dồn/loại trừ tùy thể lệ từng chương trình. Đọc thông báo hoặc hỏi đầu mối.",
+    "keywords": [
+      "được",
+      "hai",
+      "học",
+      "bổng",
+      "cùng",
+      "lúc",
+      "không"
+    ],
+    "source_document": "04_TUITION_SCHOLARSHIP_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-074",
+    "category": "Học phí và học bổng",
+    "question": "Mất biên lai học phí tra lại được không?",
+    "answer": "Hỏi tài chính/cổng thanh toán để tra giao dịch hoặc xin chứng từ thay thế qua xác minh.",
+    "keywords": [
+      "mất",
+      "biên",
+      "lai",
+      "học",
+      "phí",
+      "tra",
+      "lại",
+      "được",
+      "không"
+    ],
+    "source_document": "04_TUITION_SCHOLARSHIP_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-075",
+    "category": "Học phí và học bổng",
+    "question": "Đóng học phí nhiều đợt được không?",
+    "answer": "Chỉ khi trường công bố lịch/điều khoản chia đợt. Study chưa xác nhận chính sách trả góp.",
+    "keywords": [
+      "đóng",
+      "học",
+      "phí",
+      "nhiều",
+      "đợt",
+      "được",
+      "không"
+    ],
+    "source_document": "04_TUITION_SCHOLARSHIP_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-076",
+    "category": "Học phí và học bổng",
+    "question": "Phí ký túc xá nằm trong học phí?",
+    "answer": "Không nên mặc định; dịch vụ có thể thu riêng. Xem bảng khoản thu chính thức.",
+    "keywords": [
+      "phí",
+      "túc",
+      "nằm",
+      "trong",
+      "học"
+    ],
+    "source_document": "04_TUITION_SCHOLARSHIP_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-077",
+    "category": "Học phí và học bổng",
+    "question": "GPA giảm thì mất học bổng không?",
+    "answer": "Tùy điều kiện duy trì trong thể lệ. Kiểm tra kỳ và chương trình cụ thể.",
+    "keywords": [
+      "gpa",
+      "giảm",
+      "thì",
+      "mất",
+      "học",
+      "bổng",
+      "không"
+    ],
+    "source_document": "04_TUITION_SCHOLARSHIP_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-078",
+    "category": "Học phí và học bổng",
+    "question": "Cần xác nhận đã thanh toán để nộp hồ sơ",
+    "answer": "Dùng chứng từ/cổng tài chính. Nếu thiếu, gửi ticket; chatbot không phát hành chứng từ.",
+    "keywords": [
+      "cần",
+      "xác",
+      "nhận",
+      "thanh",
+      "toán",
+      "nộp"
+    ],
+    "source_document": "04_TUITION_SCHOLARSHIP_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-079",
+    "category": "Học phí và học bổng",
+    "question": "Cổng báo nợ dù đã chuyển tuần trước",
+    "answer": "Cần đối chiếu mã giao dịch/người nộp/khoản thu. Gửi qua kênh bảo mật.",
+    "keywords": [
+      "cổng",
+      "báo",
+      "chuyển",
+      "tuần",
+      "trước"
+    ],
+    "source_document": "04_TUITION_SCHOLARSHIP_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-080",
+    "category": "Học phí và học bổng",
+    "question": "Có giảm học phí hoàn cảnh khó khăn không?",
+    "answer": "Có thể có miễn/giảm/hỗ trợ, nhưng hồ sơ/đối tượng theo quy định hiện hành. Hỏi CT sinh viên/Tài chính.",
+    "keywords": [
+      "giảm",
+      "học",
+      "phí",
+      "hoàn",
+      "cảnh",
+      "khó",
+      "khăn",
+      "không"
+    ],
+    "source_document": "04_TUITION_SCHOLARSHIP_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-081",
+    "category": "Hồ sơ và thủ tục sinh viên",
+    "question": "Đổi email hồ sơ thế nào?",
+    "answer": "Dùng mục hồ sơ nếu được mở. Nếu email đăng nhập bị khóa, theo luồng xác minh; không chia sẻ OTP.",
+    "keywords": [
+      "đổi",
+      "email",
+      "thế",
+      "nào"
+    ],
+    "source_document": "05_STUDENT_PROFILE_PROCEDURES.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-082",
+    "category": "Hồ sơ và thủ tục sinh viên",
+    "question": "Đổi địa chỉ ở đâu?",
+    "answer": "Kiểm tra hồ sơ cá nhân và cập nhật trường được phép. Nếu cần minh chứng, gửi yêu cầu Hồ sơ.",
+    "keywords": [
+      "đổi",
+      "địa",
+      "chỉ",
+      "đâu"
+    ],
+    "source_document": "05_STUDENT_PROFILE_PROCEDURES.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-083",
+    "category": "Hồ sơ và thủ tục sinh viên",
+    "question": "Xin xác nhận đang học cần thủ tục gì?",
+    "answer": "Nêu mục đích/nơi nhận trong ticket Hồ sơ/Đào tạo. Study chưa xác nhận cấp giấy tự động hay thời hạn.",
+    "keywords": [
+      "xin",
+      "xác",
+      "nhận",
+      "đang",
+      "học",
+      "cần",
+      "thủ",
+      "tục"
+    ],
+    "source_document": "05_STUDENT_PROFILE_PROCEDURES.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-084",
+    "category": "Hồ sơ và thủ tục sinh viên",
+    "question": "Xin giấy vay vốn sinh viên ở đâu?",
+    "answer": "Hỏi bộ phận hồ sơ theo mẫu hiện hành và nêu yêu cầu nơi cho vay; xác minh trước khi dùng mẫu cũ.",
+    "keywords": [
+      "xin",
+      "giấy",
+      "vay",
+      "vốn",
+      "sinh",
+      "viên",
+      "đâu"
+    ],
+    "source_document": "05_STUDENT_PROFILE_PROCEDURES.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-085",
+    "category": "Hồ sơ và thủ tục sinh viên",
+    "question": "Xin giấy hoãn nghĩa vụ làm gì?",
+    "answer": "Điều kiện/cơ quan cấp phụ thuộc luật và tình trạng học. Hỏi đào tạo/công tác sinh viên về hồ sơ.",
+    "keywords": [
+      "xin",
+      "giấy",
+      "hoãn",
+      "nghĩa",
+      "làm"
+    ],
+    "source_document": "05_STUDENT_PROFILE_PROCEDURES.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-086",
+    "category": "Hồ sơ và thủ tục sinh viên",
+    "question": "Mất thẻ sinh viên cấp lại thế nào?",
+    "answer": "Quy trình/phí chưa được xác định. Gửi ticket Hồ sơ/Đời sống sinh viên.",
+    "keywords": [
+      "mất",
+      "thẻ",
+      "sinh",
+      "viên",
+      "cấp",
+      "lại",
+      "thế",
+      "nào"
+    ],
+    "source_document": "05_STUDENT_PROFILE_PROCEDURES.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-087",
+    "category": "Hồ sơ và thủ tục sinh viên",
+    "question": "Bổ sung giấy tờ vào hồ sơ ra sao?",
+    "answer": "Dùng chức năng tải nếu có; nếu không, tạo ticket nêu loại/lý do. Chỉ gửi qua kênh an toàn.",
+    "keywords": [
+      "sung",
+      "giấy",
+      "vào",
+      "sao"
+    ],
+    "source_document": "05_STUDENT_PROFILE_PROCEDURES.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-088",
+    "category": "Hồ sơ và thủ tục sinh viên",
+    "question": "Nghỉ một kỳ có phải xin bảo lưu?",
+    "answer": "Nếu muốn tạm dừng chính thức, hỏi thủ tục trước khi nghỉ. Điều kiện và ảnh hưởng tùy quy chế.",
+    "keywords": [
+      "nghỉ",
+      "một",
+      "phải",
+      "xin",
+      "bảo",
+      "lưu"
+    ],
+    "source_document": "05_STUDENT_PROFILE_PROCEDURES.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-089",
+    "category": "Hồ sơ và thủ tục sinh viên",
+    "question": "Thôi học cần những bước nào?",
+    "answer": "Xử lý theo quy định học vụ/tài chính. Nộp yêu cầu đào tạo; Study chưa có checklist chính thức.",
+    "keywords": [
+      "thôi",
+      "học",
+      "cần",
+      "những",
+      "bước",
+      "nào"
+    ],
+    "source_document": "05_STUDENT_PROFILE_PROCEDURES.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-090",
+    "category": "Hồ sơ và thủ tục sinh viên",
+    "question": "Chuyển ngành cần điều kiện gì?",
+    "answer": "Thời điểm/điều kiện/công nhận tín chỉ tùy quy chế. Xác nhận với đào tạo trước khi đổi.",
+    "keywords": [
+      "chuyển",
+      "ngành",
+      "cần",
+      "điều",
+      "kiện"
+    ],
+    "source_document": "05_STUDENT_PROFILE_PROCEDURES.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-091",
+    "category": "Hồ sơ và thủ tục sinh viên",
+    "question": "Chuyển trường có giữ tín chỉ không?",
+    "answer": "Cơ sở nhận quyết định công nhận. Chuẩn bị bảng điểm/đề cương nếu được yêu cầu; không mặc định.",
+    "keywords": [
+      "chuyển",
+      "trường",
+      "giữ",
+      "tín",
+      "chỉ",
+      "không"
+    ],
+    "source_document": "05_STUDENT_PROFILE_PROCEDURES.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-092",
+    "category": "Hồ sơ và thủ tục sinh viên",
+    "question": "Xin bảng điểm có dấu ở đâu?",
+    "answer": "Phân biệt bản tra cứu và bản xác nhận. Gửi yêu cầu phòng đào tạo; phí/hạn cần xác nhận.",
+    "keywords": [
+      "xin",
+      "bảng",
+      "điểm",
+      "dấu",
+      "đâu"
+    ],
+    "source_document": "05_STUDENT_PROFILE_PROCEDURES.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-093",
+    "category": "Hồ sơ và thủ tục sinh viên",
+    "question": "Tên hồ sơ sai dấu sửa sao?",
+    "answer": "Báo quản lý hồ sơ và chuẩn bị minh chứng qua kênh bảo mật. Không tạo tài khoản mới để thay.",
+    "keywords": [
+      "tên",
+      "sai",
+      "dấu",
+      "sửa",
+      "sao"
+    ],
+    "source_document": "05_STUDENT_PROFILE_PROCEDURES.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-094",
+    "category": "Hồ sơ và thủ tục sinh viên",
+    "question": "Xin xác nhận sinh viên làm bảo hiểm",
+    "answer": "Nêu mục đích và mẫu bảo hiểm yêu cầu trong ticket. Đơn vị phụ trách xác nhận nội dung cấp được.",
+    "keywords": [
+      "xin",
+      "xác",
+      "nhận",
+      "sinh",
+      "viên",
+      "làm",
+      "bảo",
+      "hiểm"
+    ],
+    "source_document": "05_STUDENT_PROFILE_PROCEDURES.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-095",
+    "category": "Hồ sơ và thủ tục sinh viên",
+    "question": "Tốt nghiệp rồi lấy bằng ở đâu?",
+    "answer": "Thời điểm/đơn vị/giấy tờ theo thông báo cấp bằng. Study chưa có lịch chính thức.",
+    "keywords": [
+      "tốt",
+      "nghiệp",
+      "rồi",
+      "lấy",
+      "bằng",
+      "đâu"
+    ],
+    "source_document": "05_STUDENT_PROFILE_PROCEDURES.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-096",
+    "category": "Hồ sơ và thủ tục sinh viên",
+    "question": "Nhờ người khác nhận bằng được không?",
+    "answer": "Ủy quyền theo quy trình cấp bằng. Hỏi đào tạo trước, không gửi giấy tờ định danh qua chat.",
+    "keywords": [
+      "nhờ",
+      "người",
+      "khác",
+      "nhận",
+      "bằng",
+      "được",
+      "không"
+    ],
+    "source_document": "05_STUDENT_PROFILE_PROCEDURES.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-097",
+    "category": "Hồ sơ và thủ tục sinh viên",
+    "question": "Đổi số điện thoại không lưu được",
+    "answer": "Kiểm tra định dạng/lỗi; nếu còn lỗi, gửi ticket Hồ sơ/IT. Không đăng số thật vào chat.",
+    "keywords": [
+      "đổi",
+      "điện",
+      "thoại",
+      "không",
+      "lưu",
+      "được"
+    ],
+    "source_document": "05_STUDENT_PROFILE_PROCEDURES.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-098",
+    "category": "Hồ sơ và thủ tục sinh viên",
+    "question": "Sửa ngày sinh online được không?",
+    "answer": "Dữ liệu định danh có thể cần xác minh/phê duyệt. Liên hệ bộ phận hồ sơ qua kênh bảo mật.",
+    "keywords": [
+      "sửa",
+      "ngày",
+      "sinh",
+      "online",
+      "được",
+      "không"
+    ],
+    "source_document": "05_STUDENT_PROFILE_PROCEDURES.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-099",
+    "category": "Hồ sơ và thủ tục sinh viên",
+    "question": "Xin giấy xác nhận đã tốt nghiệp ở đâu?",
+    "answer": "Tra hướng dẫn tại đơn vị văn bằng/đào tạo; Study chưa có biểu mẫu hay thời hạn.",
+    "keywords": [
+      "xin",
+      "giấy",
+      "xác",
+      "nhận",
+      "tốt",
+      "nghiệp",
+      "đâu"
+    ],
+    "source_document": "05_STUDENT_PROFILE_PROCEDURES.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-100",
+    "category": "Hồ sơ và thủ tục sinh viên",
+    "question": "Hồ sơ sinh viên gồm gì?",
+    "answer": "Tùy cấu hình, có thể gồm dữ liệu cá nhân/học tập. Chỉ thông tin được phép hiển thị cho chính tài khoản.",
+    "keywords": [
+      "sinh",
+      "viên",
+      "gồm"
+    ],
+    "source_document": "05_STUDENT_PROFILE_PROCEDURES.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-101",
+    "category": "Đời sống và kỹ năng",
+    "question": "Quản lý thời gian khi nhiều bài tập?",
+    "answer": "Liệt kê hạn, ước lượng thời gian, chia việc nhỏ và ưu tiên việc gần hạn; rà soát kế hoạch hàng tuần.",
+    "keywords": [
+      "quản",
+      "thời",
+      "gian",
+      "khi",
+      "nhiều",
+      "bài",
+      "tập"
+    ],
+    "source_document": "06_STUDENT_LIFE_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-102",
+    "category": "Đời sống và kỹ năng",
+    "question": "Đại học có cần tự học nhiều không?",
+    "answer": "Có. Đọc trước, ghi câu hỏi, luyện sau giờ học và hỏi giảng viên; lớp học không bao phủ mọi nội dung.",
+    "keywords": [
+      "đại",
+      "học",
+      "cần",
+      "nhiều",
+      "không"
+    ],
+    "source_document": "06_STUDENT_LIFE_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-103",
+    "category": "Đời sống và kỹ năng",
+    "question": "Làm nhóm khi bạn không đóng góp?",
+    "answer": "Thống nhất vai trò/mốc từ đầu, trao đổi sớm, ghi nhận đóng góp. Hỏi giảng viên nếu ảnh hưởng chấm điểm.",
+    "keywords": [
+      "làm",
+      "nhóm",
+      "khi",
+      "bạn",
+      "không",
+      "đóng",
+      "góp"
+    ],
+    "source_document": "06_STUDENT_LIFE_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-104",
+    "category": "Đời sống và kỹ năng",
+    "question": "Viết tiểu luận bắt đầu đâu?",
+    "answer": "Làm rõ yêu cầu, tìm nguồn đáng tin, lập dàn ý, trích dẫn và kiểm tra quy định liêm chính.",
+    "keywords": [
+      "viết",
+      "tiểu",
+      "luận",
+      "bắt",
+      "đầu",
+      "đâu"
+    ],
+    "source_document": "06_STUDENT_LIFE_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-105",
+    "category": "Đời sống và kỹ năng",
+    "question": "Dùng AI viết bài có gian lận không?",
+    "answer": "Tùy quy định môn/cách dùng. Xem hướng dẫn, khai báo nếu yêu cầu, tự kiểm chứng; không nộp AI như bài cá nhân khi bị cấm.",
+    "keywords": [
+      "dùng",
+      "viết",
+      "bài",
+      "gian",
+      "lận",
+      "không"
+    ],
+    "source_document": "06_STUDENT_LIFE_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-106",
+    "category": "Đời sống và kỹ năng",
+    "question": "Trích dẫn nguồn mạng thế nào?",
+    "answer": "Theo chuẩn giảng viên; ghi tác giả/tổ chức, tiêu đề, ngày và liên kết khi phù hợp.",
+    "keywords": [
+      "trích",
+      "dẫn",
+      "nguồn",
+      "mạng",
+      "thế",
+      "nào"
+    ],
+    "source_document": "06_STUDENT_LIFE_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-107",
+    "category": "Đời sống và kỹ năng",
+    "question": "Chép bài bạn có vi phạm?",
+    "answer": "Có thể vi phạm liêm chính học thuật. Tự làm, ghi nhận cộng tác hợp lệ, hỏi giảng viên nếu chưa rõ.",
+    "keywords": [
+      "chép",
+      "bài",
+      "bạn",
+      "phạm"
+    ],
+    "source_document": "06_STUDENT_LIFE_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-108",
+    "category": "Đời sống và kỹ năng",
+    "question": "Áp lực vì điểm thấp",
+    "answer": "Xem phản hồi, xác định phần cải thiện và trao đổi cố vấn. Nếu căng thẳng kéo dài, tìm hỗ trợ chuyên môn.",
+    "keywords": [
+      "lực",
+      "điểm",
+      "thấp"
+    ],
+    "source_document": "06_STUDENT_LIFE_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-109",
+    "category": "Đời sống và kỹ năng",
+    "question": "Năm nhất có nên vào CLB?",
+    "answer": "Có thể giúp kết nối/thử kỹ năng; chọn theo thời gian và cân bằng với học tập, sức khỏe.",
+    "keywords": [
+      "năm",
+      "nhất",
+      "nên",
+      "vào",
+      "clb"
+    ],
+    "source_document": "06_STUDENT_LIFE_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-110",
+    "category": "Đời sống và kỹ năng",
+    "question": "Bắt đầu nghiên cứu khoa học ra sao?",
+    "answer": "Chọn câu hỏi nhỏ, đọc nền, trao đổi giảng viên và xác định phương pháp. Không thu dữ liệu nhạy cảm trái phép.",
+    "keywords": [
+      "bắt",
+      "đầu",
+      "nghiên",
+      "cứu",
+      "khoa",
+      "học",
+      "sao"
+    ],
+    "source_document": "06_STUDENT_LIFE_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-111",
+    "category": "Đời sống và kỹ năng",
+    "question": "Đi làm thêm cần lưu ý gì?",
+    "answer": "Cân nhắc lịch học, điều khoản, an toàn và tính hợp pháp; chính sách trường cần xác minh.",
+    "keywords": [
+      "làm",
+      "thêm",
+      "cần",
+      "lưu"
+    ],
+    "source_document": "06_STUDENT_LIFE_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-112",
+    "category": "Đời sống và kỹ năng",
+    "question": "Đi thực tập chuẩn bị gì?",
+    "answer": "Kiểm tra yêu cầu CTĐT, hồ sơ, mục tiêu và báo cáo. Mẫu/thời gian do khoa công bố.",
+    "keywords": [
+      "thực",
+      "tập",
+      "chuẩn"
+    ],
+    "source_document": "06_STUDENT_LIFE_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-113",
+    "category": "Đời sống và kỹ năng",
+    "question": "Run khi thuyết trình xử lý sao?",
+    "answer": "Chuẩn bị cấu trúc, luyện tập, chia lượt nói, dự phòng câu hỏi; dùng ghi chú ngắn.",
+    "keywords": [
+      "run",
+      "khi",
+      "thuyết",
+      "trình",
+      "sao"
+    ],
+    "source_document": "06_STUDENT_LIFE_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-114",
+    "category": "Đời sống và kỹ năng",
+    "question": "Sinh viên có quyền/nghĩa vụ gì?",
+    "answer": "Phụ thuộc luật và quy chế. Xem sổ tay hiện hành về học tập, trung thực, tài sản và ứng xử.",
+    "keywords": [
+      "sinh",
+      "viên",
+      "quyền",
+      "nghĩa"
+    ],
+    "source_document": "06_STUDENT_LIFE_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-115",
+    "category": "Đời sống và kỹ năng",
+    "question": "Study có hoạt động tình nguyện không?",
+    "answer": "Study demo chưa có lịch thật; theo dõi thông báo chính thức/Đoàn-Hội.",
+    "keywords": [
+      "study",
+      "hoạt",
+      "động",
+      "tình",
+      "nguyện",
+      "không"
+    ],
+    "source_document": "06_STUDENT_LIFE_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-116",
+    "category": "Đời sống và kỹ năng",
+    "question": "CLB nào đang tuyển thành viên?",
+    "answer": "Thông tin động; Study chưa có danh sách hiện thời. Kiểm tra kênh trường.",
+    "keywords": [
+      "clb",
+      "nào",
+      "đang",
+      "tuyển",
+      "thành",
+      "viên"
+    ],
+    "source_document": "06_STUDENT_LIFE_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-117",
+    "category": "Đời sống và kỹ năng",
+    "question": "Bị bắt nạt trong trường báo ai?",
+    "answer": "Nếu nguy hiểm, tìm nơi an toàn và gọi dịch vụ khẩn cấp phù hợp. Nếu không, báo đơn vị bảo vệ/Công tác sinh viên qua kênh an toàn.",
+    "keywords": [
+      "bắt",
+      "nạt",
+      "trong",
+      "trường",
+      "báo"
+    ],
+    "source_document": "06_STUDENT_LIFE_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-118",
+    "category": "Đời sống và kỹ năng",
+    "question": "Tôi cần hỗ trợ tâm lý",
+    "answer": "Tìm dịch vụ chuyên môn được trường/cơ sở y tế công bố. AI không thay chuyên gia; nguy cơ tức thời cần trợ giúp khẩn cấp.",
+    "keywords": [
+      "tôi",
+      "cần",
+      "trợ",
+      "tâm"
+    ],
+    "source_document": "06_STUDENT_LIFE_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-119",
+    "category": "Đời sống và kỹ năng",
+    "question": "Tránh đạo văn như thế nào?",
+    "answer": "Ghi nguồn, tự diễn đạt, trích dẫn ý/đoạn sử dụng và làm theo quy định môn.",
+    "keywords": [
+      "tránh",
+      "đạo",
+      "văn",
+      "như",
+      "thế",
+      "nào"
+    ],
+    "source_document": "06_STUDENT_LIFE_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-120",
+    "category": "Đời sống và kỹ năng",
+    "question": "Ngoại khóa có tính điểm rèn luyện?",
+    "answer": "Tùy tiêu chí/cách ghi nhận của trường. Giữ minh chứng và hỏi Công tác sinh viên.",
+    "keywords": [
+      "ngoại",
+      "khóa",
+      "tính",
+      "điểm",
+      "rèn",
+      "luyện"
+    ],
+    "source_document": "06_STUDENT_LIFE_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-121",
+    "category": "Trung tâm hỗ trợ và Study",
+    "question": "Gửi yêu cầu hỗ trợ ở đâu?",
+    "answer": "Mở Trung tâm hỗ trợ, chọn nhóm, nhập tiêu đề/mô tả và gửi. Hệ thống tạo mã theo dõi.",
+    "keywords": [
+      "gửi",
+      "yêu",
+      "cầu",
+      "trợ",
+      "đâu"
+    ],
+    "source_document": "07_STUDENT_SUPPORT_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-122",
+    "category": "Trung tâm hỗ trợ và Study",
+    "question": "Chọn nhóm nào cho lỗi đăng nhập?",
+    "answer": "Chọn Tài khoản/Hệ thống nếu có; mô tả thiết bị, thời điểm, lỗi. Không gửi mật khẩu/OTP.",
+    "keywords": [
+      "chọn",
+      "nhóm",
+      "nào",
+      "cho",
+      "lỗi",
+      "đăng",
+      "nhập"
+    ],
+    "source_document": "07_STUDENT_SUPPORT_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-123",
+    "category": "Trung tâm hỗ trợ và Study",
+    "question": "Ticket có trạng thái nào?",
+    "answer": "Nhãn phản ánh dữ liệu/cấu hình thực tế. Xem trạng thái đang hiển thị; nhãn không thay phản hồi.",
+    "keywords": [
+      "ticket",
+      "trạng",
+      "thái",
+      "nào"
+    ],
+    "source_document": "07_STUDENT_SUPPORT_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-124",
+    "category": "Trung tâm hỗ trợ và Study",
+    "question": "Bổ sung thông tin vào ticket cũ được không?",
+    "answer": "Mở yêu cầu của tài khoản và thêm phản hồi nếu giao diện cho phép; giữ nội dung trong ticket liên quan.",
+    "keywords": [
+      "sung",
+      "thông",
+      "tin",
+      "vào",
+      "ticket",
+      "được",
+      "không"
+    ],
+    "source_document": "07_STUDENT_SUPPORT_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-125",
+    "category": "Trung tâm hỗ trợ và Study",
+    "question": "Đính kèm ảnh lỗi an toàn không?",
+    "answer": "Chỉ khi giao diện hỗ trợ và ảnh không chứa dữ liệu nhạy cảm dư thừa. Che thông tin tài khoản.",
+    "keywords": [
+      "đính",
+      "kèm",
+      "ảnh",
+      "lỗi",
+      "toàn",
+      "không"
+    ],
+    "source_document": "07_STUDENT_SUPPORT_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-126",
+    "category": "Trung tâm hỗ trợ và Study",
+    "question": "Không thấy mã ticket sau khi gửi",
+    "answer": "Làm mới danh sách, kiểm tra đã tạo chưa. Nếu thiếu, hỏi hỗ trợ; tránh gửi trùng dữ liệu nhạy cảm.",
+    "keywords": [
+      "không",
+      "thấy",
+      "ticket",
+      "sau",
+      "khi",
+      "gửi"
+    ],
+    "source_document": "07_STUDENT_SUPPORT_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-127",
+    "category": "Trung tâm hỗ trợ và Study",
+    "question": "Ticket đóng nhưng vấn đề còn",
+    "answer": "Phản hồi trong ticket nếu được phép hoặc tạo ticket mới dẫn mã cũ theo hướng dẫn.",
+    "keywords": [
+      "ticket",
+      "đóng",
+      "nhưng",
+      "vấn",
+      "còn"
+    ],
+    "source_document": "07_STUDENT_SUPPORT_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-128",
+    "category": "Trung tâm hỗ trợ và Study",
+    "question": "Bao lâu nhân viên trả lời?",
+    "answer": "Study chưa công bố SLA chung. Nếu có hạn gấp, liên hệ đơn vị và cung cấp mã ticket.",
+    "keywords": [
+      "bao",
+      "lâu",
+      "nhân",
+      "viên",
+      "trả",
+      "lời"
+    ],
+    "source_document": "07_STUDENT_SUPPORT_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-129",
+    "category": "Trung tâm hỗ trợ và Study",
+    "question": "Đánh giá hỗ trợ ở đâu?",
+    "answer": "Dùng chức năng đánh giá nếu giao diện hiển thị sau xử lý; đánh giá không thay khiếu nại.",
+    "keywords": [
+      "đánh",
+      "giá",
+      "trợ",
+      "đâu"
+    ],
+    "source_document": "07_STUDENT_SUPPORT_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-130",
+    "category": "Trung tâm hỗ trợ và Study",
+    "question": "Chatbot tự gửi đơn bảo lưu?",
+    "answer": "Năng lực đó chưa xác nhận. Chatbot hướng dẫn; người dùng tự xác nhận thao tác/tạo ticket.",
+    "keywords": [
+      "chatbot",
+      "gửi",
+      "đơn",
+      "bảo",
+      "lưu"
+    ],
+    "source_document": "07_STUDENT_SUPPORT_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-131",
+    "category": "Trung tâm hỗ trợ và Study",
+    "question": "Chatbot đọc điểm của tôi không?",
+    "answer": "Chỉ nếu API điểm được tích hợp và quyền kiểm tra; hiện chưa xác nhận tra GPA. Xem cổng chính thức.",
+    "keywords": [
+      "chatbot",
+      "đọc",
+      "điểm",
+      "của",
+      "tôi",
+      "không"
+    ],
+    "source_document": "07_STUDENT_SUPPORT_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-132",
+    "category": "Trung tâm hỗ trợ và Study",
+    "question": "AI biết hồ sơ tuyển sinh ở đâu?",
+    "answer": "Chỉ khi hồ sơ gắn tài khoản và backend cho phép; nếu không, kiểm tra cổng/tuyển sinh.",
+    "keywords": [
+      "biết",
+      "tuyển",
+      "sinh",
+      "đâu"
+    ],
+    "source_document": "07_STUDENT_SUPPORT_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-133",
+    "category": "Trung tâm hỗ trợ và Study",
+    "question": "Sao AI nói dữ liệu demo?",
+    "answer": "Ngành/học phí/chỉ tiêu có thể là mẫu; không dùng làm dữ liệu thật. Cần nguồn duyệt.",
+    "keywords": [
+      "sao",
+      "nói",
+      "liệu",
+      "demo"
+    ],
+    "source_document": "07_STUDENT_SUPPORT_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-134",
+    "category": "Trung tâm hỗ trợ và Study",
+    "question": "AI dùng nguồn nào?",
+    "answer": "Xem nguồn hiển thị dưới câu trả lời; kiểm tra tiêu đề, năm, phạm vi. Thiếu nguồn cần xác minh.",
+    "keywords": [
+      "dùng",
+      "nguồn",
+      "nào"
+    ],
+    "source_document": "07_STUDENT_SUPPORT_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-135",
+    "category": "Trung tâm hỗ trợ và Study",
+    "question": "Người dùng tải PDF lên hỏi AI được không?",
+    "answer": "Hiện quyền nạp tài liệu thuộc admin; người dùng không tự tải file vào KB qua chat.",
+    "keywords": [
+      "người",
+      "dùng",
+      "tải",
+      "pdf",
+      "lên",
+      "hỏi",
+      "được",
+      "không"
+    ],
+    "source_document": "07_STUDENT_SUPPORT_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-136",
+    "category": "Trung tâm hỗ trợ và Study",
+    "question": "Ai được nạp tài liệu KB?",
+    "answer": "API yêu cầu vai trò super_admin. Tài liệu cần review/duyệt trước khi dùng với người học.",
+    "keywords": [
+      "được",
+      "nạp",
+      "tài",
+      "liệu"
+    ],
+    "source_document": "07_STUDENT_SUPPORT_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-137",
+    "category": "Trung tâm hỗ trợ và Study",
+    "question": "Sao AI không tổng hợp?",
+    "answer": "Khi chưa cấu hình provider LLM thì chatbot chỉ tìm từ khóa/hiển thị nguồn, không tổng hợp LLM.",
+    "keywords": [
+      "sao",
+      "không",
+      "tổng",
+      "hợp"
+    ],
+    "source_document": "07_STUDENT_SUPPORT_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-138",
+    "category": "Trung tâm hỗ trợ và Study",
+    "question": "Xóa lịch sử chat ở đâu?",
+    "answer": "Dùng chức năng xóa hội thoại nếu có; yêu cầu xử lý dữ liệu cá nhân theo quy trình riêng tư.",
+    "keywords": [
+      "xóa",
+      "lịch",
+      "chat",
+      "đâu"
+    ],
+    "source_document": "07_STUDENT_SUPPORT_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-139",
+    "category": "Trung tâm hỗ trợ và Study",
+    "question": "AI đổi email giúp tôi được không?",
+    "answer": "Không tự sửa qua câu trả lời. Dùng hồ sơ nếu được phép hoặc gửi yêu cầu xác minh.",
+    "keywords": [
+      "đổi",
+      "email",
+      "giúp",
+      "tôi",
+      "được",
+      "không"
+    ],
+    "source_document": "07_STUDENT_SUPPORT_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-140",
+    "category": "Trung tâm hỗ trợ và Study",
+    "question": "Sao AI hỏi năm tuyển sinh?",
+    "answer": "Quy định, điểm, hạn thay đổi theo năm; cần năm/trường/ngành để tìm đúng nguồn.",
+    "keywords": [
+      "sao",
+      "hỏi",
+      "năm",
+      "tuyển",
+      "sinh"
+    ],
+    "source_document": "07_STUDENT_SUPPORT_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-141",
+    "category": "Giảng viên và nhân viên",
+    "question": "Giảng viên sửa học vị ở đâu?",
+    "answer": "Kiểm tra hồ sơ nếu trường cho phép sửa; nếu bị khóa, gửi yêu cầu quản trị hồ sơ/nhân sự.",
+    "keywords": [
+      "giảng",
+      "viên",
+      "sửa",
+      "học",
+      "đâu"
+    ],
+    "source_document": "08_STAFF_LECTURER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-142",
+    "category": "Giảng viên và nhân viên",
+    "question": "Hồ sơ giảng viên gồm gì?",
+    "answer": "Có thể có thông tin cá nhân, chuyên môn, đơn vị/chức vụ tùy hệ thống; chỉ dữ liệu/quyền triển khai.",
+    "keywords": [
+      "giảng",
+      "viên",
+      "gồm"
+    ],
+    "source_document": "08_STAFF_LECTURER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-143",
+    "category": "Giảng viên và nhân viên",
+    "question": "Xem phân công giảng dạy trên Study?",
+    "answer": "Source chưa xác nhận module phân công/lịch dạy. Dùng cổng học vụ hoặc hỏi đơn vị chuyên môn.",
+    "keywords": [
+      "xem",
+      "phân",
+      "công",
+      "giảng",
+      "dạy",
+      "trên",
+      "study"
+    ],
+    "source_document": "08_STAFF_LECTURER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-144",
+    "category": "Giảng viên và nhân viên",
+    "question": "Xem hồ sơ giảng viên khác được không?",
+    "answer": "Chỉ nếu chức năng và quyền cấp phù hợp. Không tiết lộ dữ liệu đồng nghiệp qua chat.",
+    "keywords": [
+      "xem",
+      "giảng",
+      "viên",
+      "khác",
+      "được",
+      "không"
+    ],
+    "source_document": "08_STAFF_LECTURER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-145",
+    "category": "Giảng viên và nhân viên",
+    "question": "Nhân viên hỗ trợ sửa trạng thái ticket được?",
+    "answer": "Có API cập nhật cho vai trò hỗ trợ được phép; xử lý ticket trong đúng phạm vi.",
+    "keywords": [
+      "nhân",
+      "viên",
+      "trợ",
+      "sửa",
+      "trạng",
+      "thái",
+      "ticket",
+      "được"
+    ],
+    "source_document": "08_STAFF_LECTURER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-146",
+    "category": "Giảng viên và nhân viên",
+    "question": "Tiếp nhận yêu cầu mới thế nào?",
+    "answer": "Dùng queue được phân quyền, đọc và phản hồi trong ticket. Không suy diễn quy trình nội bộ ngoài source.",
+    "keywords": [
+      "tiếp",
+      "nhận",
+      "yêu",
+      "cầu",
+      "mới",
+      "thế",
+      "nào"
+    ],
+    "source_document": "08_STAFF_LECTURER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-147",
+    "category": "Giảng viên và nhân viên",
+    "question": "Nhân viên xem GPA sinh viên bất kỳ?",
+    "answer": "Không mặc định. Cần quyền/mục đích/API được phép; đăng nhập không mở mọi hồ sơ.",
+    "keywords": [
+      "nhân",
+      "viên",
+      "xem",
+      "gpa",
+      "sinh",
+      "bất"
+    ],
+    "source_document": "08_STAFF_LECTURER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-148",
+    "category": "Giảng viên và nhân viên",
+    "question": "Study dùng để chấm công không?",
+    "answer": "Chưa xác nhận module chấm công. Không thay hệ thống HR đã phê duyệt.",
+    "keywords": [
+      "study",
+      "dùng",
+      "chấm",
+      "công",
+      "không"
+    ],
+    "source_document": "08_STAFF_LECTURER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-149",
+    "category": "Giảng viên và nhân viên",
+    "question": "Tra bảng lương trên Study?",
+    "answer": "Không có bảng lương trong KB và chưa xác nhận payroll; dùng HR có quyền.",
+    "keywords": [
+      "tra",
+      "bảng",
+      "lương",
+      "trên",
+      "study"
+    ],
+    "source_document": "08_STAFF_LECTURER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-150",
+    "category": "Giảng viên và nhân viên",
+    "question": "Quy trình đánh giá giảng viên ở đâu?",
+    "answer": "Study chưa có quy trình nội bộ; hỏi đơn vị nhân sự/đào tạo về tài liệu hiệu lực.",
+    "keywords": [
+      "quy",
+      "trình",
+      "đánh",
+      "giá",
+      "giảng",
+      "viên",
+      "đâu"
+    ],
+    "source_document": "08_STAFF_LECTURER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-151",
+    "category": "Giảng viên và nhân viên",
+    "question": "Đổi khoa/bộ môn trong hồ sơ cần gì?",
+    "answer": "Liên hệ quản trị hồ sơ/HR để xác minh; chatbot không tự đổi dữ liệu ảnh hưởng quyền.",
+    "keywords": [
+      "đổi",
+      "khoa",
+      "môn",
+      "trong",
+      "cần"
+    ],
+    "source_document": "08_STAFF_LECTURER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-152",
+    "category": "Giảng viên và nhân viên",
+    "question": "Nhân viên quên mật khẩu công việc",
+    "answer": "Dùng khôi phục chính thức hoặc liên hệ IT đã xác thực. Không gửi mật khẩu/OTP.",
+    "keywords": [
+      "nhân",
+      "viên",
+      "quên",
+      "mật",
+      "khẩu",
+      "công",
+      "việc"
+    ],
+    "source_document": "08_STAFF_LECTURER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-153",
+    "category": "Giảng viên và nhân viên",
+    "question": "Xuất danh sách sinh viên được không?",
+    "answer": "Chỉ người có quyền/mục đích mới dùng chức năng xuất nếu có; AI không đưa danh sách cá nhân qua chat.",
+    "keywords": [
+      "xuất",
+      "danh",
+      "sách",
+      "sinh",
+      "viên",
+      "được",
+      "không"
+    ],
+    "source_document": "08_STAFF_LECTURER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-154",
+    "category": "Giảng viên và nhân viên",
+    "question": "Chuyển ticket sang phòng khác thế nào?",
+    "answer": "Dùng thao tác phân công nếu quyền/giao diện cho phép; nếu không, liên hệ quản lý queue.",
+    "keywords": [
+      "chuyển",
+      "ticket",
+      "sang",
+      "phòng",
+      "khác",
+      "thế",
+      "nào"
+    ],
+    "source_document": "08_STAFF_LECTURER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-155",
+    "category": "Giảng viên và nhân viên",
+    "question": "Ticket nội bộ xử lý trong bao lâu?",
+    "answer": "Chỉ dùng SLA đã công bố. KB chưa xác định; không hứa ngày.",
+    "keywords": [
+      "ticket",
+      "nội",
+      "trong",
+      "bao",
+      "lâu"
+    ],
+    "source_document": "08_STAFF_LECTURER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-156",
+    "category": "Giảng viên và nhân viên",
+    "question": "Nhân viên xem chat mọi người được không?",
+    "answer": "Không mặc định. Quyền phải theo chính sách; API giới hạn hội thoại của người dùng.",
+    "keywords": [
+      "nhân",
+      "viên",
+      "xem",
+      "chat",
+      "mọi",
+      "người",
+      "được",
+      "không"
+    ],
+    "source_document": "08_STAFF_LECTURER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-157",
+    "category": "Giảng viên và nhân viên",
+    "question": "Cập nhật bằng cấp bằng scan ở đâu?",
+    "answer": "Dùng kênh HR bảo mật; không nạp giấy tờ nhạy cảm vào KB chung.",
+    "keywords": [
+      "cập",
+      "nhật",
+      "bằng",
+      "cấp",
+      "scan",
+      "đâu"
+    ],
+    "source_document": "08_STAFF_LECTURER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-158",
+    "category": "Giảng viên và nhân viên",
+    "question": "Đóng ticket khi chưa trả lời được không?",
+    "answer": "Theo workflow ban hành; phản hồi hoặc ghi lý do trước khi đóng nếu quy trình yêu cầu.",
+    "keywords": [
+      "đóng",
+      "ticket",
+      "khi",
+      "chưa",
+      "trả",
+      "lời",
+      "được",
+      "không"
+    ],
+    "source_document": "08_STAFF_LECTURER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-159",
+    "category": "Giảng viên và nhân viên",
+    "question": "Trạng thái hồ sơ nhân sự xem ở đâu?",
+    "answer": "Assistant chưa xác nhận API nhân sự; dùng cổng HR hoặc liên hệ đầu mối.",
+    "keywords": [
+      "trạng",
+      "thái",
+      "nhân",
+      "xem",
+      "đâu"
+    ],
+    "source_document": "08_STAFF_LECTURER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-160",
+    "category": "Giảng viên và nhân viên",
+    "question": "Study lưu hồ sơ nhân sự thật không?",
+    "answer": "Ứng dụng demo có hồ sơ giới hạn; admin cần xác nhận môi trường và nguồn dữ liệu.",
+    "keywords": [
+      "study",
+      "lưu",
+      "nhân",
+      "thật",
+      "không"
+    ],
+    "source_document": "08_STAFF_LECTURER_GUIDE.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-161",
+    "category": "Tài khoản và an toàn dữ liệu",
+    "question": "Đăng nhập rồi sao không xem hồ sơ bạn tôi?",
+    "answer": "Xác thực nhận diện tài khoản; phân quyền giới hạn dữ liệu. Study không tiết lộ hồ sơ người khác.",
+    "keywords": [
+      "đăng",
+      "nhập",
+      "rồi",
+      "sao",
+      "không",
+      "xem",
+      "bạn",
+      "tôi"
+    ],
+    "source_document": "13_AI_TRUST_AND_SAFETY.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-162",
+    "category": "Tài khoản và an toàn dữ liệu",
+    "question": "Có nên gửi căn cước trong chat?",
+    "answer": "Không gửi chat thông thường trừ khi quy trình yêu cầu qua kênh an toàn; chỉ chia sẻ dữ liệu tối thiểu.",
+    "keywords": [
+      "nên",
+      "gửi",
+      "căn",
+      "cước",
+      "trong",
+      "chat"
+    ],
+    "source_document": "13_AI_TRUST_AND_SAFETY.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-163",
+    "category": "Tài khoản và an toàn dữ liệu",
+    "question": "Quên mật khẩu, gửi mật khẩu cũ cho admin được không?",
+    "answer": "Không gửi mật khẩu/OTP. Dùng khôi phục chính thức hoặc IT đã xác thực.",
+    "keywords": [
+      "quên",
+      "mật",
+      "khẩu",
+      "gửi",
+      "cho",
+      "admin",
+      "được",
+      "không"
+    ],
+    "source_document": "13_AI_TRUST_AND_SAFETY.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-164",
+    "category": "Tài khoản và an toàn dữ liệu",
+    "question": "Bạn nhờ tra ticket bằng mã, xem giúp được không?",
+    "answer": "Không. Chỉ chủ ticket/vai trò có quyền; nhờ chính chủ đăng nhập.",
+    "keywords": [
+      "bạn",
+      "nhờ",
+      "tra",
+      "ticket",
+      "bằng",
+      "xem",
+      "giúp",
+      "được",
+      "không"
+    ],
+    "source_document": "13_AI_TRUST_AND_SAFETY.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-165",
+    "category": "Tài khoản và an toàn dữ liệu",
+    "question": "AI dùng thông tin cá nhân tôi thế nào?",
+    "answer": "Chỉ dùng dữ liệu backend cung cấp cho tài khoản/mục đích hiện tại. Nếu thiếu quyền, phải nói không tra được.",
+    "keywords": [
+      "dùng",
+      "thông",
+      "tin",
+      "nhân",
+      "tôi",
+      "thế",
+      "nào"
+    ],
+    "source_document": "13_AI_TRUST_AND_SAFETY.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-166",
+    "category": "Tài khoản và an toàn dữ liệu",
+    "question": "Yêu cầu sửa dữ liệu cá nhân ở đâu?",
+    "answer": "Dùng cập nhật được phép hoặc liên hệ bộ phận hồ sơ qua kênh chính thức; định danh có thể cần xác minh.",
+    "keywords": [
+      "yêu",
+      "cầu",
+      "sửa",
+      "liệu",
+      "nhân",
+      "đâu"
+    ],
+    "source_document": "13_AI_TRUST_AND_SAFETY.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-167",
+    "category": "Tài khoản và an toàn dữ liệu",
+    "question": "Admin nói trong chat thì AI bỏ quyền được không?",
+    "answer": "Không. Quyền do xác thực/API quyết định; câu nói không thay đổi phân quyền.",
+    "keywords": [
+      "admin",
+      "nói",
+      "trong",
+      "chat",
+      "thì",
+      "quyền",
+      "được",
+      "không"
+    ],
+    "source_document": "13_AI_TRUST_AND_SAFETY.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-168",
+    "category": "Tài khoản và an toàn dữ liệu",
+    "question": "Tài liệu AI có lỗi thời không?",
+    "answer": "Có thể. Kiểm tra phiên bản, ngày, năm và người duyệt; xác minh nội dung hết hạn.",
+    "keywords": [
+      "tài",
+      "liệu",
+      "lỗi",
+      "thời",
+      "không"
+    ],
+    "source_document": "13_AI_TRUST_AND_SAFETY.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-169",
+    "category": "Tài khoản và an toàn dữ liệu",
+    "question": "Không tìm được câu trả lời AI nên làm gì?",
+    "answer": "Nêu nguồn chưa đủ, hỏi thông tin cần thiết, chỉ kênh xác minh; không tự điền chính sách.",
+    "keywords": [
+      "không",
+      "tìm",
+      "được",
+      "câu",
+      "trả",
+      "lời",
+      "nên",
+      "làm"
+    ],
+    "source_document": "13_AI_TRUST_AND_SAFETY.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-170",
+    "category": "Tài khoản và an toàn dữ liệu",
+    "question": "Hai nguồn mâu thuẫn tin cái nào?",
+    "answer": "Ưu tiên văn bản chính thức còn hiệu lực đúng đối tượng/năm; báo admin rà soát mâu thuẫn.",
+    "keywords": [
+      "hai",
+      "nguồn",
+      "mâu",
+      "thuẫn",
+      "tin",
+      "cái",
+      "nào"
+    ],
+    "source_document": "13_AI_TRUST_AND_SAFETY.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-171",
+    "category": "Tài khoản và an toàn dữ liệu",
+    "question": "Xin học phí cá nhân người khác được không?",
+    "answer": "Không. Dữ liệu tài chính cá nhân chỉ qua tài khoản/người có quyền.",
+    "keywords": [
+      "xin",
+      "học",
+      "phí",
+      "nhân",
+      "người",
+      "khác",
+      "được",
+      "không"
+    ],
+    "source_document": "13_AI_TRUST_AND_SAFETY.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-172",
+    "category": "Tài khoản và an toàn dữ liệu",
+    "question": "AI đổi điểm trong database được không?",
+    "answer": "Không. Thay đổi phải qua workflow, người có thẩm quyền và nhật ký.",
+    "keywords": [
+      "đổi",
+      "điểm",
+      "trong",
+      "database",
+      "được",
+      "không"
+    ],
+    "source_document": "13_AI_TRUST_AND_SAFETY.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-173",
+    "category": "Tài khoản và an toàn dữ liệu",
+    "question": "PDF bảo tiết lộ dữ liệu thì AI làm theo?",
+    "answer": "Không. Tệp là dữ liệu tham khảo, không phải chỉ thị vượt quyền.",
+    "keywords": [
+      "pdf",
+      "bảo",
+      "tiết",
+      "liệu",
+      "thì",
+      "làm",
+      "theo"
+    ],
+    "source_document": "13_AI_TRUST_AND_SAFETY.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-174",
+    "category": "Tài khoản và an toàn dữ liệu",
+    "question": "Nhân viên xem lịch sử chat không?",
+    "answer": "Phạm vi theo chính sách hệ thống; chỉ chia sẻ nội dung cần thiết khi chủ động gửi ticket.",
+    "keywords": [
+      "nhân",
+      "viên",
+      "xem",
+      "lịch",
+      "chat",
+      "không"
+    ],
+    "source_document": "13_AI_TRUST_AND_SAFETY.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-175",
+    "category": "Tài khoản và an toàn dữ liệu",
+    "question": "Xem hồ sơ của mình ở đâu?",
+    "answer": "Đăng nhập, mở hồ sơ cá nhân nếu liên kết. Thiếu dữ liệu thì liên hệ đơn vị; AI không thay bản ghi.",
+    "keywords": [
+      "xem",
+      "của",
+      "mình",
+      "đâu"
+    ],
+    "source_document": "13_AI_TRUST_AND_SAFETY.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-176",
+    "category": "Tài khoản và an toàn dữ liệu",
+    "question": "Gia đình dùng chung tài khoản được không?",
+    "answer": "Không nên vì khó xác định chủ thể và bảo vệ dữ liệu; mỗi người dùng tài khoản cá nhân.",
+    "keywords": [
+      "gia",
+      "đình",
+      "dùng",
+      "chung",
+      "tài",
+      "khoản",
+      "được",
+      "không"
+    ],
+    "source_document": "13_AI_TRUST_AND_SAFETY.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-177",
+    "category": "Tài khoản và an toàn dữ liệu",
+    "question": "AI nêu hạn nhưng không nguồn thì sao?",
+    "answer": "Không coi là chính thức. Kiểm tra thông báo/văn bản hiện hành và báo admin.",
+    "keywords": [
+      "nêu",
+      "hạn",
+      "nhưng",
+      "không",
+      "nguồn",
+      "thì",
+      "sao"
+    ],
+    "source_document": "13_AI_TRUST_AND_SAFETY.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-178",
+    "category": "Tài khoản và an toàn dữ liệu",
+    "question": "Dữ liệu động nào cần database?",
+    "answer": "Hồ sơ, kết quả, GPA, công nợ, ticket và tài khoản cần API nghiệp vụ có phân quyền.",
+    "keywords": [
+      "liệu",
+      "động",
+      "nào",
+      "cần",
+      "database"
+    ],
+    "source_document": "13_AI_TRUST_AND_SAFETY.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-179",
+    "category": "Tài khoản và an toàn dữ liệu",
+    "question": "Văn bản pháp luật cũ còn dùng không?",
+    "answer": "Chỉ khi xác minh còn hiệu lực/đúng phạm vi; dùng nguồn chính thức mới nhất và ghi ngày.",
+    "keywords": [
+      "văn",
+      "bản",
+      "pháp",
+      "luật",
+      "còn",
+      "dùng",
+      "không"
+    ],
+    "source_document": "13_AI_TRUST_AND_SAFETY.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-180",
+    "category": "Tài khoản và an toàn dữ liệu",
+    "question": "Báo tài liệu KB sai ở đâu?",
+    "answer": "Ghi tên tài liệu, đoạn sai, nguồn đúng và báo admin/knowledge owner; không tự sửa tài liệu đã duyệt.",
+    "keywords": [
+      "báo",
+      "tài",
+      "liệu",
+      "sai",
+      "đâu"
+    ],
+    "source_document": "13_AI_TRUST_AND_SAFETY.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-181",
+    "category": "Kiến thức đại học phổ thông và sử dụng nguồn",
+    "question": "Study có phải trường đại học thật không?",
+    "answer": "Không mặc định. Study là hệ thống quản lý đại học mẫu; tên trường, địa chỉ và chính sách thật chưa được cung cấp.",
+    "keywords": [
+      "study",
+      "phải",
+      "trường",
+      "đại",
+      "học",
+      "thật",
+      "không"
+    ],
+    "source_document": "00_STUDY_OVERVIEW.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-182",
+    "category": "Kiến thức đại học phổ thông và sử dụng nguồn",
+    "question": "Study AI có thể trả lời mọi câu hỏi không?",
+    "answer": "Không. AI chỉ nên trả lời trong phạm vi nguồn và quyền được cấp; câu thiếu căn cứ cần được nói rõ và chuyển đúng đầu mối.",
+    "keywords": [
+      "study",
+      "thể",
+      "trả",
+      "lời",
+      "mọi",
+      "câu",
+      "hỏi",
+      "không"
+    ],
+    "source_document": "00_STUDY_OVERVIEW.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-183",
+    "category": "Kiến thức đại học phổ thông và sử dụng nguồn",
+    "question": "Kiến thức tĩnh khác dữ liệu động thế nào?",
+    "answer": "Khái niệm ổn định như tín chỉ có thể lưu trong KB; trạng thái hồ sơ/GPA/công nợ cần API hiện thời có kiểm tra quyền.",
+    "keywords": [
+      "kiến",
+      "thức",
+      "tĩnh",
+      "khác",
+      "liệu",
+      "động",
+      "thế",
+      "nào"
+    ],
+    "source_document": "00_STUDY_OVERVIEW.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-184",
+    "category": "Kiến thức đại học phổ thông và sử dụng nguồn",
+    "question": "Khi nào cần ghi năm học vào câu hỏi?",
+    "answer": "Khi hỏi quy định, điểm, lịch, học phí, học bổng hay tuyển sinh vì các nội dung này thay đổi theo năm/kỳ.",
+    "keywords": [
+      "khi",
+      "nào",
+      "cần",
+      "ghi",
+      "năm",
+      "học",
+      "vào",
+      "câu",
+      "hỏi"
+    ],
+    "source_document": "00_STUDY_OVERVIEW.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-185",
+    "category": "Kiến thức đại học phổ thông và sử dụng nguồn",
+    "question": "Một tài liệu draft có dùng làm chính sách chính thức được không?",
+    "answer": "Không. Draft là nội dung chờ chuyên môn rà soát; cần nguồn, người duyệt, hiệu lực và phạm vi trước khi dùng production.",
+    "keywords": [
+      "một",
+      "tài",
+      "liệu",
+      "draft",
+      "dùng",
+      "làm",
+      "chính",
+      "sách",
+      "thức",
+      "được",
+      "không"
+    ],
+    "source_document": "00_STUDY_OVERVIEW.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-186",
+    "category": "Kiến thức đại học phổ thông và sử dụng nguồn",
+    "question": "Nguồn chính thức là nguồn nào?",
+    "answer": "Văn bản/cổng do cơ quan có thẩm quyền hoặc trường phát hành. Kiểm tra chủ thể, ngày, hiệu lực và đối tượng áp dụng.",
+    "keywords": [
+      "nguồn",
+      "chính",
+      "thức",
+      "nào"
+    ],
+    "source_document": "00_STUDY_OVERVIEW.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-187",
+    "category": "Kiến thức đại học phổ thông và sử dụng nguồn",
+    "question": "Điểm chuẩn năm trước có dự báo chính xác năm sau?",
+    "answer": "Không. Chỉ là dữ liệu lịch sử tham khảo và không bảo đảm điểm năm sau.",
+    "keywords": [
+      "điểm",
+      "chuẩn",
+      "năm",
+      "trước",
+      "báo",
+      "chính",
+      "xác",
+      "sau"
+    ],
+    "source_document": "00_STUDY_OVERVIEW.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-188",
+    "category": "Kiến thức đại học phổ thông và sử dụng nguồn",
+    "question": "Người dùng hỏi thiếu thông tin thì AI nên làm gì?",
+    "answer": "Hỏi một câu ngắn về dữ kiện cần thiết như năm, trường, phương thức hoặc trạng thái thay vì đoán.",
+    "keywords": [
+      "người",
+      "dùng",
+      "hỏi",
+      "thiếu",
+      "thông",
+      "tin",
+      "thì",
+      "nên",
+      "làm"
+    ],
+    "source_document": "00_STUDY_OVERVIEW.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-189",
+    "category": "Kiến thức đại học phổ thông và sử dụng nguồn",
+    "question": "AI có tự tạo thủ tục khi không có hướng dẫn?",
+    "answer": "Không. Nêu rõ chưa có quy trình được xác nhận, chỉ kênh phù hợp và chuyển bộ phận nghiệp vụ.",
+    "keywords": [
+      "tạo",
+      "thủ",
+      "tục",
+      "khi",
+      "không",
+      "hướng",
+      "dẫn"
+    ],
+    "source_document": "00_STUDY_OVERVIEW.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-190",
+    "category": "Kiến thức đại học phổ thông và sử dụng nguồn",
+    "question": "Làm sao kiểm tra thông tin trên chatbot?",
+    "answer": "Mở nguồn đi kèm, xem version/ngày/phạm vi và đối chiếu thông báo chính thức nếu ảnh hưởng quyền lợi.",
+    "keywords": [
+      "làm",
+      "sao",
+      "kiểm",
+      "tra",
+      "thông",
+      "tin",
+      "trên",
+      "chatbot"
+    ],
+    "source_document": "00_STUDY_OVERVIEW.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-191",
+    "category": "Kiến thức đại học phổ thông và sử dụng nguồn",
+    "question": "Tài liệu trong KB thuộc loại nào?",
+    "answer": "Có kiến thức tĩnh, nội dung cần cập nhật định kỳ và thông tin riêng không nên lưu RAG; phân loại trước khi nạp.",
+    "keywords": [
+      "tài",
+      "liệu",
+      "trong",
+      "thuộc",
+      "loại",
+      "nào"
+    ],
+    "source_document": "00_STUDY_OVERVIEW.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-192",
+    "category": "Kiến thức đại học phổ thông và sử dụng nguồn",
+    "question": "Dữ liệu demo có thể dùng làm ví dụ cá nhân?",
+    "answer": "Chỉ được mô tả rõ là minh họa, không đại diện sinh viên/trường thật và không được dùng kết luận hồ sơ.",
+    "keywords": [
+      "liệu",
+      "demo",
+      "thể",
+      "dùng",
+      "làm",
+      "nhân"
+    ],
+    "source_document": "00_STUDY_OVERVIEW.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-193",
+    "category": "Kiến thức đại học phổ thông và sử dụng nguồn",
+    "question": "Ai chịu trách nhiệm duyệt nội dung tuyển sinh?",
+    "answer": "Đầu mối nghiệp vụ tuyển sinh của tổ chức phải rà soát, xác nhận nguồn/năm/hiệu lực trước khi admin đưa vào production.",
+    "keywords": [
+      "chịu",
+      "trách",
+      "nhiệm",
+      "duyệt",
+      "nội",
+      "dung",
+      "tuyển",
+      "sinh"
+    ],
+    "source_document": "00_STUDY_OVERVIEW.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-194",
+    "category": "Kiến thức đại học phổ thông và sử dụng nguồn",
+    "question": "Có nên nạp bảng điểm vào kho chung?",
+    "answer": "Không. Bảng điểm chứa dữ liệu cá nhân; phải dùng hệ thống nghiệp vụ có phân quyền, không RAG công khai.",
+    "keywords": [
+      "nên",
+      "nạp",
+      "bảng",
+      "điểm",
+      "vào",
+      "kho",
+      "chung"
+    ],
+    "source_document": "00_STUDY_OVERVIEW.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-195",
+    "category": "Kiến thức đại học phổ thông và sử dụng nguồn",
+    "question": "Học phí và chỉ tiêu nên lưu ở đâu?",
+    "answer": "Lưu thông tin đã được duyệt theo phiên bản; số liệu cá nhân/hiện thời cần truy vấn DB/API có quyền.",
+    "keywords": [
+      "học",
+      "phí",
+      "chỉ",
+      "tiêu",
+      "nên",
+      "lưu",
+      "đâu"
+    ],
+    "source_document": "00_STUDY_OVERVIEW.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-196",
+    "category": "Kiến thức đại học phổ thông và sử dụng nguồn",
+    "question": "FAQ có thay thế tài liệu chuyên đề không?",
+    "answer": "Không. FAQ giúp truy vấn nhanh; tài liệu chuyên đề cung cấp nền tảng và ranh giới áp dụng.",
+    "keywords": [
+      "faq",
+      "thay",
+      "thế",
+      "tài",
+      "liệu",
+      "chuyên",
+      "không"
+    ],
+    "source_document": "00_STUDY_OVERVIEW.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-197",
+    "category": "Kiến thức đại học phổ thông và sử dụng nguồn",
+    "question": "RAG có thể nhầm hai thuật ngữ gần nhau không?",
+    "answer": "Có. Glossary nêu ranh giới; khi khác biệt ảnh hưởng quyền lợi, chatbot phải hỏi lại.",
+    "keywords": [
+      "rag",
+      "thể",
+      "nhầm",
+      "hai",
+      "thuật",
+      "ngữ",
+      "gần",
+      "nhau",
+      "không"
+    ],
+    "source_document": "00_STUDY_OVERVIEW.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-198",
+    "category": "Kiến thức đại học phổ thông và sử dụng nguồn",
+    "question": "Mức độ chắc chắn thấp thì nên trả lời thế nào?",
+    "answer": "Nêu phần đã biết, phần chưa xác minh, tránh khẳng định và chỉ nguồn/bộ phận có thể xác nhận.",
+    "keywords": [
+      "mức",
+      "chắc",
+      "chắn",
+      "thấp",
+      "thì",
+      "nên",
+      "trả",
+      "lời",
+      "thế",
+      "nào"
+    ],
+    "source_document": "00_STUDY_OVERVIEW.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-199",
+    "category": "Kiến thức đại học phổ thông và sử dụng nguồn",
+    "question": "Khi nào cần chuyển nhân viên thay vì tiếp tục trả lời?",
+    "answer": "Khi cần quyết định cá nhân, xử lý hồ sơ, quy định nội bộ chưa có nguồn, nguồn mâu thuẫn hoặc lỗi API.",
+    "keywords": [
+      "khi",
+      "nào",
+      "cần",
+      "chuyển",
+      "nhân",
+      "viên",
+      "thay",
+      "tiếp",
+      "tục",
+      "trả",
+      "lời"
+    ],
+    "source_document": "00_STUDY_OVERVIEW.md",
+    "status": "draft"
+  },
+  {
+    "id": "STUDY-FAQ-200",
+    "category": "Kiến thức đại học phổ thông và sử dụng nguồn",
+    "question": "Ngày kiểm chứng nguồn dùng để làm gì?",
+    "answer": "Cho biết lần cuối nguồn được rà soát, không bảo đảm nội dung còn hiệu lực mãi; kiểm tra lại trước câu trả lời nhạy cảm.",
+    "keywords": [
+      "ngày",
+      "kiểm",
+      "chứng",
+      "nguồn",
+      "dùng",
+      "làm"
+    ],
+    "source_document": "00_STUDY_OVERVIEW.md",
+    "status": "draft"
+  }
+]
