@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     gemini_model: str = "gemini-3.8-flash"
     groq_api_key: str | None = None
     groq_model: str = "openai/gpt-oss-20b"
-    ai_max_output_tokens: int = 450
+    ai_max_output_tokens: int = 2048
     ai_temperature: float = 0.3
     ai_provider_timeout_seconds: float = 8.0
     ai_total_timeout_seconds: float = 18.0

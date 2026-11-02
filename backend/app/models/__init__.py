@@ -1,11 +1,15 @@
 from app.models.entities import (
-    Applicant, ChatConversation, ChatMessage, Faculty, FAQ,
+    AdmissionProgram, AdmissionScore, Applicant, ChatConversation, ChatFeedback,
+    ChatMessage, Department, Faculty, FAQ, FaqItem, KbAuditLog,
     KnowledgeChunk, KnowledgeDocument, Major, Notification, Personnel, Student,
-    SupportTicket, TicketAttachment, TicketMessage, User,
+    StudyTask, SupportTicket, TicketAttachment, TicketMessage, TuitionFee,
+    UnansweredQuestion, User,
 )
 
 __all__ = [
-    "Applicant", "ChatConversation", "ChatMessage", "Faculty",
-    "FAQ", "KnowledgeChunk", "KnowledgeDocument", "Major", "Notification", "Personnel", "Student",
-    "SupportTicket", "TicketAttachment", "TicketMessage", "User",
+    "AdmissionProgram", "AdmissionScore", "Applicant", "ChatConversation", "ChatFeedback",
+    "ChatMessage", "Department", "Faculty", "FAQ", "FaqItem", "KbAuditLog",
+    "KnowledgeChunk", "KnowledgeDocument", "Major", "Notification", "Personnel", "Student",
+    "StudyTask", "SupportTicket", "TicketAttachment", "TicketMessage", "TuitionFee",
+    "UnansweredQuestion", "User",
 ]

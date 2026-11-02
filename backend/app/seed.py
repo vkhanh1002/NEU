@@ -1,10 +1,10 @@
-from datetime import date
+from datetime import date, datetime, timedelta, timezone
 
 from sqlalchemy import select
 
 from app.core.database import Base, SessionLocal, enable_vector_extension, engine
 from app.core.security import hash_password
-from app.models import Applicant, FAQ, Faculty, Major, Personnel, Student, SupportTicket, User
+from app.models import Applicant, FAQ, Faculty, Major, Personnel, Student, StudyTask, SupportTicket, User
 
 
 MAJOR_DATA = [
@@ -26,6 +26,13 @@ FAQ_DATA = [
     ("Tôi tra cứu tình trạng hồ sơ ở đâu?", "Mở mục Tuyển sinh và tra cứu bằng tài khoản đã đăng ký. Nhân viên có thể xem danh sách hồ sơ theo quyền được cấp.", "Tuyển sinh"),
     ("Học phí hiển thị trên hệ thống có chính thức không?", "Không. Học phí và chỉ tiêu trong bản Study demo là dữ liệu tham khảo minh họa, không đại diện cho thông tin chính thức của trường.", "Học phí"),
     ("Tài liệu nào được dùng làm nguồn cho AI Assistant?", "AI tìm trong FAQ, danh mục ngành và các tài liệu PDF, DOCX hoặc TXT do quản trị viên tải lên. Khi không đủ nguồn, trợ lý sẽ nêu rõ giới hạn.", "AI Assistant"),
+    ("Đại học Kinh tế Quốc dân (NEU) ở đâu?", "Trụ sở chính của Đại học Kinh tế Quốc dân (NEU) tọa lạc tại số 207 Đường Giải Phóng, phường Đồng Tâm, quận Hai Bà Trưng, Hà Nội. Trường nổi tiếng với Tòa nhà Thế kỷ (Building A1) và Thư viện Phạm Văn Đồng hiện đại.", "NEU"),
+    ("NEU có những phương thức xét tuyển nào?", "NEU tuyển sinh theo 3 nhóm phương thức chính: (1) Xét tuyển thẳng theo quy chế của Bộ GD&ĐT; (2) Xét tuyển kết hợp (chứng chỉ tiếng Anh quốc tế IELTS/TOEFL kết hợp ĐGNL hoặc điểm thi tốt nghiệp THPT, chứng chỉ SAT/ACT, điểm thi HSA/APT/TSA); (3) Xét tuyển theo kết quả thi tốt nghiệp THPT (các khối A00, A01, D01, D07...).", "NEU"),
+    ("Các ngành đào tạo nổi bật nhất tại NEU là gì?", "Các ngành thế mạnh và điểm chuẩn top đầu tại NEU gồm: Logistics và Quản lý chuỗi cung ứng, Kinh doanh quốc tế, Marketing, Kiểm toán, Tài chính - Ngân hàng, Khoa học dữ liệu trong kinh tế, Trí tuệ nhân tạo (AI), Thương mại điện tử và các chương trình Tiên tiến & Chất lượng cao (AEP).", "NEU"),
+    ("Học phí của NEU là bao nhiêu?", "Học phí tại NEU dao động theo chương trình đào tạo: Hệ chuẩn (đại trà) khoảng 18 - 25 triệu đồng/năm học tùy khối ngành; Hệ Tiên tiến & Chất lượng cao (AEP, POHE) khoảng 40 - 65 triệu đồng/năm học.", "NEU"),
+    ("Chương trình Tiên tiến và Chất lượng cao (AEP) tại NEU là gì?", "AEP (Advanced Educational Programs) là chương trình đào tạo tinh hoa của NEU, giảng dạy bằng tiếng Anh với giáo trình nhập khẩu từ các đại học danh tiếng của Mỹ (như California State University, Long Beach). Sinh viên được học tập trong môi trường quốc tế và cơ hội liên kết du học cao.", "NEU"),
+    ("Quy chế đào tạo và tốt nghiệp tại NEU như thế nào?", "NEU đào tạo theo hệ thống tín chỉ chuẩn 4 năm (có thể học vượt trong 3 - 3.5 năm). Điểm học tập đánh giá theo thang điểm 10 quy đổi sang thang điểm 4. Để tốt nghiệp, sinh viên cần hoàn thành đủ số tín chỉ, đạt chuẩn đầu ra Tiếng Anh, chuẩn Tin học và Giáo dục thể chất, quốc phòng.", "NEU"),
+    ("Đời sống sinh viên và câu lạc bộ tại NEU ra sao?", "NEU có phong trào sinh viên vô cùng sôi nổi với hơn 40 câu lạc bộ lớn nhỏ (như CLB Nhà Kinh tế trẻ YEC, CLB Kế toán Kiểm toán A&A, CLB Marketing MGC...). Trường có ký túc xá khang trang, sân bóng, hội trường A2 hiện đại và thư viện Phạm Văn Đồng 4 tầng chuẩn quốc tế.", "NEU"),
 ]
 
 STUDENT_GIVEN_NAMES = ["Minh Anh", "Gia Huy", "Phương Linh", "Hoàng Nam", "Thảo Vy", "Quốc Bảo", "Khánh Ngọc", "Tuấn Kiệt", "Hà My", "Đức Anh", "Bảo Trân", "Nhật Minh", "Thanh Tâm", "Quang Vinh", "Ngọc Hà", "Hữu Phước", "Mai Chi", "Trọng Nghĩa", "Yến Nhi", "Đình Khang", "Kim Anh", "Tiến Đạt", "Khánh Linh", "Đăng Khoa", "Thùy Dương", "Minh Quân", "Bích Ngọc", "Hoài An", "Văn Khải", "Hương Giang", "Anh Tuấn", "Ngọc Diệp", "Phúc Hưng", "Thanh Trúc", "Bảo Long", "Thu Trang", "Duy Khánh", "Quỳnh Mai", "Thành Đạt", "Như Ý"]
@@ -170,6 +177,27 @@ def seed_data() -> None:
                 db.add(SupportTicket(code=code, owner_id=student_user.id, category=category, subject=subject,
                                      description="Yêu cầu mẫu để minh họa quy trình hỗ trợ.", priority="Bình thường",
                                      status=status, assignee_id=support_user.id if status != "Mới tiếp nhận" else None))
+        now = datetime.now(timezone.utc)
+        demo_study_tasks = [
+            ("Nộp bài tập lớn Cấu trúc dữ liệu & Giải thuật", "Cấu trúc dữ liệu & Giải thuật", "assignment", now + timedelta(days=3), "high", "Cài đặt cây nhị phân tìm kiếm AVL và báo cáo benchmark."),
+            ("Thi kết thúc học phần Cơ sở dữ liệu", "Cơ sở dữ liệu", "exam", now + timedelta(days=10), "high", "Phạm vi: Chuẩn hóa 3NF, BCNF, viết truy vấn SQL nâng cao và tối ưu chỉ mục."),
+            ("Quiz trắc nghiệm Lý thuyết Mạng máy tính", "Mạng máy tính", "quiz", now + timedelta(days=5), "medium", "Kiểm tra 30 câu mô hình OSI, giao thức TCP/UDP và định tuyến IP."),
+            ("Báo cáo tiến độ Đồ án Công nghệ phần mềm", "Công nghệ phần mềm", "project", now + timedelta(days=14), "medium", "Nộp tài liệu SRS và bản vẽ thiết kế kiến trúc Figma."),
+            ("Thi giữa kỳ môn Lập trình Web nâng cao", "Lập trình Web nâng cao", "exam", now + timedelta(days=18), "high", "Thi thực hành xây dựng RESTful API với Next.js và FastAPI."),
+        ]
+        for title, course, t_type, due, priority, notes in demo_study_tasks:
+            if not db.scalar(select(StudyTask.id).where(StudyTask.user_id == student_user.id, StudyTask.title == title)):
+                db.add(StudyTask(
+                    user_id=student_user.id,
+                    title=title,
+                    course_name=course,
+                    task_type=t_type,
+                    due_date=due,
+                    priority=priority,
+                    notes=notes,
+                    status="pending",
+                ))
+
         for question, answer, category in FAQ_DATA:
             if not db.scalar(select(FAQ.id).where(FAQ.question == question)):
                 db.add(FAQ(question=question, answer=answer, category=category, is_published=True))

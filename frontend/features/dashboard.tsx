@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ArrowDownRight, ArrowRight, ArrowUpRight, Bot, CircleHelp, FileText, GraduationCap, Plus, Sparkles, UsersRound } from "lucide-react";
+import { ArrowDownRight, ArrowRight, ArrowUpRight, Bot, Calendar, CalendarCheck2, CircleHelp, Clock, FileText, GraduationCap, Plus, Sparkles, UsersRound } from "lucide-react";
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";
 import { DemoTag, ErrorNotice, Loading, PageTitle, StatusBadge } from "@/components/ui";
@@ -19,9 +19,17 @@ const emptyData: DashboardData = { students: 0, applications: 0, majors: 0, pend
 
 export function Dashboard() {
   const [data, setData] = useState<DashboardData | null>(null);
+  const [studySummary, setStudySummary] = useState<{ upcoming_deadlines: number; upcoming_exams: number; tasks: any[] } | null>(null);
   const [error, setError] = useState("");
   const { user } = useAuth();
-  useEffect(() => { api<DashboardData>("/dashboard").then(setData).catch(reason => setError(reason.message)); }, []);
+  useEffect(() => {
+    api<DashboardData>("/dashboard").then(setData).catch(reason => setError(reason.message));
+    if (user) {
+      api<{ upcoming_deadlines: number; upcoming_exams: number; tasks: any[] }>("/study/summary")
+        .then(setStudySummary)
+        .catch(() => {});
+    }
+  }, [user]);
   const date = new Intl.DateTimeFormat("vi-VN", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(new Date());
   return <div className="dashboard-page">
     <PageTitle eyebrow="TỔNG QUAN" title={`Xin chào${user ? `, ${user.full_name.split(" ").slice(-1)[0]}` : ""} 👋`} description="Đây là những gì đang diễn ra trong Study hôm nay." action={<div className="today-label">{date}</div>} />
@@ -45,7 +53,50 @@ export function Dashboard() {
         <div className="quick-panel"><div className="panel-heading"><div><h2>Thao tác nhanh</h2><p>Đi đến nghiệp vụ thường dùng</p></div></div>
           <Link className="quick-action" href="/admissions"><span className="quick-icon blue"><Plus size={18} /></span><span><strong>Tạo hồ sơ tuyển sinh</strong><small>Tiếp nhận nguyện vọng mới</small></span><ArrowRight size={16} /></Link>
           <Link className="quick-action" href="/support"><span className="quick-icon green"><CircleHelp size={18} /></span><span><strong>Gửi yêu cầu hỗ trợ</strong><small>Theo dõi yêu cầu của bạn</small></span><ArrowRight size={16} /></Link>
+          <Link className="quick-action" href="/study-planner"><span className="quick-icon blue"><CalendarCheck2 size={18} /></span><span><strong>Kế hoạch học tập</strong><small>Quản lý deadline & lịch thi</small></span><ArrowRight size={16} /></Link>
           <Link className="quick-action" href="/profiles"><span className="quick-icon violet"><UsersRound size={18} /></span><span><strong>Tra cứu hồ sơ</strong><small>Thông tin người học</small></span><ArrowRight size={16} /></Link>
+        </div>
+      </section>
+      {/* Widget Deadline & Lịch thi sắp tới */}
+      <section className="study-schedule-widget">
+        <div className="study-schedule-header">
+          <div className="study-schedule-title">
+            <span className="schedule-badge"><CalendarCheck2 size={15} /> TIẾN ĐỘ HỌC TẬP</span>
+            <h3>Deadline & Lịch thi sắp tới</h3>
+            <p>Tự động nhắc nhở và đồng bộ với Trợ lý AI lập lịch ôn tập</p>
+          </div>
+          <div className="study-schedule-actions">
+            <Link href="/study-planner" className="button button-secondary button-small">Xem tất cả</Link>
+            <Link href="/assistant" className="button button-primary button-small"><Bot size={15} /> Nhờ AI lập lịch</Link>
+          </div>
+        </div>
+        <div className="study-task-cards">
+          {(studySummary?.tasks ?? []).filter((t: any) => t.status !== "completed").slice(0, 3).length ? (
+            (studySummary?.tasks ?? []).filter((t: any) => t.status !== "completed").slice(0, 3).map((task: any) => {
+              const diff = new Date(task.due_date).getTime() - new Date().getTime();
+              const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+              const daysLabel = days < 0 ? `Quá hạn ${Math.abs(days)} ngày` : days === 0 ? "Hôm nay" : days === 1 ? "Ngày mai" : `Còn ${days} ngày`;
+              const isUrgent = days <= 3;
+              return (
+                <div key={task.id} className="study-task-mini-card">
+                  <div className="mini-card-top">
+                    <span className={`task-badge ${task.task_type}`}>{task.task_type === "exam" ? "Lịch thi" : "Deadline"}</span>
+                    <span className={`mini-card-countdown ${isUrgent ? "urgent" : ""}`}>{daysLabel}</span>
+                  </div>
+                  <h4>{task.title}</h4>
+                  <div className="mini-card-foot">
+                    <span>{task.course_name}</span>
+                    <time>{new Date(task.due_date).toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}</time>
+                  </div>
+                </div>
+              );
+            })
+          ) : (
+            <div className="study-task-empty">
+              <Clock size={16} />
+              <span>Hiện không có deadline hay lịch thi nào cận kề. Hãy mở <Link href="/study-planner">Kế hoạch học tập</Link> để thêm mới!</span>
+            </div>
+          )}
         </div>
       </section>
       <section className="ai-banner"><div className="ai-banner-art"><div className="ai-orb"><Bot size={28} /></div><span className="sparkle s1">✦</span><span className="sparkle s2">✧</span><span className="orbit orbit-one" /><span className="orbit orbit-two" /></div><div className="ai-banner-copy"><div className="ai-label"><Sparkles size={14} /> STUDY AI ASSISTANT</div><h2>Trợ lý đại học của bạn,<br className="desktop-break" /> luôn sẵn sàng hỗ trợ.</h2><p>Tìm hiểu ngành đào tạo, quy trình tuyển sinh và thủ tục sinh viên từ dữ liệu tri thức của Study.</p><Link className="button button-light" href="/assistant">Bắt đầu trò chuyện <ArrowRight size={16} /></Link></div><div className="ai-banner-chips"><span>✦ Tư vấn tuyển sinh</span><span>⌕ Tra cứu hồ sơ</span><span>◌ Hỗ trợ 24/7*</span><small>* Demo: phản hồi phụ thuộc cấu hình LLM</small></div></section>

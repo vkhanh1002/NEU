@@ -9,6 +9,8 @@ import { API_BASE, api, Ticket } from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";
 import { DemoTag, EmptyState, ErrorNotice, Loading, PageTitle, StatusBadge } from "@/components/ui";
 
+import { StudentHandbook } from "./student-handbook";
+
 type FAQ = { id: string; question: string; answer: string; category: string };
 type Agent = { id: string; full_name: string; email: string };
 type SupportStats = { total: number; by_status: { status: string; count: number }[]; success_rate: number };
@@ -21,6 +23,7 @@ const staffRoles = ["super_admin", "support_staff"];
 export function Support() {
   const { user } = useAuth();
   const isStaff = Boolean(user && staffRoles.includes(user.role));
+  const [hubTab, setHubTab] = useState<"handbook" | "tickets">("handbook");
   const [faqs, setFaqs] = useState<FAQ[]>([]); const [tickets, setTickets] = useState<Ticket[]>([]);
   const [agents, setAgents] = useState<Agent[]>([]); const [stats, setStats] = useState<SupportStats | null>(null);
   const [loading, setLoading] = useState(true); const [error, setError] = useState(""); const [success, setSuccess] = useState("");
@@ -96,16 +99,206 @@ export function Support() {
   const countByStatus = useMemo(() => Object.fromEntries((stats?.by_status ?? []).map(row => [row.status, row.count])), [stats]);
 
   return <div className="module-page">
-    <PageTitle eyebrow="HỖ TRỢ NGƯỜI HỌC" title={isStaff ? "Quản lý yêu cầu hỗ trợ" : "Trung tâm hỗ trợ"} description={isStaff ? "Tiếp nhận, phân công và theo dõi trao đổi với người học." : "Gửi yêu cầu, nhận phản hồi và theo dõi tiến độ từ các bộ phận phụ trách."} action={user ? <button className="button button-primary" onClick={() => setFormOpen(true)}><MessageCircle size={17} /> Tạo yêu cầu</button> : <span className="login-hint">Đăng nhập để tạo yêu cầu</span>} />
-    {!isStaff && <div className="support-hero"><div className="support-hero-icon"><CircleHelp size={24} /></div><div><h2>Chúng tôi có thể giúp gì cho bạn?</h2><p>Chọn chủ đề bên dưới hoặc gửi yêu cầu để bộ phận phụ trách hỗ trợ.</p></div><div className="support-hero-meta"><span><i /> Thường phản hồi trong 1 ngày làm việc</span><DemoTag /></div></div>}
-    {isStaff && stats && <div className="support-stats-grid">{[{ label: "Tổng yêu cầu", value: stats.total, status: "" }, ...statuses.map(value => ({ label: value, value: countByStatus[value] ?? 0, status: value }))].map(item => <button key={item.label} className={`support-stat ${status === item.status ? "selected" : ""}`} onClick={() => setStatus(status === item.status ? "" : item.status)}><span>{item.label}</span><strong>{item.value}</strong></button>)}<div className="support-stat success-rate"><span>Tỷ lệ xử lý thành công</span><strong>{stats.success_rate}%</strong></div></div>}
-    {error && <ErrorNotice message={error} />}
-    {success && <div className="success-notice"><TicketCheck size={16} />{success}<button onClick={() => setSuccess("")}>×</button></div>}
-    <div className="support-grid"><section><div className="section-heading"><div><h2>{isStaff ? "Danh sách yêu cầu" : "Yêu cầu của tôi"}</h2><p>{isStaff ? "Tìm kiếm, lọc và xử lý yêu cầu" : "Theo dõi trao đổi và trạng thái xử lý"}</p></div><TicketCheck size={20} /></div>
-      {isStaff && <div className="support-filters"><label className="search-field"><Search size={17} /><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Mã yêu cầu, sinh viên hoặc nội dung…" /></label><select aria-label="Lọc danh mục" value={category} onChange={event => setCategory(event.target.value)}><option value="">Tất cả danh mục</option>{categories.map(value => <option key={value}>{value}</option>)}</select><select aria-label="Lọc trạng thái" value={status} onChange={event => setStatus(event.target.value)}><option value="">Tất cả trạng thái</option>{statuses.map(value => <option key={value}>{value}</option>)}</select></div>}
-      {loading ? <Loading /> : !user ? <EmptyState icon={<MessageCircle size={22} />} title="Đăng nhập để xem yêu cầu" description="Yêu cầu chỉ hiển thị với người gửi và nhân viên được phân quyền." /> : tickets.length === 0 ? <EmptyState icon={<TicketCheck size={22} />} title={isStaff ? "Không tìm thấy yêu cầu" : "Bạn chưa có yêu cầu nào"} description={isStaff ? "Thử thay đổi từ khóa hoặc bộ lọc." : "Tạo yêu cầu mới để được bộ phận phụ trách hỗ trợ."} action={!isStaff ? <button className="button button-secondary" onClick={() => setFormOpen(true)}>Tạo yêu cầu đầu tiên</button> : undefined} /> : <div className="ticket-list">{tickets.map(ticket => <article className={`ticket-card ${activeTicket === ticket.id ? "expanded" : ""}`} key={ticket.id}><button className="ticket-card-head" onClick={() => setActiveTicket(activeTicket === ticket.id ? null : ticket.id)}><span className="ticket-code">{ticket.code}</span><span className="ticket-title"><strong>{ticket.subject}</strong><small>{ticket.category} · {new Date(ticket.created_at).toLocaleDateString("vi-VN")}{isStaff ? ` · ${ticket.owner_name}` : ""}</small></span><StatusBadge>{ticket.status}</StatusBadge><ChevronDown size={17} /></button>
-        {activeTicket === ticket.id && <div className="ticket-detail"><p>{ticket.description}</p>{ticket.attachments?.length > 0 && <div className="attachment-list">{ticket.attachments.map(file => <button key={file.id} onClick={() => downloadAttachment(ticket, file.id, file.filename)}><Download size={15} />{file.filename}<small>{(file.size_bytes / 1024).toFixed(0)} KB</small></button>)}</div>}<div className="ticket-thread">{ticket.messages.map(message => <div className={`thread-message ${message.author_id === user.id ? "own" : ""}`} key={message.id}><span>{message.author_id === user.id ? "Bạn" : isStaff ? "Người tham gia" : "Bộ phận hỗ trợ"} · {new Date(message.created_at).toLocaleString("vi-VN")}</span><p>{message.body}</p></div>)}</div><ReplyBox onSend={body => reply(ticket, body)} busy={busyTicket === ticket.id} />{isStaff && <div className="ticket-manage"><label>Trạng thái<select disabled={busyTicket === ticket.id} value={ticket.status} onChange={event => mutateTicket(ticket, "status", { status: event.target.value })}>{statuses.map(value => <option key={value}>{value}</option>)}</select></label><label>Người phụ trách<select disabled={busyTicket === ticket.id} value={ticket.assignee_id ?? ""} onChange={event => mutateTicket(ticket, "assignee", { assignee_id: event.target.value || null })}><option value="">Chưa phân công</option>{agents.map(agent => <option key={agent.id} value={agent.id}>{agent.full_name}</option>)}</select></label></div>}{!isStaff && ["Đã giải quyết", "Đã đóng"].includes(ticket.status) && <TicketRating rating={ticket.satisfaction_rating} feedback={ticket.satisfaction_feedback} busy={busyTicket === ticket.id} onRate={(value, feedback) => rate(ticket, value, feedback)} />}</div>}</article>)}</div>}
-    </section><aside className="faq-side"><div className="section-heading"><div><h2>Câu hỏi thường gặp</h2><p>Câu trả lời nhanh từ Study</p></div><CircleHelp size={20} /></div>{loading ? <Loading /> : <div className="faq-list">{faqs.map(faq => <details className="faq-item" key={faq.id}><summary><span>{faq.question}</span><ChevronDown size={17} /></summary><div className="faq-answer"><span className="faq-category">{faq.category}</span><p>{faq.answer}</p></div></details>)}</div>}<button className="faq-ai-link" onClick={() => window.location.assign("/assistant")}><span className="faq-ai-icon">✦</span><span><strong>Cần trợ giúp thêm?</strong><small>Hỏi Study AI Assistant</small></span><ArrowRight size={17} /></button></aside></div>
+    <PageTitle
+      eyebrow="MODULE M12 · HỖ TRỢ NGƯỜI HỌC"
+      title={isStaff ? "Quản lý yêu cầu hỗ trợ" : "Trung tâm hỗ trợ người học"}
+      description={isStaff ? "Tiếp nhận, phân công và theo dõi trao đổi với người học." : "Cẩm nang tân sinh viên, tra cứu hệ thống website NEU và gửi yêu cầu giải đáp thủ tục."}
+      action={
+        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+          {!isStaff && (
+            <div style={{ display: "inline-flex", background: "#e2e8f0", padding: "3px", borderRadius: "10px" }}>
+              <button
+                onClick={() => setHubTab("handbook")}
+                style={{
+                  padding: "6px 14px",
+                  borderRadius: "8px",
+                  fontSize: "13px",
+                  fontWeight: 650,
+                  border: "none",
+                  cursor: "pointer",
+                  background: hubTab === "handbook" ? "#ffffff" : "transparent",
+                  color: hubTab === "handbook" ? "#1d4ed8" : "#475569",
+                  boxShadow: hubTab === "handbook" ? "0 2px 4px rgba(0,0,0,0.06)" : "none"
+                }}
+              >
+                Cẩm nang & Tra cứu NEU
+              </button>
+              <button
+                onClick={() => setHubTab("tickets")}
+                style={{
+                  padding: "6px 14px",
+                  borderRadius: "8px",
+                  fontSize: "13px",
+                  fontWeight: 650,
+                  border: "none",
+                  cursor: "pointer",
+                  background: hubTab === "tickets" ? "#ffffff" : "transparent",
+                  color: hubTab === "tickets" ? "#1d4ed8" : "#475569",
+                  boxShadow: hubTab === "tickets" ? "0 2px 4px rgba(0,0,0,0.06)" : "none"
+                }}
+              >
+                Yêu cầu hỗ trợ (Tickets)
+              </button>
+            </div>
+          )}
+          {user ? (
+            <button className="button button-primary" onClick={() => setFormOpen(true)}>
+              <MessageCircle size={17} /> Tạo yêu cầu
+            </button>
+          ) : (
+            <span className="login-hint">Đăng nhập để tạo yêu cầu</span>
+          )}
+        </div>
+      }
+    />
+
+    {!isStaff && hubTab === "handbook" ? (
+      <StudentHandbook />
+    ) : (
+      <>
+        {!isStaff && (
+          <div className="support-hero">
+            <div className="support-hero-icon"><CircleHelp size={24} /></div>
+            <div>
+              <h2>Chúng tôi có thể giúp gì cho bạn?</h2>
+              <p>Chọn chủ đề bên dưới hoặc gửi yêu cầu để bộ phận phụ trách hỗ trợ.</p>
+            </div>
+            <div className="support-hero-meta">
+              <span><i /> Thường phản hồi trong 1 ngày làm việc</span>
+              <DemoTag />
+            </div>
+          </div>
+        )}
+        {isStaff && stats && (
+          <div className="support-stats-grid">
+            {[{ label: "Tổng yêu cầu", value: stats.total, status: "" }, ...statuses.map(value => ({ label: value, value: countByStatus[value] ?? 0, status: value }))].map(item => (
+              <button key={item.label} className={`support-stat ${status === item.status ? "selected" : ""}`} onClick={() => setStatus(status === item.status ? "" : item.status)}>
+                <span>{item.label}</span><strong>{item.value}</strong>
+              </button>
+            ))}
+            <div className="support-stat success-rate">
+              <span>Tỷ lệ xử lý thành công</span><strong>{stats.success_rate}%</strong>
+            </div>
+          </div>
+        )}
+        {error && <ErrorNotice message={error} />}
+        {success && <div className="success-notice"><TicketCheck size={16} />{success}<button onClick={() => setSuccess("")}>×</button></div>}
+        <div className="support-grid">
+          <section>
+            <div className="section-heading">
+              <div>
+                <h2>{isStaff ? "Danh sách yêu cầu" : "Yêu cầu của tôi"}</h2>
+                <p>{isStaff ? "Tìm kiếm, lọc và xử lý yêu cầu" : "Theo dõi trao đổi và trạng thái xử lý"}</p>
+              </div>
+              <TicketCheck size={20} />
+            </div>
+            {isStaff && (
+              <div className="support-filters">
+                <label className="search-field">
+                  <Search size={17} />
+                  <input value={query} onChange={event => setQuery(event.target.value)} placeholder="Mã yêu cầu, sinh viên hoặc nội dung…" />
+                </label>
+                <select aria-label="Lọc danh mục" value={category} onChange={event => setCategory(event.target.value)}>
+                  <option value="">Tất cả danh mục</option>
+                  {categories.map(value => <option key={value}>{value}</option>)}
+                </select>
+                <select aria-label="Lọc trạng thái" value={status} onChange={event => setStatus(event.target.value)}>
+                  <option value="">Tất cả trạng thái</option>
+                  {statuses.map(value => <option key={value}>{value}</option>)}
+                </select>
+              </div>
+            )}
+            {loading ? (
+              <Loading />
+            ) : !user ? (
+              <EmptyState icon={<MessageCircle size={22} />} title="Đăng nhập để xem yêu cầu" description="Yêu cầu chỉ hiển thị với người gửi và nhân viên được phân quyền." />
+            ) : tickets.length === 0 ? (
+              <EmptyState icon={<TicketCheck size={22} />} title={isStaff ? "Không tìm thấy yêu cầu" : "Bạn chưa có yêu cầu nào"} description={isStaff ? "Thử thay đổi từ khóa hoặc bộ lọc." : "Tạo yêu cầu mới để được bộ phận phụ trách hỗ trợ."} action={!isStaff ? <button className="button button-secondary" onClick={() => setFormOpen(true)}>Tạo yêu cầu đầu tiên</button> : undefined} />
+            ) : (
+              <div className="ticket-list">
+                {tickets.map(ticket => (
+                  <article className={`ticket-card ${activeTicket === ticket.id ? "expanded" : ""}`} key={ticket.id}>
+                    <button className="ticket-card-head" onClick={() => setActiveTicket(activeTicket === ticket.id ? null : ticket.id)}>
+                      <span className="ticket-code">{ticket.code}</span>
+                      <span className="ticket-title">
+                        <strong>{ticket.subject}</strong>
+                        <small>{ticket.category} · {new Date(ticket.created_at).toLocaleDateString("vi-VN")}{isStaff ? ` · ${ticket.owner_name}` : ""}</small>
+                      </span>
+                      <StatusBadge>{ticket.status}</StatusBadge>
+                      <ChevronDown size={17} />
+                    </button>
+                    {activeTicket === ticket.id && (
+                      <div className="ticket-detail">
+                        <p>{ticket.description}</p>
+                        {ticket.attachments?.length > 0 && (
+                          <div className="attachment-list">
+                            {ticket.attachments.map(file => (
+                              <button key={file.id} onClick={() => downloadAttachment(ticket, file.id, file.filename)}>
+                                <Download size={15} />{file.filename}<small>{(file.size_bytes / 1024).toFixed(0)} KB</small>
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                        <div className="ticket-thread">
+                          {ticket.messages.map(message => (
+                            <div className={`thread-message ${message.author_id === user.id ? "own" : ""}`} key={message.id}>
+                              <span>{message.author_id === user.id ? "Bạn" : isStaff ? "Người tham gia" : "Bộ phận hỗ trợ"} · {new Date(message.created_at).toLocaleString("vi-VN")}</span>
+                              <p>{message.body}</p>
+                            </div>
+                          ))}
+                        </div>
+                        <ReplyBox onSend={body => reply(ticket, body)} busy={busyTicket === ticket.id} />
+                        {isStaff && (
+                          <div className="ticket-manage">
+                            <label>Trạng thái
+                              <select disabled={busyTicket === ticket.id} value={ticket.status} onChange={event => mutateTicket(ticket, "status", { status: event.target.value })}>
+                                {statuses.map(value => <option key={value}>{value}</option>)}
+                              </select>
+                            </label>
+                            <label>Người phụ trách
+                              <select disabled={busyTicket === ticket.id} value={ticket.assignee_id ?? ""} onChange={event => mutateTicket(ticket, "assignee", { assignee_id: event.target.value || null })}>
+                                <option value="">Chưa phân công</option>
+                                {agents.map(agent => <option key={agent.id} value={agent.id}>{agent.full_name}</option>)}
+                              </select>
+                            </label>
+                          </div>
+                        )}
+                        {!isStaff && ["Đã giải quyết", "Đã đóng"].includes(ticket.status) && (
+                          <TicketRating rating={ticket.satisfaction_rating} feedback={ticket.satisfaction_feedback} busy={busyTicket === ticket.id} onRate={(value, feedback) => rate(ticket, value, feedback)} />
+                        )}
+                      </div>
+                    )}
+                  </article>
+                ))}
+              </div>
+            )}
+          </section>
+          <aside className="faq-side">
+            <div className="section-heading">
+              <div><h2>Câu hỏi thường gặp</h2><p>Câu trả lời nhanh từ Study</p></div>
+              <CircleHelp size={20} />
+            </div>
+            {loading ? (
+              <Loading />
+            ) : (
+              <div className="faq-list">
+                {faqs.map(faq => (
+                  <details className="faq-item" key={faq.id}>
+                    <summary><span>{faq.question}</span><ChevronDown size={17} /></summary>
+                    <div className="faq-answer"><span className="faq-category">{faq.category}</span><p>{faq.answer}</p></div>
+                  </details>
+                ))}
+              </div>
+            )}
+            <button className="faq-ai-link" onClick={() => window.location.assign("/assistant")}>
+              <span className="faq-ai-icon">✦</span>
+              <span><strong>Cần trợ giúp thêm?</strong><small>Hỏi Study AI Assistant</small></span>
+              <ArrowRight size={17} />
+            </button>
+          </aside>
+        </div>
+      </>
+    )}
     {formOpen && <TicketDialog onClose={() => setFormOpen(false)} onCreated={async (ticket, note) => { setFormOpen(false); await loadTickets(); setActiveTicket(ticket.id); setSuccess(note ? `Đã tạo yêu cầu ${ticket.code}. ${note}` : `Đã tạo yêu cầu ${ticket.code}.`); }} />}
   </div>;
 }
