@@ -18,6 +18,8 @@ services:
 
   backend:
     build: ./backend
+    volumes:
+      - ./knowledge_base:/app/knowledge_base:ro
     environment:
       DATABASE_URL: postgresql+psycopg://study:${DB_PASSWORD:-study}@db:5432/study
       SECRET_KEY: ${STUDY_SECRET_KEY:-local-demo-only-change-before-deployment}

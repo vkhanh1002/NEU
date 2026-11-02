@@ -9,7 +9,7 @@ from app.schemas import PersonnelCreate, PersonnelPublic, PersonnelUpdate
 from app.services.serializers import personnel_public
 
 router = APIRouter(prefix="/personnel", tags=["Personnel"])
-ADMIN = ("super_admin",)
+ADMIN = ("super_admin", "hr_staff")
 ACTIVE = "Đang công tác"
 
 

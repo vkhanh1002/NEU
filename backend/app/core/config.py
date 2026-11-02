@@ -2,7 +2,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    app_name: str = "Study University Management API"
+    app_name: str = "NEU University Management API"
     api_prefix: str = "/api/v1"
     database_url: str = "postgresql+psycopg://study:study@localhost:5432/study"
     secret_key: str = "change-this-in-production"

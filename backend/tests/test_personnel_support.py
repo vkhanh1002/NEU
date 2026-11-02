@@ -1,7 +1,7 @@
 from sqlalchemy import func, select
 
 from app.core.security import create_token, hash_password
-from app.models import Faculty, Personnel, Student, SupportTicket, User
+from app.models import Applicant, Faculty, Personnel, Student, SupportTicket, User
 
 
 def auth(user):
@@ -86,17 +86,18 @@ def test_demo_seed_is_additive_and_idempotent(monkeypatch):
 
     seed.seed_data()
     with TestingSession() as db:
-        lecturer = db.scalar(select(Personnel).where(Personnel.code == "GV-DEMO-001"))
+        lecturer = db.scalar(select(Personnel).where(Personnel.code == "GV-NEU-001"))
         lecturer.full_name = "Tên giảng viên đã chỉnh sửa"
         db.commit()
     seed.seed_data()
     with TestingSession() as db:
-        assert db.scalar(select(func.count(Student.id))) == 41
-        assert db.scalar(select(func.count(Personnel.id))) == 20
-        assert db.scalar(select(func.count(SupportTicket.id))) == 6
-        saved_admin = db.scalar(select(User).where(User.email == existing_admin.email))
+        assert db.scalar(select(func.count(Student.id))) == 20
+        assert db.scalar(select(func.count(Personnel.id))) == 15
+        assert db.scalar(select(func.count(SupportTicket.id))) == 26
+        assert db.scalar(select(func.count(Applicant.id))) == 25
+        saved_admin = db.scalar(select(User).where(User.email == "admin@neu.local"))
         assert saved_admin.full_name == "Tên quản trị đã chỉnh sửa"
         assert saved_admin.password_hash == existing_admin.password_hash
-        saved_lecturer = db.scalar(select(Personnel).where(Personnel.code == "GV-DEMO-001"))
+        saved_lecturer = db.scalar(select(Personnel).where(Personnel.code == "GV-NEU-001"))
         assert saved_lecturer.full_name == "Tên giảng viên đã chỉnh sửa"
     engine.dispose()

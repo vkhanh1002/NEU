@@ -18,8 +18,6 @@ export function StatusBadge({ children }: { children: React.ReactNode }) {
   return <span className={`status-badge ${tone}`}><i />{children}</span>;
 }
 
-export function DemoTag() { return <span className="demo-tag">Dữ liệu minh họa</span>; }
-
 export function ErrorNotice({ message }: { message: string }) {
   return <div className="error-notice" role="alert">{message}</div>;
 }

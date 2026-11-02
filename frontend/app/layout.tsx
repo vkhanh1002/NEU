@@ -4,8 +4,9 @@ import { Shell } from "@/components/shell";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Study — University Management System",
-  description: "Nền tảng quản lý đại học tập trung, tích hợp Study AI Assistant.",
+  title: "NEU | Hệ thống quản lý đại học",
+  description: "Cổng thông tin và dịch vụ của Đại học Kinh tế Quốc dân.",
+  icons: { icon: "/neu-mark.svg" },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

@@ -2,14 +2,15 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session, joinedload
 
-from app.api.deps import current_user, require_roles
+from app.api.deps import current_user, optional_current_user, require_roles
 from app.core.database import get_db
+from app.core.security import hash_password
 from app.models import Applicant, Faculty, Major, Student, User
 from app.schemas import ApplicantCreate, ApplicantPublic, ApplicantStatusUpdate, MajorPublic, StudentProfileUpdate, StudentPublic
 from app.services.serializers import applicant_public, student_public
 
 router = APIRouter(tags=["Admissions and profiles"])
-STAFF = ("super_admin",)
+STAFF = ("super_admin", "support_staff", "academic_staff")
 ADMISSION_STAFF = ("super_admin", "admission_staff")
 
 
@@ -37,27 +38,52 @@ def list_applications(_user: User = Depends(require_roles(*ADMISSION_STAFF)), db
 
 
 @router.post("/admissions/applications", response_model=ApplicantPublic, status_code=201)
-def create_application(data: ApplicantCreate, db: Session = Depends(get_db)):
+def create_application(data: ApplicantCreate, user: User | None = Depends(optional_current_user), db: Session = Depends(get_db)):
     major = db.get(Major, data.desired_major_id)
     if not major or major.admission_status != "Đang tuyển sinh":
         raise HTTPException(status_code=400, detail="Ngành không mở nhận hồ sơ trong dữ liệu hiện tại.")
-    applicant = Applicant(**data.model_dump(), email=data.email.lower())
+    email = data.email.lower()
+    if db.scalar(select(Applicant.id).where(Applicant.email == email)):
+        raise HTTPException(status_code=409, detail="Email này đã có hồ sơ. Đăng nhập để theo dõi hồ sơ hiện có.")
+    existing_user = db.scalar(select(User).where(User.email == email))
+    if user and user.role == "applicant" and user.email != email:
+        raise HTTPException(status_code=403, detail="Tài khoản thí sinh chỉ được gửi hồ sơ cho email đã đăng nhập.")
+    if existing_user and existing_user.role != "applicant":
+        raise HTTPException(status_code=409, detail="Email đã được dùng cho tài khoản khác.")
+    if existing_user and (user is None or user.id != existing_user.id):
+        raise HTTPException(status_code=409, detail="Email đã có tài khoản thí sinh. Đăng nhập để gửi hồ sơ.")
+    if not existing_user:
+        if not data.password:
+            raise HTTPException(status_code=422, detail="Tạo mật khẩu để theo dõi hồ sơ sau khi gửi.")
+        existing_user = User(email=email, full_name=data.full_name, password_hash=hash_password(data.password), role="applicant")
+        db.add(existing_user)
+    applicant_values = data.model_dump(exclude={"password"})
+    applicant = Applicant(**applicant_values, email=email)
     db.add(applicant)
     db.commit()
     db.refresh(applicant)
     return applicant_public(db.scalar(select(Applicant).where(Applicant.id == applicant.id).options(joinedload(Applicant.major))))
 
 
+@router.get("/admissions/applications/me", response_model=list[ApplicantPublic])
+def my_applications(user: User = Depends(require_roles("applicant")), db: Session = Depends(get_db)):
+    rows = db.scalars(select(Applicant).where(Applicant.email == user.email)
+                      .options(joinedload(Applicant.major)).order_by(Applicant.created_at.desc())).all()
+    return [applicant_public(row) for row in rows]
+
+
 @router.patch("/admissions/applications/{applicant_id}/status", response_model=ApplicantPublic)
 def update_application_status(applicant_id: str, data: ApplicantStatusUpdate,
                               _user: User = Depends(require_roles("super_admin", "admission_staff")),
                               db: Session = Depends(get_db)):
-    if data.status not in {"Mới tiếp nhận", "Đang xét duyệt", "Cần bổ sung", "Trúng tuyển", "Không trúng tuyển"}:
+    if data.status not in {"Mới tiếp nhận", "Đang xét duyệt", "Cần bổ sung", "Đã duyệt", "Trúng tuyển", "Không đủ điều kiện", "Không trúng tuyển"}:
         raise HTTPException(status_code=422, detail="Trạng thái hồ sơ không hợp lệ.")
     applicant = db.scalar(select(Applicant).where(Applicant.id == applicant_id).options(joinedload(Applicant.major)))
     if not applicant:
         raise HTTPException(status_code=404, detail="Không tìm thấy hồ sơ.")
     applicant.status = data.status
+    if data.note is not None:
+        applicant.review_note = data.note.strip()
     db.commit()
     db.refresh(applicant)
     return applicant_public(applicant)
@@ -73,14 +99,26 @@ def promote_applicant(applicant_id: str, _user: User = Depends(require_roles("su
         raise HTTPException(status_code=409, detail="Chỉ có thể chuyển hồ sơ đã trúng tuyển thành sinh viên.")
     if applicant.student_id:
         return student_public(db.scalar(select(Student).where(Student.id == applicant.student_id).options(joinedload(Student.major))))
+    account = db.scalar(select(User).where(User.email == applicant.email))
+    if account and account.role not in {"applicant", "student"}:
+        raise HTTPException(status_code=409, detail="Tài khoản gắn với email hồ sơ không thể chuyển thành sinh viên.")
+    linked_student = db.scalar(select(Student).where(Student.user_id == account.id)) if account else None
+    if linked_student:
+        applicant.student_id = linked_student.id
+        db.commit()
+        return student_public(db.scalar(select(Student).where(Student.id == linked_student.id).options(joinedload(Student.major))))
     count = db.scalar(select(func.count(Student.id))) or 0
     student = Student(
-        applicant_id=applicant.id, student_number=f"STU{2026}{count + 1:04d}",
+        user_id=account.id if account else None, applicant_id=applicant.id,
+        student_number=f"STU{2026}{count + 1:04d}",
         full_name=applicant.full_name, email=applicant.email, phone=applicant.phone,
         date_of_birth=applicant.date_of_birth, address=applicant.address, major_id=applicant.desired_major_id,
         cohort="2026", enrollment_date=None, is_demo=False,
     )
     db.add(student)
+    if account:
+        account.role = "student"
+        account.full_name = applicant.full_name
     db.flush()
     applicant.student_id = student.id
     db.commit()
@@ -100,6 +138,8 @@ def list_students(user: User = Depends(current_user), db: Session = Depends(get_
 
 @router.get("/profiles/me", response_model=StudentPublic)
 def my_student_profile(user: User = Depends(current_user), db: Session = Depends(get_db)):
+    if user.role != "student":
+        raise HTTPException(status_code=403, detail="Chức năng chỉ dành cho tài khoản sinh viên.")
     student = db.scalar(select(Student).where(Student.user_id == user.id).options(joinedload(Student.major)))
     if not student:
         raise HTTPException(status_code=404, detail="Tài khoản chưa được liên kết với hồ sơ sinh viên.")
@@ -108,6 +148,8 @@ def my_student_profile(user: User = Depends(current_user), db: Session = Depends
 
 @router.patch("/profiles/me", response_model=StudentPublic)
 def update_my_student_profile(data: StudentProfileUpdate, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    if user.role != "student":
+        raise HTTPException(status_code=403, detail="Chức năng chỉ dành cho tài khoản sinh viên.")
     student = db.scalar(select(Student).where(Student.user_id == user.id).options(joinedload(Student.major)))
     if not student:
         raise HTTPException(status_code=404, detail="Tài khoản chưa được liên kết với hồ sơ sinh viên.")

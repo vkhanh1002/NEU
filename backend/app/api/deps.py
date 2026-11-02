@@ -26,6 +26,22 @@ def current_user(
     return user
 
 
+def optional_current_user(
+    credentials: HTTPAuthorizationCredentials | None = Depends(bearer),
+    db: Session = Depends(get_db),
+) -> User | None:
+    if not credentials:
+        return None
+    try:
+        user_id = decode_token(credentials.credentials)
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Phiên đăng nhập không hợp lệ hoặc đã hết hạn.") from None
+    user = db.get(User, user_id)
+    if not user or not user.is_active:
+        raise HTTPException(status_code=401, detail="Tài khoản không hoạt động.")
+    return user
+
+
 def require_roles(*roles: str):
     def dependency(user: User = Depends(current_user)) -> User:
         if user.role not in roles:

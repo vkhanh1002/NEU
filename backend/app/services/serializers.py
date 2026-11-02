@@ -6,7 +6,8 @@ def applicant_public(applicant: Applicant) -> dict:
         "id": applicant.id, "email": applicant.email, "full_name": applicant.full_name,
         "phone": applicant.phone, "desired_major_id": applicant.desired_major_id,
         "major_name": applicant.major.name, "admission_method": applicant.admission_method,
-        "status": applicant.status, "created_at": applicant.created_at, "student_id": applicant.student_id,
+        "status": applicant.status, "review_note": applicant.review_note,
+        "created_at": applicant.created_at, "student_id": applicant.student_id,
     }
 
 

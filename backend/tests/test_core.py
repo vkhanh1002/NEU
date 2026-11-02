@@ -1,10 +1,25 @@
-from app.ai.rag import chunks_for, cosine_similarity, extract_document, lexical_score
+from app.ai.rag import chunks_for, cosine_similarity, extract_document, lexical_score, normalize_neu_name
 import pytest
 import asyncio
+from datetime import datetime
+from fastapi import HTTPException
+from sqlalchemy import select
 
+from app.api.auth import login as login_handler
+from app.api.dashboard import dashboard as dashboard_handler
+from app.api.deps import current_user, require_roles
+from app.api.lecturer import lecturer_schedule
+from app.api.student import student_schedule
 from app.ai.rag import generate_answer, retrieve_context
 from app.core.security import create_token, decode_token, hash_password, verify_password
 from app.models import Applicant, FAQ, Faculty, Major, Student, SupportTicket, User
+from app.schemas import LoginRequest
+
+
+def test_neu_name_normalization_only_corrects_known_typo():
+    text = "Đại học Kinh Tế Quốc Nhã (NEU)"
+    assert normalize_neu_name(text) == "Đại học Kinh tế Quốc dân (NEU)"
+    assert normalize_neu_name("National Economics University") == "National Economics University"
 
 
 def test_password_hashing_and_token_types():
@@ -16,6 +31,49 @@ def test_password_hashing_and_token_types():
     assert decode_token(token) == "user-123"
     with pytest.raises(Exception):
         decode_token(token, "refresh")
+
+
+def test_seeded_demo_accounts_authenticate_with_internal_domains(database, monkeypatch):
+    from sqlalchemy.orm import sessionmaker
+    from app import seed
+
+    bound_engine = database.get_bind()
+    monkeypatch.setattr(seed, "engine", bound_engine)
+    monkeypatch.setattr(seed, "SessionLocal", sessionmaker(bind=bound_engine, autoflush=False, expire_on_commit=False))
+    monkeypatch.setattr(seed, "enable_vector_extension", lambda: None)
+    seed.seed_data()
+    accounts = [
+        ("candidate01@example.test", "NEUApplicant2026!", "applicant"),
+        ("student@neu.local", "NEUStudent2026!", "student"),
+        ("lecturer@neu.local", "NEUStaff2026!", "lecturer"),
+        ("admissions@neu.local", "NEUStaff2026!", "admission_staff"),
+        ("hr@neu.local", "NEUStaff2026!", "hr_staff"),
+        ("support@neu.local", "NEUStaff2026!", "support_staff"),
+        ("admin@neu.local", "NEUStaff2026!", "super_admin"),
+    ]
+    for email, password, role in accounts:
+        pair = login_handler(LoginRequest(email=email, password=password), database)
+        assert pair.user.email == email and pair.user.role == role
+
+
+def test_student_and_lecturer_share_the_same_assigned_offering_schedule(database, monkeypatch):
+    from sqlalchemy.orm import sessionmaker
+    from app import seed
+
+    bound_engine = database.get_bind()
+    monkeypatch.setattr(seed, "engine", bound_engine)
+    monkeypatch.setattr(seed, "SessionLocal", sessionmaker(bind=bound_engine, autoflush=False, expire_on_commit=False))
+    monkeypatch.setattr(seed, "enable_vector_extension", lambda: None)
+    seed.seed_data()
+    student_user = database.scalar(select(User).where(User.email == "student@neu.local"))
+    lecturer_user = database.scalar(select(User).where(User.email == "lecturer@neu.local"))
+    student_items = student_schedule(semester_id="all", user=student_user, db=database)["items"]
+    lecturer_items = lecturer_schedule(user=lecturer_user, db=database)["items"]
+    common = next(item for item in lecturer_items if any(row["offering_id"] == item["offering_id"] for row in student_items))
+    student_item = next(row for row in student_items if row["offering_id"] == common["offering_id"])
+    for key in ("class_date", "weekday", "study_shift", "starts_at", "ends_at", "room", "semester_name", "course_code", "section_code"):
+        assert student_item[key] == common[key]
+    assert common["lecturer"] and common["class_date"] and common["note"]
 
 
 def test_chunking_and_retrieval_helpers():
@@ -39,12 +97,31 @@ def test_role_protected_route_rejects_anonymous_request(client):
     assert response.status_code == 401
 
 
-def test_dashboard_returns_demo_analytics(client):
-    response = client.get("/api/v1/dashboard")
-    assert response.status_code == 200
-    body = response.json()
-    assert body["demo_data"] is True
+def test_dashboard_requires_staff_role():
+    with pytest.raises(HTTPException) as anonymous:
+        current_user(credentials=None, db=None)
+    assert anonymous.value.status_code == 401
+    student = User(email="student-dashboard@example.test", full_name="Sinh viên", password_hash="x", role="student")
+    with pytest.raises(HTTPException) as denied:
+        require_roles("super_admin", "admission_staff", "lecturer", "support_staff", "hr_staff", "academic_staff")(student)
+    assert denied.value.status_code == 403
+
+
+def test_dashboard_returns_live_analytics_for_staff(database):
+    faculty = Faculty(name="Khoa dashboard")
+    database.add(faculty)
+    database.flush()
+    major = Major(code="DASH01", name="Ngành dashboard", faculty_id=faculty.id)
+    admin = User(email="dashboard-admin@example.test", full_name="Quản trị", password_hash=hash_password("password"), role="super_admin")
+    database.add_all([major, admin])
+    database.flush()
+    database.add(Applicant(email="dashboard-candidate@example.test", full_name="Thí sinh", desired_major_id=major.id))
+    database.commit()
+
+    body = dashboard_handler(admin, database)
     assert len(body["admissions_by_month"]) == 12
+    assert body["admissions_by_month"][datetime.now().month - 1]["applications"] == 1
+    assert "demo_data" not in body
 
 
 def test_login_and_role_protected_application_conversion(client, database):
@@ -54,7 +131,8 @@ def test_login_and_role_protected_application_conversion(client, database):
     major = Major(code="999999", name="Ngành mẫu", faculty_id=faculty.id, description="Mẫu", duration_years=4,
                   tuition_per_year_vnd=1, admission_quota=10, admission_status="Đang tuyển sinh", is_demo=True)
     admin = User(email="admin@example.com", full_name="Admin", password_hash=hash_password("correct-password"), role="super_admin")
-    database.add_all([major, admin])
+    candidate_user = User(email="candidate@example.com", full_name="Ứng viên", password_hash=hash_password("candidate-password"), role="applicant")
+    database.add_all([major, admin, candidate_user])
     database.flush()
     applicant = Applicant(email="candidate@example.com", full_name="Ứng viên Mẫu", desired_major_id=major.id, status="Đang xét duyệt")
     database.add(applicant)
@@ -63,11 +141,18 @@ def test_login_and_role_protected_application_conversion(client, database):
     login = client.post("/api/v1/auth/login", json={"email": admin.email, "password": "correct-password"})
     assert login.status_code == 200
     headers = {"Authorization": f"Bearer {login.json()['access_token']}"}
-    assert client.patch(f"/api/v1/admissions/applications/{applicant.id}/status", json={"status": "Trúng tuyển"}, headers=headers).status_code == 200
+    reviewed = client.patch(f"/api/v1/admissions/applications/{applicant.id}/status", json={
+        "status": "Trúng tuyển", "note": "Hồ sơ đã được rà soát trong quy trình kiểm thử."
+    }, headers=headers)
+    assert reviewed.status_code == 200
+    assert reviewed.json()["review_note"] == "Hồ sơ đã được rà soát trong quy trình kiểm thử."
     promoted = client.post(f"/api/v1/admissions/applications/{applicant.id}/promote", headers=headers)
     assert promoted.status_code == 200
     assert promoted.json()["email"] == "candidate@example.com"
     assert promoted.json()["major_id"] == major.id
+    database.refresh(candidate_user)
+    assert candidate_user.role == "student"
+    assert database.scalar(select(Student).where(Student.user_id == candidate_user.id)).applicant_id == applicant.id
     assert client.post(f"/api/v1/admissions/applications/{applicant.id}/promote", headers=headers).json()["id"] == promoted.json()["id"]
 
 

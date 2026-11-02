@@ -6,7 +6,7 @@ import { api, User } from "@/lib/api";
 type AuthContextValue = {
   user: User | null;
   ready: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<User>;
   logout: () => void;
 };
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -37,6 +37,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     window.sessionStorage.setItem("study_user", JSON.stringify(tokens.user));
     setUser(tokens.user);
     setReady(true);
+    return tokens.user;
   }, []);
   const logout = useCallback(() => {
     window.sessionStorage.removeItem("study_access_token");

@@ -1,12 +1,12 @@
 from datetime import date, datetime
 from typing import Literal
-from pydantic import BaseModel, ConfigDict, EmailStr, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
 
 
 class UserPublic(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: str
-    email: EmailStr
+    email: str
     full_name: str
     role: str
 
@@ -19,8 +19,17 @@ class TokenPair(BaseModel):
 
 
 class LoginRequest(BaseModel):
-    email: EmailStr
+    email: str = Field(min_length=3, max_length=255)
     password: str
+
+    @field_validator("email")
+    @classmethod
+    def normalize_login_email(cls, value: str) -> str:
+        email = value.strip().lower()
+        local, separator, domain = email.partition("@")
+        if not separator or not local or not domain or "@" in domain or "." not in domain or any(char.isspace() for char in email):
+            raise ValueError("Email chưa đúng định dạng.")
+        return email
 
 
 class MajorPublic(BaseModel):
@@ -39,15 +48,17 @@ class MajorPublic(BaseModel):
 class ApplicantCreate(BaseModel):
     email: EmailStr
     full_name: str = Field(min_length=2, max_length=180)
+    password: str | None = Field(default=None, min_length=8, max_length=128)
     phone: str = ""
     date_of_birth: date | None = None
     address: str = ""
     desired_major_id: str
-    admission_method: str = "Học bạ (demo)"
+    admission_method: str = "Học bạ"
 
 
 class ApplicantStatusUpdate(BaseModel):
     status: str
+    note: str | None = Field(default=None, max_length=1000)
 
 
 class ApplicantPublic(BaseModel):
@@ -59,6 +70,7 @@ class ApplicantPublic(BaseModel):
     major_name: str
     admission_method: str
     status: str
+    review_note: str
     created_at: datetime
     student_id: str | None
 
@@ -293,11 +305,17 @@ class DocumentPublic(BaseModel):
     filename: str
     media_type: str
     status: str
+    is_public: bool = False
     error: str | None
     created_at: datetime
 
 
+class DocumentVisibilityUpdate(BaseModel):
+    is_public: bool
+
+
 class DashboardPublic(BaseModel):
+    year: int
     students: int
     applications: int
     majors: int
@@ -305,4 +323,3 @@ class DashboardPublic(BaseModel):
     admissions_by_month: list[dict]
     students_by_major: list[dict]
     recent_activity: list[dict]
-    demo_data: bool = True

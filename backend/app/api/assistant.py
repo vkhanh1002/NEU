@@ -1,11 +1,13 @@
 import asyncio
+import hashlib
 import logging
 import json
+import secrets
 import time
 from collections import deque
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Request
 from fastapi.responses import StreamingResponse
 from sqlalchemy import select
 from sqlalchemy.orm import Session, joinedload
@@ -15,25 +17,121 @@ from app.ai.rag import AnswerResult, generate_answer, ingest_document, retrieve_
 from app.api.deps import current_user, require_roles
 from app.core.config import settings
 from app.core.database import get_db
-from app.models import Applicant, ChatConversation, ChatMessage, KnowledgeDocument, Student, SupportTicket, User
-from app.schemas import ChatAsk, ConversationCreate, ConversationPublic, ConversationRename, DocumentPublic
+from app.models import Applicant, ChatConversation, ChatMessage, GuestChatMessage, GuestChatSession, KnowledgeDocument, Student, SupportTicket, User
+from app.schemas import ChatAsk, ConversationCreate, ConversationPublic, ConversationRename, DocumentPublic, DocumentVisibilityUpdate
 
-router = APIRouter(tags=["Study AI Assistant"])
+router = APIRouter(tags=["NEU AI Assistant"])
 ADMIN_ROLES = ("super_admin",)
 logger = logging.getLogger(__name__)
 ai_runtime_status: dict[str, dict] = {}
 ai_metrics: deque[dict] = deque(maxlen=200)
+guest_request_times: dict[str, deque[float]] = {}
 
 
 def _report_metric(metric: dict) -> None:
     ai_metrics.appendleft(metric)
     logger.info(
-        "Study AI metric provider=%s model=%s retrieval=%.3fs provider_latency=%s ttft=%s generation=%s total=%.3fs status=%s input_tokens=%s output_tokens=%s retry=%s fallback=%s",
+        "NEU AI metric provider=%s model=%s retrieval=%.3fs provider_latency=%s ttft=%s generation=%s total=%.3fs status=%s input_tokens=%s output_tokens=%s retry=%s fallback=%s",
         metric.get("provider") or "none", metric.get("model") or "none", metric.get("retrieval_seconds", 0),
         metric.get("provider_seconds"), metric.get("ttft_seconds"), metric.get("generation_seconds"),
         metric.get("total_seconds", 0), metric.get("status"), metric.get("input_tokens"),
         metric.get("output_tokens"), metric.get("retry_count", 0), metric.get("fallback_count", 0),
     )
+
+
+def _guest_session_hash(request: Request) -> str:
+    token = request.headers.get("X-Guest-Session", "").strip()
+    if len(token) < 32 or len(token) > 128:
+        raise HTTPException(status_code=401, detail="Phiên trò chuyện khách chưa hợp lệ. Hãy tạo cuộc trò chuyện mới.")
+    return hashlib.sha256(token.encode("utf-8")).hexdigest()
+
+
+@router.post("/assistant/guest-session")
+def create_guest_session(request: Request):
+    _check_guest_rate_limit(request)
+    token = secrets.token_urlsafe(32)
+    return {"session_id": token, "messages": []}
+
+
+@router.get("/assistant/guest-session")
+def read_guest_session(request: Request, db: Session = Depends(get_db)):
+    session_hash = _guest_session_hash(request)
+    session = db.get(GuestChatSession, session_hash)
+    if not session:
+        raise HTTPException(status_code=404, detail="Không tìm thấy phiên trò chuyện này. Hãy tạo cuộc trò chuyện mới.")
+    return {"messages": [{"id": row.id, "role": row.role, "content": row.content,
+                          "sources": row.sources or [], "created_at": row.created_at}
+                         for row in session.messages[-40:]]}
+
+
+@router.delete("/assistant/guest-session", status_code=204)
+def clear_guest_session(request: Request, db: Session = Depends(get_db)):
+    session = db.get(GuestChatSession, _guest_session_hash(request))
+    if not session:
+        raise HTTPException(status_code=404, detail="Không tìm thấy phiên trò chuyện này.")
+    session.messages.clear()
+    db.commit()
+
+
+def _check_guest_rate_limit(request: Request) -> None:
+    client_key = request.client.host if request.client else "unknown"
+    now = time.monotonic()
+    if len(guest_request_times) > 5000:
+        for key in list(guest_request_times):
+            if not guest_request_times[key] or now - guest_request_times[key][-1] > 300:
+                guest_request_times.pop(key, None)
+    recent = guest_request_times.setdefault(client_key, deque())
+    while recent and now - recent[0] > 60:
+        recent.popleft()
+    if len(recent) >= 6:
+        raise HTTPException(status_code=429, detail="Bạn đã gửi nhiều câu hỏi trong thời gian ngắn. Vui lòng thử lại sau một phút.")
+    recent.append(now)
+
+
+def _guest_suggestions(question: str, sources: list[dict]) -> list[str]:
+    titles = list(dict.fromkeys(str(source.get("title", "")) for source in sources if source.get("title")))
+    suggestions = [f"Cho tôi biết thêm về {title[:90]}" for title in titles[:2]]
+    suggestions.append("Tôi cần chuẩn bị những gì tiếp theo?")
+    if any(word in question.lower() for word in ("ngành", "học phí", "chỉ tiêu", "điểm chuẩn")):
+        suggestions.append("Thông tin này áp dụng cho năm tuyển sinh nào?")
+    return list(dict.fromkeys(suggestions))[:4]
+
+
+@router.post("/assistant/guest-messages")
+async def ask_guest_assistant(data: ChatAsk, request: Request, db: Session = Depends(get_db)):
+    """Public Q&A with a random bearer session, isolated history, and public-only RAG."""
+    _check_guest_rate_limit(request)
+    session_hash = _guest_session_hash(request)
+    session = db.get(GuestChatSession, session_hash)
+    if not session:
+        session = GuestChatSession(token_hash=session_hash)
+        db.add(session)
+        db.commit()
+        db.refresh(session)
+    question = data.message.strip()[:1200]
+    if not question:
+        raise HTTPException(status_code=422, detail="Vui lòng nhập câu hỏi.")
+    try:
+        history = [{"role": row.role, "content": row.content[:1000]} for row in session.messages[-8:]]
+        sources = await retrieve_context(db, question, public_only=True)
+        result = await generate_answer(question, sources, history, "")
+    except ProviderError as exc:
+        logger.warning("Guest AI request failed provider=%s status=%s code=%s request_id=%s",
+                       exc.provider, exc.status_code, exc.code, exc.request_id)
+        raise HTTPException(status_code=503, detail=_stream_error_message(exc)) from exc
+    except Exception as exc:
+        logger.exception("Guest AI request failed error_type=%s", type(exc).__name__)
+        raise HTTPException(status_code=503, detail="Trợ lý hiện chưa thể kết nối. Vui lòng thử lại sau.") from exc
+    if result.mode != "cloud":
+        raise HTTPException(status_code=503, detail="Trợ lý tư vấn hiện chưa được kết nối với dịch vụ tạo câu trả lời.")
+    public_sources = [{key: source[key] for key in ("title", "excerpt", "source_type") if key in source}
+                      for source in sources]
+    db.add(GuestChatMessage(session_hash=session_hash, role="user", content=question, sources=[]))
+    db.add(GuestChatMessage(session_hash=session_hash, role="assistant", content=result.content, sources=public_sources))
+    db.commit()
+    return {"content": result.content, "sources": public_sources,
+            "provider": result.provider, "model": result.model, "used_fallback": result.used_fallback,
+            "suggested_questions": _guest_suggestions(question, sources)}
 
 
 def _active_request(conversation_id: str) -> bool:
@@ -105,7 +203,7 @@ async def _prepare_turn(conversation: ChatConversation, message: str, user: User
             private_context = "Tài khoản này chưa liên kết hồ sơ sinh viên hoặc hồ sơ xét tuyển cùng email."
     elif any(term in question for term in unsupported_personal_terms):
         private_context = ("Đây là dữ liệu cá nhân cần truy vấn qua API học vụ/tài chính đã xác thực. "
-                           "Study Assistant hiện không có API được xác nhận để trả lời loại thông tin này; hãy xem phân hệ chính thức hoặc liên hệ bộ phận phụ trách.")
+                           "NEU AI hiện không có API được xác nhận để trả lời loại thông tin này; hãy xem phân hệ phù hợp hoặc liên hệ bộ phận phụ trách.")
     if any(term in question for term in (
         "yêu cầu hỗ trợ của tôi", "yêu cầu hỗ trợ của em", "ticket của tôi", "ticket của em",
         "phản ánh của tôi", "mã yêu cầu", "trạng thái yêu cầu", "yêu cầu của tôi",
@@ -223,7 +321,7 @@ async def ask_assistant(conversation_id: str, data: ChatAsk, user: User = Depend
     except Exception as exc:
         logger.exception("Unexpected AI orchestration failure error_type=%s", type(exc).__name__)
         answer_result = AnswerResult(
-            "Study AI gặp lỗi khi tạo câu trả lời. Các nguồn tham khảo tìm được vẫn ở bên dưới; bạn có thể thử lại sau.",
+            "NEU AI gặp lỗi khi tạo câu trả lời. Các nguồn tham khảo tìm được vẫn ở bên dưới; bạn có thể thử lại sau.",
             "unavailable",
         )
         report_ai_status({"state": "failed", "error_kind": "internal_error"})
@@ -360,7 +458,7 @@ async def ask_assistant_stream(conversation_id: str, data: ChatAsk,
         except Exception as exc:
             logger.exception("Unexpected streaming assistant failure error_type=%s", type(exc).__name__)
             _set_ai_status(conversation.id, {"state": "failed", "error_kind": "internal_error"})
-            yield _sse("error", {"message": "Study AI gặp lỗi khi xử lý. Nội dung chưa hoàn tất chưa được lưu; bạn có thể thử lại."})
+            yield _sse("error", {"message": "NEU AI gặp lỗi khi xử lý. Nội dung chưa hoàn tất chưa được lưu; bạn có thể thử lại."})
         finally:
             if producer_task and not producer_task.done():
                 producer_task.cancel()
@@ -375,6 +473,18 @@ async def ask_assistant_stream(conversation_id: str, data: ChatAsk,
 @router.get("/admin/knowledge-documents", response_model=list[DocumentPublic])
 def list_documents(_user: User = Depends(require_roles(*ADMIN_ROLES)), db: Session = Depends(get_db)):
     return db.scalars(select(KnowledgeDocument).order_by(KnowledgeDocument.created_at.desc())).all()
+
+
+@router.patch("/admin/knowledge-documents/{document_id}/visibility", response_model=DocumentPublic)
+def update_document_visibility(document_id: str, data: DocumentVisibilityUpdate,
+                               _user: User = Depends(require_roles(*ADMIN_ROLES)), db: Session = Depends(get_db)):
+    document = db.get(KnowledgeDocument, document_id)
+    if not document:
+        raise HTTPException(status_code=404, detail="Không tìm thấy tài liệu.")
+    document.is_public = data.is_public
+    db.commit()
+    db.refresh(document)
+    return document
 
 
 @router.get("/admin/ai-status")

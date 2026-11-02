@@ -1,96 +1,78 @@
-# Study — University Management System
+# NEU University Management System
 
-Study là bản MVP có thể chạy của nền tảng quản lý đại học: Next.js/TypeScript ở frontend, FastAPI ở backend, PostgreSQL + pgvector ở tầng dữ liệu và Study AI Assistant với RAG. Dữ liệu mẫu được gắn nhãn demo; học phí, chỉ tiêu và hoạt động biểu đồ không phải thông tin chính thức của một trường.
+Nền tảng nội bộ mô phỏng cổng thông tin và nghiệp vụ đại học, gồm Next.js, FastAPI, PostgreSQL/pgvector và trợ lý AI tra cứu tri thức. Tên trường, quy trình và dữ liệu seed cần được rà soát trước khi dùng như thông tin chính thức.
 
-## Chạy toàn bộ hệ thống
+## Chạy bằng Docker Desktop trên Windows
 
-Yêu cầu: Docker Desktop và Docker Compose v2.
+Mở Docker Desktop, mở PowerShell tại thư mục gốc dự án rồi chạy:
 
 ```powershell
 if (-not (Test-Path .env)) { Copy-Item .env.example .env }
 docker compose up --build -d
 docker compose ps
+docker compose logs --tail=100 backend
 ```
 
-Khi database và backend báo `healthy`, frontend báo `running`, mở giao diện tại [http://localhost:3000](http://localhost:3000), API tại [http://localhost:8000](http://localhost:8000), và tài liệu OpenAPI tại [http://localhost:8000/docs](http://localhost:8000/docs). Compose chạy ở chế độ nền; dùng `docker compose logs -f backend` để xem log và `docker compose down` để dừng. Nếu chạy `docker compose up --build` không có `-d`, terminal sẽ tiếp tục mở để hiển thị log — đó là hành vi bình thường, nhưng cần đợi backend báo healthy trước khi mở giao diện. Lần đầu seed tạo 41 hồ sơ sinh viên, 12 giảng viên, 8 nhân viên và một số yêu cầu hỗ trợ; các lần chạy sau chỉ thêm hồ sơ mẫu còn thiếu, không ghi đè hồ sơ đã có.
+Khi `db` và `backend` báo `healthy`, mở http://localhost:3000. API: http://localhost:8000; OpenAPI: http://localhost:8000/docs. Compose tự chạy Alembic đến revision mới nhất rồi chạy seed; các lần seed lặp lại không tạo trùng các mã ổn định. Nếu sửa `.env`, chạy lại `docker compose up --build -d` để recreate container. Dùng `docker compose down` để dừng. Tránh `docker compose down -v` vì sẽ xóa dữ liệu database.
 
-Nếu trước đó backend liên tục báo `relation "users" does not exist` hoặc unhealthy, hãy để Docker Desktop chạy rồi build lại image với code mới bằng `docker compose up --build -d`. Kiểm tra `docker compose ps` và `docker compose logs --tail=100 backend`; không dùng `docker compose down -v` vì tùy chọn `-v` sẽ xóa volume cơ sở dữ liệu.
+## Tài khoản kiểm thử cục bộ
 
-Đăng nhập demo:
+Seed mới tạo các tài khoản dưới đây nếu chưa tồn tại. Bốn tài khoản cũ `@study.edu.vn` sẽ được chuyển sang địa chỉ NEU tương ứng; mật khẩu tự đặt được giữ nguyên. Tài khoản cũ còn dùng mật khẩu mặc định sẽ được đổi sang mật khẩu NEU bên dưới.
 
-| Vai trò | Email | Mật khẩu |
+| Vai trò | Email | Mật khẩu seed mới |
 | --- | --- | --- |
-| Super Admin | `admin@study.edu.vn` | `StudyDemo2026!` |
-| Nhân viên tuyển sinh | `admissions@study.edu.vn` | `StudyDemo2026!` |
-| Sinh viên | `student@study.edu.vn` | `StudyDemo2026!` |
-| Nhân viên hỗ trợ | `support@study.edu.vn` | `StudyDemo2026!` |
+| Quản trị viên | `admin@neu.local` | `NEUStaff2026!` |
+| Cán bộ tuyển sinh | `admissions@neu.local` | `NEUStaff2026!` |
+| Cán bộ hỗ trợ | `support@neu.local` | `NEUStaff2026!` |
+| Cán bộ nhân sự | `hr@neu.local` | `NEUStaff2026!` |
+| Cán bộ đào tạo | `academic@neu.local` | `NEUStaff2026!` |
+| Giảng viên | `lecturer@neu.local` | `NEUStaff2026!` |
+| Sinh viên chính | `student@neu.local` | `NEUStudent2026!` |
+| Sinh viên bổ sung | `student02@neu.local`–`student20@neu.local` | `NEUStudent2026!` |
+| Thí sinh | `candidate01@example.test`–`candidate05@example.test` | `NEUApplicant2026!` |
 
-Thay mật khẩu và `STUDY_SECRET_KEY` trước khi dùng ở môi trường thật. AI mặc định chọn Groq (`AI_PROVIDER=groq`, model `openai/gpt-oss-120b`) và dùng Gemini (`gemini-3.8-flash`) làm dự phòng. Để bật Groq:
+Đây là tài khoản/mật khẩu phát triển, không dùng trên hệ thống công khai. Seed không ghi đè mật khẩu người dùng đã thay đổi.
 
-1. Tạo API key trong [GroqCloud](https://console.groq.com/keys).
-2. Mở `.env` ở thư mục gốc và đặt `GROQ_API_KEY=...`, `GROQ_MODEL=openai/gpt-oss-120b`. Đặt `GEMINI_API_KEY=...` từ [Google AI Studio](https://aistudio.google.com/apikey) để bật dự phòng. Không dán khóa vào mã nguồn, trình duyệt hoặc chat.
-3. Chạy `docker compose up --build -d`, rồi mở **Quản trị → Kho tri thức → Kiểm tra kết nối**.
+## Dữ liệu seed
 
-Backend xác minh model Groq trong endpoint `/models`; nếu GPT-OSS 120B không khả dụng, thử GPT-OSS 20B rồi dùng Gemini fallback nếu được cấu hình. Không tự nâng gói. Hạn mức và giá phụ thuộc tài khoản; xem Groq Console trước khi dùng thường xuyên. Điều khoản Gemini free tier cho phép Google sử dụng dữ liệu gửi lên để cải thiện sản phẩm, vì vậy tuyệt đối không gửi hồ sơ thật/tài liệu mật. API key chỉ nằm ở backend. Nếu không có provider khả dụng, chatbot báo lỗi cho lượt đó và giữ nguồn RAG, không tạo câu trả lời giả lập.
+- 10 ngành và các khoa liên quan.
+- 20 hồ sơ sinh viên được liên kết tài khoản; mỗi hồ sơ có dữ liệu hai học kỳ, học phần, điểm, lịch học/thi, rèn luyện, tài chính, bài tập và thông báo. Có 15 hồ sơ giảng viên/nhân viên và yêu cầu hỗ trợ nhiều trạng thái.
+- 25 hồ sơ thí sinh gồm hồ sơ tiếp nhận, cần bổ sung, đang xét duyệt, đã duyệt, trúng tuyển, không đủ điều kiện và không trúng tuyển. Năm tài khoản thí sinh đầu tiên có thể đăng nhập để xem hồ sơ của mình.
+- 11 bài viết thuộc nhiều danh mục. Năm sự kiện được giữ ở trạng thái chờ xác nhận nên không xuất hiện trên lịch công khai trước khi có lịch và địa điểm đã được duyệt.
+- Các khoản thu và giao dịch là dữ liệu nội bộ phục vụ kiểm tra luồng hiển thị; không có cổng thanh toán thật.
 
-## Tính năng hiện có
+Seed là bổ sung an toàn: không xóa volume và không thay thế các hồ sơ hiện có. Nếu database cũ chứa nhiều sinh viên hơn, seed giữ nguyên các hồ sơ đó và liên kết dữ liệu học tập cho tối đa 20 sinh viên đầu tiên.
 
-- Dashboard tổng hợp số sinh viên, hồ sơ, ngành, yêu cầu hỗ trợ; chuỗi biểu đồ tuyển sinh được ghi nhãn dữ liệu minh họa.
-- 10 ngành mẫu, tìm kiếm ngành, gửi hồ sơ đăng ký, cập nhật trạng thái theo vai trò và chuyển hồ sơ đã trúng tuyển thành sinh viên có liên kết ngược với thí sinh.
-- Hồ sơ người học: sinh viên chỉ đọc/cập nhật liên hệ của chính mình; Super Admin có thể xem danh sách và cập nhật thông tin liên hệ. API không dựa vào việc ẩn nút trên giao diện để bảo vệ dữ liệu.
-- Hồ sơ giảng viên và nhân viên dùng chung bảng nhân sự, hỗ trợ tìm kiếm/lọc, xem/thêm/chỉnh sửa, trạng thái công tác và dashboard phân bố theo khoa/phòng ban.
-- Cổng hỗ trợ người học: sinh viên gửi yêu cầu kèm tệp, theo dõi lịch sử/phản hồi; nhân viên tìm kiếm, lọc, phân công và cập nhật trạng thái; dashboard, FAQ, thông báo và đánh giá sau xử lý.
-- AI Assistant: lịch sử hội thoại riêng theo tài khoản, tạo/đổi tên/xóa hội thoại, truy xuất FAQ/ngành/tài liệu, nguồn tham khảo; có thể lấy hồ sơ và yêu cầu hỗ trợ gắn với chính người đăng nhập.
-- Quản trị tri thức: tải PDF, DOCX, TXT, Markdown (tối đa 10 MB), trích xuất/chia đoạn, tùy chọn OpenAI embeddings, quản lý FAQ và kiểm tra kết nối provider AI.
-- Mật khẩu Argon2, access token + refresh token JWT, kiểm tra vai trò ở backend, CORS được giới hạn theo cấu hình.
+## AI và Knowledge Base
 
-## Cấu trúc
+Các khóa provider nằm trong `.env` ở thư mục gốc và chỉ được truyền vào backend. Không commit hoặc dán khóa vào giao diện/chat. AI sử dụng Groq làm primary và Gemini làm fallback theo cấu hình `.env.example`; model và hạn mức phụ thuộc cấu hình tài khoản. Chạy lại Compose sau khi đổi biến môi trường. Nếu cả hai provider thất bại, ứng dụng trả thông báo lỗi thay vì tạo câu trả lời giả.
 
-```text
-frontend/                 Next.js App Router, React, TypeScript, Tailwind, RHF, Zod
-backend/app/api/          REST API phiên bản /api/v1
-backend/app/models/       SQLAlchemy entities
-backend/app/ai/           RAG, embedding, LLM orchestration, file extraction
-backend/migrations/       Alembic migrations (initial schema + personnel/attachments)
-backend/tests/            pytest API và helper tests
-docker-compose.yml        frontend + API + PostgreSQL/pgvector
-```
+Quản trị viên mở **Quản trị → Kho tri thức** để nạp tài liệu. Tài liệu mới chỉ dùng nội bộ; bật biểu tượng công khai cho tài liệu đã được duyệt trước khi Guest AI có thể truy xuất. Guest Chat lưu lịch sử theo token phiên ngẫu nhiên ở backend, token được giữ trong localStorage, và mỗi phiên chỉ đọc được lịch sử của chính nó. Guest RAG chỉ đọc FAQ đã xuất bản, danh mục ngành công khai và tài liệu được bật công khai. Không tải hồ sơ cá nhân hoặc tài liệu mật lên dịch vụ AI bên ngoài.
 
-## Chạy kiểm thử
+## Kiểm thử
 
-Backend tests dùng SQLite in-memory để chạy độc lập với PostgreSQL:
+Frontend, tại `frontend/`:
 
 ```powershell
-cd backend
-python -m pip install -r requirements.txt
-python -m pytest
-```
-
-Frontend:
-
-```powershell
-cd frontend
-npm install
 npm test
 npm run typecheck
 npm run build
 ```
 
-## API chính
+Backend, tại `backend/`:
 
-- `POST /api/v1/auth/login`, `POST /api/v1/auth/refresh`, `GET /api/v1/auth/me`
-- `GET /api/v1/dashboard`, `GET /api/v1/majors`
-- `/api/v1/personnel` và `/api/v1/personnel/dashboard` (Super Admin)
-- `POST /api/v1/admissions/applications`, danh sách/trạng thái/chuyển đổi hồ sơ qua `/api/v1/admissions/applications/...`
-- `/api/v1/profiles/...`, `/api/v1/support/...` (tickets, assignments, attachments, dashboard), `/api/v1/assistant/...`
-- `/api/v1/admin/knowledge-documents`, `/api/v1/admin/faqs`, `/api/v1/admin/ai-status` (Super Admin)
-- Chat có endpoint SSE `/api/v1/assistant/conversations/{id}/messages/stream`; các câu trả lời hoàn tất vẫn được lưu cùng nguồn. Lỗi sau khi đã phát token không được ghép model fallback và không lưu phần trả lời dở.
-- Retry/timeout được quản lý một nơi trong `AIProviderManager`: tối đa một retry Groq khi lỗi tạm thời, Gemini fallback tối đa 8 giây, ngân sách provider tối đa 18 giây kể cả thời gian fallback. Giao diện quản trị Kho tri thức có thống kê latency gần đây; số liệu được giữ trong RAM backend (tối đa 200 lượt, mất khi container khởi động lại).
+```powershell
+python -m pip install -r requirements.txt
+python -m pytest tests
+```
 
-## Ghi chú triển khai
+Các kiểm thử API dùng SQLite và không cần database production. Có thể kiểm tra endpoint qua `/docs` khi backend khỏe.
 
-- Cấu hình môi trường nằm ở `.env`; `.env.example` chỉ có giá trị phát triển. Không đưa khóa LLM, mật khẩu DB hoặc signing key thật vào source control.
-- Thay các tài khoản demo, signing key, mật khẩu PostgreSQL, CORS và chính sách lưu token trước khi triển khai công khai; cân nhắc cookie `HttpOnly` cho phiên đăng nhập, rate limiting, audit log và quy trình backup/retention dữ liệu cá nhân.
-- Study AI chỉ gọi Groq (chính) và Gemini (dự phòng). RAG hiện tra cứu FAQ, tài liệu và danh mục bằng tìm kiếm từ khóa; không gửi câu hỏi sang dịch vụ embedding. Các vector đã có trong PostgreSQL không bị xóa.
-- `.env.example` chỉ dùng để tạo `.env` lần đầu. Nếu `.env` đã có, không chép đè; thêm/cập nhật biến `GEMINI_API_KEY` trong file hiện tại rồi chạy lại Compose.
-- Đây là nền tảng MVP: chưa có tích hợp SSO, storage object cho hồ sơ đính kèm, phân quyền từng permission/cơ sở, quy trình admission period/method quản trị riêng, hoặc triển khai nền xử lý tài liệu hàng đợi. Các trường admission hiện được đánh dấu demo.
+## Thành phần chính
+
+- Guest: đúng ba mục **Giới thiệu**, **Tuyển sinh**, **Tin tức và sự kiện**; chatbot tuyển sinh dùng API tra cứu công khai có giới hạn tần suất và lịch sử phiên riêng.
+- Student: tiến độ, hồ sơ cá nhân, lịch học, lịch thi, kết quả/GPA, rèn luyện, tài chính, bài tập, thông báo và yêu cầu hỗ trợ.
+- Lecturer: thời khóa biểu riêng theo hồ sơ giảng viên, lọc theo học kỳ/năm học/môn/lớp, xem danh sách sinh viên trong lớp được phân công.
+- Student và giảng viên đọc cùng bản ghi lớp học phần; cấu hình ca học tập trung tại `backend/app/services/schedule.py`. Giờ ca hiện là khung tham khảo, không thay thế lịch chính thức đã được trường xác nhận.
+- Staff: nghiệp vụ theo vai trò; kiểm tra quyền ở backend.
+- Database: migration `0001`–`0006`; có liên kết tài khoản giảng viên, ghi chú lớp học phần, phạm vi tri thức công khai và phiên Guest Chat. Nâng cấp không xóa dữ liệu hiện có.

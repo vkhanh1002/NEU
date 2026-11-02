@@ -5,6 +5,34 @@ export class ApiError extends Error {
   constructor(message: string, status: number) { super(message); this.status = status; }
 }
 
+export function apiErrorMessage(value: unknown, fallback = "Có lỗi xảy ra. Vui lòng thử lại."): string {
+  if (typeof value === "string") return value;
+  if (Array.isArray(value)) {
+    const messages = value.map(item => {
+      if (typeof item === "string") return item;
+      if (!item || typeof item !== "object") return null;
+      const entry = item as Record<string, unknown>;
+      const message = typeof entry.msg === "string" ? entry.msg : typeof entry.message === "string" ? entry.message : null;
+      const location = Array.isArray(entry.loc) ? entry.loc.filter(part => typeof part === "string").slice(-1)[0] as string | undefined : undefined;
+      if (!message) return null;
+      if (/field required|missing/i.test(message)) return `Vui lòng nhập ${location === "email" ? "email" : location === "password" ? "mật khẩu" : location ?? "đầy đủ thông tin"}.`;
+      if (/valid email/i.test(message)) return "Email chưa đúng định dạng.";
+      return message;
+    }).filter((message): message is string => Boolean(message));
+    return messages.length ? messages.join(" ") : fallback;
+  }
+  if (value && typeof value === "object") {
+    const record = value as Record<string, unknown>;
+    for (const key of ["detail", "message", "msg", "error"]) {
+      if (record[key] !== undefined) {
+        const message = apiErrorMessage(record[key], "");
+        if (message) return message;
+      }
+    }
+  }
+  return fallback;
+}
+
 export async function authenticatedFetch(path: string, options: RequestInit = {}): Promise<Response> {
   const browser = typeof window !== "undefined";
   const token = browser ? window.sessionStorage.getItem("study_access_token") : null;
@@ -42,7 +70,7 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
   const response = await authenticatedFetch(path, options);
   if (response.status === 204) return undefined as T;
   const body = await response.json().catch(() => ({}));
-  if (!response.ok) throw new ApiError(body.detail ?? "Có lỗi xảy ra. Vui lòng thử lại.", response.status);
+  if (!response.ok) throw new ApiError(apiErrorMessage(body), response.status);
   return body as T;
 }
 
