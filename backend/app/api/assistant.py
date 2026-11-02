@@ -15,7 +15,7 @@ from app.ai.rag import AnswerResult, generate_answer, ingest_document, retrieve_
 from app.api.deps import current_user, require_roles
 from app.core.config import settings
 from app.core.database import get_db
-from app.models import Applicant, ChatConversation, ChatMessage, KnowledgeDocument, Student, StudyTask, SupportTicket, User
+from app.models import Applicant, ChatConversation, ChatMessage, KnowledgeDocument, Student, SupportTicket, User
 from app.schemas import ChatAsk, ConversationCreate, ConversationPublic, ConversationRename, DocumentPublic
 
 router = APIRouter(tags=["Study AI Assistant"])
@@ -115,41 +115,12 @@ async def _prepare_turn(conversation: ChatConversation, message: str, user: User
             private_context += " Yêu cầu hỗ trợ của chính tài khoản này: " + "; ".join(f"{ticket.code} — {ticket.subject}: {ticket.status}" for ticket in tickets)
         elif not private_context:
             private_context = "Tài khoản đang đăng nhập chưa có yêu cầu hỗ trợ phù hợp để tra cứu."
-    study_terms = (
-        "deadline", "hạn nộp", "lịch thi", "ngày thi", "khi nào thi", "bài tập",
-        "kế hoạch học tập", "lập kế hoạch", "sắp xếp thời gian", "lịch ôn tập", "ôn thi",
-        "ôn tập", "nhiệm vụ", "study planner", "task", "lịch học",
-    )
-    if any(term in question for term in study_terms):
-        tasks = db.scalars(
-            select(StudyTask)
-            .where(StudyTask.user_id == user.id)
-            .order_by(StudyTask.due_date.asc())
-        ).all()
-        if tasks:
-            task_descriptions = []
-            for t in tasks:
-                status_vi = "Đã xong" if t.status == "completed" else ("Đang làm" if t.status == "in_progress" else "Chưa làm")
-                type_vi = "Lịch thi" if t.task_type == "exam" else ("Bài tập" if t.task_type == "assignment" else ("Kiểm tra" if t.task_type == "quiz" else "Dự án/Đồ án"))
-                due_str = t.due_date.strftime("%d/%m/%Y %H:%M")
-                task_descriptions.append(f"[{type_vi}] {t.title} - Môn: {t.course_name} (Hạn/Ngày thi: {due_str}, Trạng thái: {status_vi}, Ưu tiên: {t.priority})")
-            
-            study_context = "Dữ liệu nhiệm vụ học tập, deadline và lịch thi thực tế của sinh viên này:\n" + "\n".join(f"- {d}" for d in task_descriptions)
-            study_context += "\nHãy sử dụng danh sách deadline và lịch thi trên để giải đáp thắc mắc, nhắc nhở hoặc lập kế hoạch/thời gian biểu ôn tập cụ thể, thực tế theo yêu cầu của sinh viên."
-            if private_context:
-                private_context += "\n" + study_context
-            else:
-                private_context = study_context
-        else:
-            no_tasks_msg = "Sinh viên này hiện chưa ghi nhận deadline hay lịch thi nào trong hệ thống Kế hoạch học tập."
-            private_context = f"{private_context}\n{no_tasks_msg}" if private_context else no_tasks_msg
-
     retrieval_started = time.perf_counter()
-    sources = await retrieve_context(db, message, audience="sinh_vien", limit=5)
+    sources = [] if private_context else await retrieve_context(db, message)
     retrieval_seconds = time.perf_counter() - retrieval_started
     if private_context:
         sources.insert(0, {"title": "Thông tin thuộc tài khoản của bạn", "excerpt": private_context.strip(),
-                           "source_type": "Hồ sơ cá nhân", "score": 5.0})
+                           "source_type": "Hồ sơ cá nhân", "score": 1.0})
     return history, private_context, sources, retrieval_seconds
 
 
