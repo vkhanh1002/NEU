@@ -7,7 +7,7 @@ RUN pip install --no-cache-dir -r requirements.txt && useradd --create-home --ui
 COPY app ./app
 COPY migrations ./migrations
 COPY alembic.ini ./alembic.ini
-RUN mkdir -p /app/uploads && chown -R study:study /app
-USER study
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN mkdir -p /app/uploads /app/data/attendance && chown -R study:study /app && chmod 755 /usr/local/bin/docker-entrypoint.sh
 EXPOSE 8000
-CMD ["sh", "-c", "alembic upgrade head && python -m app.seed && uvicorn app.main:app --host 0.0.0.0 --port 8000"]
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]

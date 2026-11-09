@@ -3,12 +3,13 @@ from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
-from sqlalchemy import select
+from sqlalchemy import func, select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, joinedload
 
 from app.api.deps import current_user
 from app.core.database import get_db
-from app.models import CourseEnrollment, CourseGradeAudit, CourseOffering, Personnel, Semester, Student, User
+from app.models import AttendanceSession, CourseEnrollment, CourseGradeAudit, CourseOffering, Personnel, Semester, Student, User
 from app.services.schedule import serialize_schedule
 
 router = APIRouter(prefix="/lecturer", tags=["Lecturer academic services"])
@@ -20,6 +21,10 @@ class GradeUpdate(BaseModel):
     final_score: float | None = Field(default=None, ge=0, le=10)
     total_score: float | None = Field(default=None, ge=0, le=10)
     letter_grade: Literal["", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "F"] | None = None
+
+
+class EnrollmentCreate(BaseModel):
+    student_number: str = Field(min_length=1, max_length=30)
 
 
 def current_lecturer(user: User, db: Session) -> Personnel:
@@ -81,23 +86,82 @@ def lecturer_schedule(semester_id: str | None = None, academic_year: str | None 
 
 
 @router.get("/schedule/{offering_id}/students")
-def lecturer_offering_students(offering_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+def lecturer_offering_students(offering_id: str, q: str = "", page: int = 1, page_size: int = 20,
+                               user: User = Depends(current_user), db: Session = Depends(get_db)):
+    return _lecturer_roster(offering_id, q, page, page_size, user, db)
+
+
+def _lecturer_roster(offering_id: str, q: str, page: int, page_size: int, user: User, db: Session):
     lecturer = current_lecturer(user, db)
     offering = db.scalar(select(CourseOffering).where(
         CourseOffering.id == offering_id, CourseOffering.lecturer_id == lecturer.id,
-    ).options(joinedload(CourseOffering.course), joinedload(CourseOffering.semester)))
+    ).options(joinedload(CourseOffering.course), joinedload(CourseOffering.semester), joinedload(CourseOffering.lecturer)))
     if not offering:
         raise HTTPException(status_code=404, detail="Không tìm thấy lớp học phần được phân công.")
-    rows = db.scalars(select(Student).join(CourseEnrollment).where(
-        CourseEnrollment.offering_id == offering.id,
-    ).order_by(Student.student_number)).all()
+    page = max(1, page); page_size = min(100, max(1, page_size))
+    query = select(CourseEnrollment).join(Student).where(CourseEnrollment.offering_id == offering.id)
+    count_query = select(func.count(CourseEnrollment.id)).join(Student).where(CourseEnrollment.offering_id == offering.id)
+    if q.strip():
+        pattern = f"%{q.strip()}%"
+        condition = (Student.student_number.ilike(pattern)) | (Student.full_name.ilike(pattern))
+        query = query.where(condition); count_query = count_query.where(condition)
+    total = db.scalar(count_query) or 0
+    rows = db.scalars(query.options(joinedload(CourseEnrollment.student)).order_by(Student.student_number)
+                      .offset((page - 1) * page_size).limit(page_size)).all()
     return {
-        "offering": {"course_code": offering.course.code, "course_name": offering.course.name,
-                     "section": offering.section, "section_code": f"{offering.course.code}-{offering.section}"},
-        "items": [{"student_number": row.student_number, "full_name": row.full_name,
-                   "email": row.email, "class_name": row.class_name} for row in rows],
-        "count": len(rows),
+        "offering": {"id": offering.id, "course_code": offering.course.code, "course_name": offering.course.name,
+                     "section": offering.section, "section_code": f"{offering.course.code}-{offering.section}",
+                     "lecturer_name": offering.lecturer.full_name if offering.lecturer else lecturer.full_name},
+        "items": [{"student_id": row.student.id, "student_number": row.student.student_number,
+                   "full_name": row.student.full_name, "email": row.student.email,
+                   "class_name": row.student.class_name, "status": row.status} for row in rows],
+        "count": total, "page": page, "page_size": page_size,
     }
+
+
+@router.get("/classes/{offering_id}/students")
+def lecturer_class_roster(offering_id: str, q: str = "", page: int = 1, page_size: int = 20,
+                          user: User = Depends(current_user), db: Session = Depends(get_db)):
+    return _lecturer_roster(offering_id, q, page, page_size, user, db)
+
+
+@router.get("/classes/{offering_id}/students/lookup")
+def lookup_student_for_offering(offering_id: str, student_number: str,
+                                user: User = Depends(current_user), db: Session = Depends(get_db)):
+    offering = _owned_offering(offering_id, user, db)
+    student = db.scalar(select(Student).where(func.lower(Student.student_number) == student_number.strip().lower()))
+    if not student:
+        raise HTTPException(404, "Không tìm thấy sinh viên theo mã đã nhập.")
+    if db.scalar(select(CourseEnrollment.id).where(CourseEnrollment.offering_id == offering.id,
+                                                   CourseEnrollment.student_id == student.id)):
+        raise HTTPException(409, "Sinh viên đã có trong lớp học phần này.")
+    return {"student_id": student.id, "student_number": student.student_number,
+            "full_name": student.full_name, "email": student.email, "class_name": student.class_name}
+
+
+@router.post("/classes/{offering_id}/students", status_code=201)
+def add_student_to_offering(offering_id: str, body: EnrollmentCreate,
+                            user: User = Depends(current_user), db: Session = Depends(get_db)):
+    offering = _owned_offering(offering_id, user, db)
+    if db.scalar(select(AttendanceSession.id).where(AttendanceSession.offering_id == offering.id,
+                                                     AttendanceSession.status == "open")):
+        raise HTTPException(409, "Không thể thay đổi danh sách khi lớp đang mở phiên điểm danh.")
+    student = db.scalar(select(Student).where(func.lower(Student.student_number) == body.student_number.strip().lower()))
+    if not student:
+        raise HTTPException(404, "Không tìm thấy sinh viên theo mã đã nhập.")
+    if db.scalar(select(CourseEnrollment.id).where(CourseEnrollment.offering_id == offering.id,
+                                                   CourseEnrollment.student_id == student.id)):
+        raise HTTPException(409, "Sinh viên đã có trong lớp học phần này.")
+    enrollment = CourseEnrollment(student_id=student.id, offering_id=offering.id, status="Đang học")
+    db.add(enrollment)
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=409, detail="Sinh viên đã được thêm vào lớp học phần này.") from None
+    return {"student_id": student.id, "student_number": student.student_number,
+            "full_name": student.full_name, "email": student.email,
+            "class_name": student.class_name, "status": enrollment.status}
 
 
 def _owned_offering(offering_id: str, user: User, db: Session) -> CourseOffering:

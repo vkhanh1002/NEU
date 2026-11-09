@@ -103,6 +103,42 @@ def seed_academic_news(db) -> None:
             db.flush()
         courses[code] = course
 
+    # Six additional, stable demo sections are assigned to the main demo lecturer.
+    # Their rosters differ deterministically and are safe to seed repeatedly.
+    primary_lecturer = db.scalar(select(Personnel).join(User, Personnel.user_id == User.id)
+                                 .where(User.email == "lecturer@neu.local", Personnel.kind == "lecturer"))
+    if primary_lecturer is None and lecturers:
+        primary_lecturer = lecturers[0]
+    current_term = semesters["2026-1"]
+    if primary_lecturer:
+        for section_index, (course_code, _, _) in enumerate(COURSE_DATA[:6]):
+            offering = db.scalar(select(CourseOffering).where(
+                CourseOffering.course_id == courses[course_code].id,
+                CourseOffering.semester_id == current_term.id,
+                CourseOffering.section == "D02",
+            ))
+            if not offering:
+                shift_name, shift_start, shift_end = STUDY_SHIFTS[section_index % len(STUDY_SHIFTS)]
+                offering = CourseOffering(
+                    course_id=courses[course_code].id, semester_id=current_term.id,
+                    lecturer_id=primary_lecturer.id, section="D02", room=f"B{201 + section_index}",
+                    delivery_mode="Trực tiếp", weekday=(section_index + 1) % 5 + 1,
+                    starts_at=time.fromisoformat(shift_start), ends_at=time.fromisoformat(shift_end),
+                    note=f"Lịch demo {shift_name}; cần đối chiếu lịch đào tạo chính thức.",
+                )
+                db.add(offering); db.flush()
+            roster_size = max(1, len(students) * 2 // 3)
+            roster_start = (section_index * 3) % max(1, len(students))
+            for student_index, student in enumerate(students):
+                if (student_index - roster_start) % max(1, len(students)) >= roster_size:
+                    continue
+                exists = db.scalar(select(CourseEnrollment.id).where(
+                    CourseEnrollment.student_id == student.id, CourseEnrollment.offering_id == offering.id,
+                ))
+                if not exists:
+                    db.add(CourseEnrollment(student_id=student.id, offering_id=offering.id, status="Đang học"))
+        db.flush()
+
     offerings = {}
     for semester_index, term_code in enumerate(("2025-2", "2026-1")):
         semester = semesters[term_code]

@@ -332,13 +332,18 @@ class AttendanceMakeupRequest(TimestampMixin, Base):
     __table_args__ = (UniqueConstraint("record_id", name="uq_attendance_makeup_record"),)
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
     record_id: Mapped[str] = mapped_column(ForeignKey("attendance_records.id", ondelete="CASCADE"), index=True, nullable=False)
-    evidence_id: Mapped[str] = mapped_column(ForeignKey("attendance_evidence.id"), nullable=False)
+    evidence_id: Mapped[str | None] = mapped_column(ForeignKey("attendance_evidence.id"), nullable=True)
+    request_reason: Mapped[str] = mapped_column(Text, default="", nullable=False)
+    request_photo_path: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    request_photo_media_type: Mapped[str | None] = mapped_column(String(80), nullable=True)
+    request_photo_captured_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    request_photo_received_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     submitted_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc, nullable=False)
     status: Mapped[str] = mapped_column(String(20), default="pending", index=True, nullable=False)
     reviewed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     reviewed_by: Mapped[str | None] = mapped_column(ForeignKey("users.id"), nullable=True)
     review_reason: Mapped[str] = mapped_column(String(1000), default="", nullable=False)
-    evidence: Mapped[AttendanceEvidence] = relationship()
+    evidence: Mapped[AttendanceEvidence | None] = relationship()
 
 
 class AttendanceAuditLog(TimestampMixin, Base):

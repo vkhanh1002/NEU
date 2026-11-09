@@ -1639,3 +1639,45 @@ td small, .table-panel td small { font-size: 13px; }
   .student-dashboard .student-stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .student-service-page .student-data-table th, .student-service-page .student-data-table td { padding: 10px 9px; font-size: 14px; }
 }
+
+.request-count-link { position: relative; display: inline-flex; align-items: center; gap: 10px; }
+.attendance-load-error { display: flex; align-items: flex-start; gap: 10px; }
+.attendance-load-error .error-notice { flex: 1; }
+.attendance-load-error .button { flex: 0 0 auto; min-height: 42px; }
+.request-count-badge { display: inline-grid; min-width: 23px; height: 23px; place-items: center; padding: 0 6px; color: #fff; background: #cf3d3a; border: 2px solid #fff; border-radius: 999px; font-size: 12px; font-weight: 800; line-height: 1; }
+.attendance-request-filters { display: grid; grid-template-columns: repeat(3, minmax(180px, 1fr)); gap: 12px; margin: 0 0 14px; }
+.attendance-request-filters label, .roster-toolbar label { display: grid; gap: 6px; color: #385b73; font-size: 14px; font-weight: 650; }
+.attendance-request-filters select, .roster-toolbar input { min-height: 43px; padding: 8px 11px; color: #294b63; background: #fff; border: 1px solid #cfdee8; border-radius: 8px; font: inherit; }
+.request-reason { margin: 12px 0; padding: 12px 14px; color: #35566e; background: #f2f8fc; border-left: 3px solid #3283bb; border-radius: 7px; }
+.request-reason strong { font-size: 14px; }
+.request-reason p { margin-top: 5px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.pending-count-summary { display: inline-flex; align-items: center; gap: 8px; padding: 9px 13px; color: #385b73; background: #f7fafc; border: 1px solid #dfe9ef; border-radius: 9px; font-size: 14px; }
+.pending-count-summary strong { display: inline-grid; min-width: 25px; height: 25px; place-items: center; color: #fff; background: #c73737; border-radius: 50%; }
+.roster-toolbar { display: grid; grid-template-columns: minmax(220px, 1fr) minmax(320px, 1fr); gap: 12px; margin: 0 0 14px; }
+.roster-add { display: flex; align-items: end; gap: 8px; }
+.roster-add label { flex: 1; }
+.roster-add .button { min-height: 43px; }
+.roster-candidate { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; margin: 0 0 14px; padding: 13px; color: #31566f; background: #eef8f2; border: 1px solid #cae7d7; border-radius: 9px; }
+.roster-candidate > div { display: grid; flex: 1 1 260px; gap: 4px; }
+.roster-candidate span { color: #60788b; font-size: 14px; }
+.roster-pagination { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px; margin-top: 12px; color: #60788b; font-size: 14px; }
+.roster-pagination > span { margin-right: auto; }
+.attendance-capture-preview { display: block; width: min(100%, 620px); max-height: 56vh; margin: 0 auto; object-fit: contain; background: #f2f6f8; border: 1px solid #dce7ed; border-radius: 9px; }
+.attendance-capture-figure { display: grid; gap: 7px; margin: 0; color: #385b73; font-size: 14px; font-weight: 650; }
+.makeup-request-modal { display: grid; gap: 12px; width: min(480px, calc(100vw - 26px)); max-height: 92vh; overflow: auto; padding: 18px; background: #fff; border-radius: 13px; }
+.makeup-request-modal > header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.makeup-request-modal > header h2 { margin: 0; color: #254c68; font-size: 22px; }
+.makeup-request-modal > header p { margin: 5px 0 0; color: #5c7487; }
+.makeup-request-modal > header button { min-width: 38px; min-height: 38px; font-size: 22px; }
+.makeup-request-modal dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0; }
+.makeup-request-modal dl > div { padding: 10px; background: #f6f9fb; border-radius: 7px; }
+.makeup-request-modal dt { color: #60788b; font-size: 13px; }
+.makeup-request-modal dd { margin: 4px 0 0; color: #294b63; font-size: 14px; font-weight: 650; }
+.makeup-request-modal > label { display: grid; gap: 7px; color: #385b73; font-size: 14px; font-weight: 650; }
+.makeup-request-modal textarea { min-height: 100px; padding: 10px; border: 1px solid #cfdee8; border-radius: 8px; font: inherit; resize: vertical; }
+.makeup-photo-field { display: grid; justify-items: start; gap: 8px; }
+.makeup-photo-field video { display: block; width: 100%; max-height: 42vh; object-fit: cover; background: #182b39; border-radius: 9px; }
+.makeup-photo-field .makeup-request-photo { width: 100%; max-height: 38vh; }
+.makeup-photo-field p { margin: 0; color: #587286; font-size: 13px; }
+@media (max-width: 760px) { .attendance-request-filters { grid-template-columns: 1fr 1fr; }.roster-toolbar { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .attendance-request-filters, .makeup-request-modal dl { grid-template-columns: 1fr; }.roster-add { align-items: stretch; flex-direction: column; }.roster-pagination { justify-content: flex-start; }.roster-pagination > span { flex: 1 1 100%; } }

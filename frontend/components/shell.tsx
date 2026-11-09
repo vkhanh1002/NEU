@@ -120,7 +120,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
     "/support": ["super_admin", "student", "support_staff"],
     "/assistant": ["super_admin", "student", "applicant", "lecturer", "support_staff", "admission_staff", "hr_staff", "academic_staff"],
   };
-  const restrictedRoles = pathRoles[pathname] ?? (pathname.startsWith("/student/") || pathname === "/notifications" ? ["student"] : undefined);
+  const restrictedRoles = pathRoles[pathname] ?? (pathname.startsWith("/lecturer/") ? ["lecturer"] : pathname.startsWith("/student/") || pathname === "/notifications" ? ["student"] : undefined);
   useEffect(() => {
     if (user && restrictedRoles && !restrictedRoles.includes(user.role)) router.replace(roleHome[user.role] ?? "/");
     if (!user && restrictedRoles) router.replace("/");

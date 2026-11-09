@@ -1,11 +1,12 @@
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from uuid import uuid4
 
-from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
+from fastapi import APIRouter, Depends, File, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 from sqlalchemy import case, func, select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, joinedload
 
 from app.api.deps import current_user
@@ -13,7 +14,7 @@ from app.core.database import get_db
 from app.models import (
     AttendanceAuditLog, AttendanceEvidence, AttendanceMakeupRequest, AttendanceRecord,
     AttendanceSession, Course, CourseEnrollment, CourseOffering, Personnel, Semester,
-    Student, User,
+    Notification, Student, User,
 )
 
 router = APIRouter(tags=["Smart attendance"])
@@ -92,7 +93,7 @@ def lecturer_classes(user: User = Depends(current_user), db: Session = Depends(g
     for offering in offerings:
         count = db.scalar(select(func.count(CourseEnrollment.id)).where(CourseEnrollment.offering_id == offering.id)) or 0
         items.append({"id": offering.id, "course_code": offering.course.code, "course_name": offering.course.name,
-                      "section": offering.section, "room": offering.room, "semester": offering.semester.name,
+                      "course_id": offering.course_id, "section": offering.section, "room": offering.room, "semester": offering.semester.name,
                       "academic_year": offering.semester.academic_year, "weekday": offering.weekday,
                       "starts_at": offering.starts_at.strftime("%H:%M"), "ends_at": offering.ends_at.strftime("%H:%M"),
                       "student_count": count})
@@ -219,18 +220,22 @@ def student_attendance(user: User = Depends(current_user), db: Session = Depends
     items = []
     for record in records:
         session = record.session
-        offering = db.scalar(_offering_query().where(CourseOffering.id == session.offering_id))
         evidence = db.scalar(select(AttendanceEvidence).where(AttendanceEvidence.session_id == session.id,
                                                                AttendanceEvidence.student_id == student.id))
         request = db.scalar(select(AttendanceMakeupRequest).where(AttendanceMakeupRequest.record_id == record.id))
+        offering = db.scalar(_offering_query().where(CourseOffering.id == session.offering_id))
         items.append({"record_id": record.id, "session_id": session.id, "course_code": offering.course.code,
                       "course_name": offering.course.name, "section": offering.section, "starts_at": session.starts_at,
+                      "lecturer_name": offering.lecturer.full_name if offering.lecturer else "",
+                      "room": offering.room, "ends_at": offering.ends_at,
                       "closed_at": session.closed_at, "session_status": session.status, "status": record.status,
                       "evidence_id": evidence.id if evidence else None,
                       "evidence_received_at": evidence.received_at if evidence else None,
                       "makeup_request": {"status": request.status, "reason": request.review_reason,
+                                         "request_reason": request.request_reason,
+                                         "photo_captured_at": request.request_photo_captured_at,
                                          "submitted_at": request.submitted_at} if request else None,
-                      "can_submit_request": bool(session.status == "closed" and record.status == "absent" and evidence and not request)})
+                      "can_submit_request": bool(session.status == "closed" and record.status == "absent" and not request)})
     closed = [row for row in records if row.session.status == "closed"]
     present = sum(row.status == "present" for row in closed)
     late = sum(row.status == "late" for row in closed)
@@ -257,12 +262,19 @@ async def capture_attendance_evidence(session_id: str, photo: UploadFile = File(
     content = await photo.read(MAX_IMAGE_BYTES + 1)
     if not content or len(content) > MAX_IMAGE_BYTES:
         raise HTTPException(413, "Ảnh phải có dung lượng từ 1 byte đến 5 MB.")
-    if not content.startswith((b"\xff\xd8\xff", b"\x89PNG\r\n\x1a\n", b"RIFF")):
+    signatures = {
+        "image/jpeg": content.startswith(b"\xff\xd8\xff"),
+        "image/png": content.startswith(b"\x89PNG\r\n\x1a\n"),
+        "image/webp": len(content) >= 12 and content.startswith(b"RIFF") and content[8:12] == b"WEBP",
+    }
+    if not signatures.get(media_type, False):
         raise HTTPException(415, "Tệp gửi lên không phải ảnh hợp lệ.")
     record = db.scalar(select(AttendanceRecord).where(AttendanceRecord.session_id == session.id,
                                                      AttendanceRecord.student_id == student.id))
     if record is None:
         raise HTTPException(403, "Không tìm thấy lượt điểm danh của bạn trong lớp này.")
+    if record.status != "absent":
+        raise HTTPException(409, "Bạn đã được ghi nhận điểm danh; không cần gửi ảnh minh chứng.")
     if db.scalar(select(AttendanceEvidence.id).where(AttendanceEvidence.session_id == session.id,
                                                      AttendanceEvidence.student_id == student.id)):
         raise HTTPException(409, "Đã nhận ảnh minh chứng cho buổi học này.")
@@ -279,15 +291,42 @@ async def capture_attendance_evidence(session_id: str, photo: UploadFile = File(
                               action="evidence_received", details={"evidence_id": evidence_id, "received_at": received_at.isoformat()}))
     try:
         db.commit()
-    except Exception:
+    except IntegrityError:
         db.rollback()
         (UPLOAD_DIR / filename).unlink(missing_ok=True)
         raise HTTPException(409, "Ảnh minh chứng đã được gửi cho buổi học này.") from None
+    except Exception:
+        db.rollback()
+        (UPLOAD_DIR / filename).unlink(missing_ok=True)
+        raise
     return {"id": evidence.id, "received_at": evidence.received_at, "status": "received"}
 
 
 @router.post("/student/attendance/records/{record_id}/makeup-requests", status_code=201)
-def create_makeup_request(record_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+async def create_makeup_request(
+    record_id: str,
+    http_request: Request,
+    user: User = Depends(current_user),
+    db: Session = Depends(get_db),
+):
+    photo = None
+    captured_at = None
+    if "multipart/form-data" in http_request.headers.get("content-type", ""):
+        form = await http_request.form()
+        photo = form.get("photo")
+        reason = str(form.get("reason") or "")
+        capture_value = form.get("captured_at")
+        if capture_value:
+            try:
+                captured_at = datetime.fromisoformat(str(capture_value).replace("Z", "+00:00"))
+            except ValueError:
+                raise HTTPException(422, "Thời điểm chụp ảnh không hợp lệ.") from None
+    else:
+        try:
+            payload = await http_request.json()
+        except Exception:
+            payload = {}
+        reason = str(payload.get("reason") or "") if isinstance(payload, dict) else ""
     student = student_person(user, db)
     record = db.scalar(select(AttendanceRecord).where(AttendanceRecord.id == record_id,
                                                      AttendanceRecord.student_id == student.id))
@@ -296,25 +335,97 @@ def create_makeup_request(record_id: str, user: User = Depends(current_user), db
     session = db.get(AttendanceSession, record.session_id)
     if record.status != "absent" or session.status != "closed":
         raise HTTPException(409, "Chỉ gửi yêu cầu cho buổi đã kết thúc và đang có trạng thái Vắng.")
-    evidence = db.scalar(select(AttendanceEvidence).where(AttendanceEvidence.session_id == session.id,
-                                                           AttendanceEvidence.student_id == student.id))
-    if evidence is None or evidence.received_at > (session.closed_at or datetime.min.replace(tzinfo=timezone.utc)):
-        raise HTTPException(409, "Cần có ảnh được máy chủ tiếp nhận trong thời gian buổi học.")
+    reason = reason.strip()
+    if len(reason) < 10:
+        raise HTTPException(422, "Lý do xin điểm danh bù phải có ít nhất 10 ký tự.")
     if db.scalar(select(AttendanceMakeupRequest.id).where(AttendanceMakeupRequest.record_id == record.id)):
         raise HTTPException(409, "Bạn đã gửi yêu cầu cho buổi học này.")
-    request = AttendanceMakeupRequest(record_id=record.id, evidence_id=evidence.id)
+
+    evidence = db.scalar(select(AttendanceEvidence).where(AttendanceEvidence.session_id == session.id,
+                                                           AttendanceEvidence.student_id == student.id))
+    if evidence and evidence.received_at > (session.closed_at or datetime.min.replace(tzinfo=timezone.utc)):
+        evidence = None
+    if photo is None and evidence is None:
+        raise HTTPException(422, "Hãy chụp ảnh trực tiếp trong yêu cầu điểm danh bù.")
+
+    photo_filename = None
+    media_type = None
+    content = None
+    received_at = None
+    if photo is not None and hasattr(photo, "read"):
+        media_type = (photo.content_type or "").lower()
+        if media_type not in ALLOWED_TYPES:
+            raise HTTPException(415, "Ảnh phải ở định dạng JPEG, PNG hoặc WebP.")
+        content = await photo.read(MAX_IMAGE_BYTES + 1)
+        if not content or len(content) > MAX_IMAGE_BYTES:
+            raise HTTPException(413, "Ảnh phải có dung lượng từ 1 byte đến 5 MB.")
+        signatures = {
+            "image/jpeg": content.startswith(b"\xff\xd8\xff"),
+            "image/png": content.startswith(b"\x89PNG\r\n\x1a\n"),
+            "image/webp": len(content) >= 12 and content.startswith(b"RIFF") and content[8:12] == b"WEBP",
+        }
+        if not signatures.get(media_type, False):
+            raise HTTPException(415, "Tệp gửi lên không phải ảnh hợp lệ.")
+        received_at = datetime.now(timezone.utc)
+        captured_at = captured_at or received_at
+        if captured_at.tzinfo is None:
+            captured_at = captured_at.replace(tzinfo=timezone.utc)
+        if captured_at > received_at + timedelta(seconds=30) or captured_at < received_at - timedelta(minutes=5):
+            captured_at = received_at
+        photo_filename = f"makeup-{uuid4()}{ALLOWED_TYPES[media_type]}"
+        UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+        (UPLOAD_DIR / photo_filename).write_bytes(content)
+    request = AttendanceMakeupRequest(record_id=record.id, evidence_id=evidence.id if evidence else None,
+                                     request_reason=reason, request_photo_path=photo_filename,
+                                     request_photo_media_type=media_type,
+                                     request_photo_captured_at=captured_at,
+                                     request_photo_received_at=received_at)
     db.add(request)
     db.add(AttendanceAuditLog(session_id=session.id, record_id=record.id, actor_id=user.id,
-                              action="makeup_requested", details={"evidence_id": evidence.id}))
-    db.commit()
-    return {"id": request.id, "status": request.status, "submitted_at": request.submitted_at}
+                              action="makeup_requested",
+                              details={"evidence_id": evidence.id if evidence else None,
+                                       "request_photo": photo_filename,
+                                       "photo_captured_at": captured_at.isoformat() if captured_at else None,
+                                       "photo_received_at": received_at.isoformat() if received_at else None,
+                                       "request_reason": reason}))
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        if photo_filename:
+            (UPLOAD_DIR / photo_filename).unlink(missing_ok=True)
+        raise HTTPException(409, "Bạn đã gửi yêu cầu cho buổi học này.") from None
+    except Exception:
+        db.rollback()
+        if photo_filename:
+            (UPLOAD_DIR / photo_filename).unlink(missing_ok=True)
+        raise
+    return {"id": request.id, "status": request.status, "request_reason": request.request_reason,
+            "photo_captured_at": request.request_photo_captured_at,
+            "photo_received_at": request.request_photo_received_at,
+            "submitted_at": request.submitted_at}
 
 
 @router.get("/lecturer/attendance/requests")
-def lecturer_makeup_requests(user: User = Depends(current_user), db: Session = Depends(get_db)):
+def lecturer_makeup_requests(
+    offering_id: str | None = None, course_id: str | None = None, status: str = "all",
+    user: User = Depends(current_user), db: Session = Depends(get_db),
+):
     lecturer = lecturer_person(user, db)
-    rows = db.scalars(select(AttendanceMakeupRequest).join(AttendanceRecord).join(AttendanceSession)
-                      .join(CourseOffering).where(CourseOffering.lecturer_id == lecturer.id)
+    if status not in {"all", "pending", "accepted", "rejected"}:
+        raise HTTPException(422, "Bộ lọc trạng thái không hợp lệ.")
+    owned = CourseOffering.lecturer_id == lecturer.id
+    pending_count = db.scalar(select(func.count(AttendanceMakeupRequest.id)).join(AttendanceRecord)
+                              .join(AttendanceSession).join(CourseOffering)
+                              .where(owned, AttendanceMakeupRequest.status == "pending")) or 0
+    statement = select(AttendanceMakeupRequest).join(AttendanceRecord).join(AttendanceSession).join(CourseOffering).where(owned)
+    if offering_id:
+        statement = statement.where(CourseOffering.id == offering_id)
+    if course_id:
+        statement = statement.where(CourseOffering.course_id == course_id)
+    if status != "all":
+        statement = statement.where(AttendanceMakeupRequest.status == status)
+    rows = db.scalars(statement
                           .order_by(case((AttendanceMakeupRequest.status == "pending", 0), else_=1),
                                     AttendanceMakeupRequest.submitted_at.desc())
                       .options(joinedload(AttendanceMakeupRequest.evidence))).all()
@@ -324,26 +435,40 @@ def lecturer_makeup_requests(user: User = Depends(current_user), db: Session = D
         session = db.get(AttendanceSession, record.session_id)
         student = db.get(Student, record.student_id)
         offering = db.scalar(_offering_query().where(CourseOffering.id == session.offering_id))
-        minutes_late = max(0, int((request.evidence.received_at - session.starts_at).total_seconds() // 60))
+        minutes_late = (max(0, int((request.evidence.received_at - session.starts_at).total_seconds() // 60))
+                        if request.evidence else None)
+        photo_captured_at = request.request_photo_captured_at or (request.evidence.received_at if request.evidence else None)
+        photo_received_at = request.request_photo_received_at or (request.evidence.received_at if request.evidence else None)
         items.append({"id": request.id, "status": request.status, "reason": request.review_reason,
+                      "request_reason": request.request_reason,
                       "student_id": student.id, "student_number": student.student_number, "full_name": student.full_name,
+                      "class_name": student.class_name, "lecturer_name": offering.lecturer.full_name if offering.lecturer else "",
                       "course_code": offering.course.code, "course_name": offering.course.name, "section": offering.section,
-                      "starts_at": session.starts_at, "received_at": request.evidence.received_at,
+                      "starts_at": session.starts_at,
+                      "received_at": photo_received_at, "photo_captured_at": photo_captured_at,
                       "minutes_late": minutes_late, "submitted_at": request.submitted_at,
-                      "attendance_status": record.status, "evidence_id": request.evidence_id})
-    return {"items": items}
+                      "attendance_status": record.status,
+                      "evidence_id": request.evidence_id,
+                      "has_request_photo": bool(request.request_photo_path or request.evidence)})
+    return {"items": items, "pending_count": pending_count}
 
 
 @router.patch("/lecturer/attendance/requests/{request_id}")
 def review_makeup_request(request_id: str, body: ReviewBody, user: User = Depends(current_user), db: Session = Depends(get_db)):
     lecturer = lecturer_person(user, db)
-    request = db.scalar(select(AttendanceMakeupRequest).where(AttendanceMakeupRequest.id == request_id))
+    request = db.scalar(select(AttendanceMakeupRequest).where(
+        AttendanceMakeupRequest.id == request_id,
+    ).with_for_update())
     if request is None:
         raise HTTPException(404, "Không tìm thấy yêu cầu.")
     record = db.get(AttendanceRecord, request.record_id)
-    session, _ = _session_for_lecturer(record.session_id, lecturer, db)
+    if record is None:
+        raise HTTPException(404, "Không tìm thấy lượt điểm danh liên kết với yêu cầu.")
+    session, offering = _session_for_lecturer(record.session_id, lecturer, db)
     if request.status != "pending":
         raise HTTPException(409, "Yêu cầu đã được xử lý.")
+    if body.decision == "rejected" and not body.reason.strip():
+        raise HTTPException(422, "Cần nhập lý do từ chối yêu cầu.")
     old_status = record.status
     request.status = body.decision
     request.reviewed_by = user.id
@@ -353,11 +478,21 @@ def review_makeup_request(request_id: str, body: ReviewBody, user: User = Depend
         if record.status != "absent":
             raise HTTPException(409, "Lượt điểm danh đã được cập nhật; không thể chấp nhận yêu cầu.")
         record.status = "late"
-        record.marked_at = request.evidence.received_at
+        record.marked_at = request.request_photo_captured_at or (
+            request.evidence.received_at if request.evidence else request.submitted_at
+        )
         record.marked_by = user.id
     db.add(AttendanceAuditLog(session_id=session.id, record_id=record.id, actor_id=user.id,
                               action=f"makeup_{body.decision}",
                               details={"from": old_status, "to": record.status, "reason": request.review_reason}))
+    student = db.get(Student, record.student_id)
+    if student and student.user_id:
+        decision_label = "đã được chấp nhận" if body.decision == "accepted" else "đã bị từ chối"
+        message = f"Yêu cầu điểm danh bù môn {offering.course.name} ({offering.section}) {decision_label}."
+        if body.decision == "rejected":
+            message += f" Lý do: {request.review_reason}"
+        db.add(Notification(owner_id=student.user_id, title="Kết quả yêu cầu điểm danh bù",
+                            message=message[:500], href="/student/attendance"))
     db.commit()
     return {"id": request.id, "status": request.status, "attendance_status": record.status,
             "reviewed_at": request.reviewed_at, "reason": request.review_reason}
@@ -385,6 +520,40 @@ def get_attendance_evidence(evidence_id: str, user: User = Depends(current_user)
     return FileResponse(target, media_type=evidence.media_type, filename=target.name)
 
 
+@router.get("/attendance/makeup-requests/{request_id}/photo")
+def get_makeup_request_photo(request_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    request = db.get(AttendanceMakeupRequest, request_id)
+    if request is None:
+        raise HTTPException(404, "Không tìm thấy yêu cầu điểm danh bù.")
+    record = db.get(AttendanceRecord, request.record_id)
+    if record is None:
+        raise HTTPException(404, "Không tìm thấy lượt điểm danh liên kết với yêu cầu.")
+
+    allowed = user.role == "super_admin"
+    if user.role == "student":
+        allowed = record.student_id == student_person(user, db).id
+    elif user.role == "lecturer":
+        lecturer = lecturer_person(user, db)
+        session = db.get(AttendanceSession, record.session_id)
+        allowed = bool(session and db.scalar(select(CourseOffering.id).where(
+            CourseOffering.id == session.offering_id, CourseOffering.lecturer_id == lecturer.id)))
+    if not allowed:
+        raise HTTPException(403, "Bạn không có quyền xem ảnh của yêu cầu này.")
+
+    if request.request_photo_path:
+        filename = Path(request.request_photo_path).name
+        media_type = request.request_photo_media_type or "application/octet-stream"
+    elif request.evidence:
+        filename = Path(request.evidence.storage_path).name
+        media_type = request.evidence.media_type
+    else:
+        raise HTTPException(404, "Yêu cầu chưa có ảnh minh chứng.")
+    target = UPLOAD_DIR / filename
+    if not target.is_file():
+        raise HTTPException(404, "Tệp ảnh của yêu cầu không còn trong vùng lưu trữ.")
+    return FileResponse(target, media_type=media_type, filename=filename)
+
+
 @router.get("/admin/attendance")
 def admin_attendance(user: User = Depends(current_user), db: Session = Depends(get_db)):
     if user.role != "super_admin":
@@ -399,10 +568,17 @@ def admin_attendance(user: User = Depends(current_user), db: Session = Depends(g
     request_items = []
     for request in requests:
         record = db.get(AttendanceRecord, request.record_id)
+        if record is None:
+            continue
         session = db.get(AttendanceSession, record.session_id)
+        if session is None:
+            continue
         student = db.get(Student, record.student_id)
         offering = db.scalar(_offering_query().where(CourseOffering.id == session.offering_id))
+        if student is None or offering is None:
+            continue
         request_items.append({"id": request.id, "status": request.status, "reason": request.review_reason,
+                              "request_reason": request.request_reason,
                               "student_number": student.student_number, "student_name": student.full_name,
                               "course_code": offering.course.code, "course_name": offering.course.name,
                               "section": offering.section, "session_id": session.id,
@@ -419,5 +595,6 @@ def admin_attendance_requests(user: User = Depends(current_user), db: Session = 
         raise HTTPException(403, "Chức năng chỉ dành cho quản trị viên.")
     rows = db.scalars(select(AttendanceMakeupRequest).order_by(AttendanceMakeupRequest.submitted_at.desc()).limit(200)).all()
     return {"items": [{"id": row.id, "status": row.status, "reason": row.review_reason,
+                       "request_reason": row.request_reason,
                        "record_id": row.record_id, "submitted_at": row.submitted_at,
                        "reviewed_at": row.reviewed_at, "reviewed_by": row.reviewed_by} for row in rows]}

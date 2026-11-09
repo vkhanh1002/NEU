@@ -45,7 +45,7 @@ export async function authenticatedFetch(path: string, options: RequestInit = {}
   }
   let response: Response;
   try { response = await send(token); }
-  catch { throw new ApiError("Không thể kết nối tới máy chủ NEU. Kiểm tra kết nối mạng rồi thử lại; thông tin đang nhập vẫn được giữ.", 0); }
+  catch { throw new ApiError(`Không thể kết nối API tại ${API_BASE}. Hãy kiểm tra Backend đang chạy, NEXT_PUBLIC_API_URL và CORS_ORIGINS.`, 0); }
   if (response.status === 401 && browser && path !== "/auth/login" && path !== "/auth/refresh") {
     const refreshToken = window.sessionStorage.getItem("study_refresh_token");
     if (refreshToken) {

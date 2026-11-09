@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { CalendarDays, UsersRound } from "lucide-react";
 import { api } from "@/lib/api";
 import { ErrorNotice, Loading, PageTitle } from "@/components/ui";
@@ -18,6 +19,7 @@ export function LecturerSchedule() {
   const [section, setSection] = useState("");
   const [selected, setSelected] = useState<Meeting | null>(null);
   const [students, setStudents] = useState<{ student_number: string; full_name: string; class_name: string }[]>([]);
+  const [studentCount, setStudentCount] = useState(0);
   const [busy, setBusy] = useState(false);
   async function load() {
     setBusy(true); setError("");
@@ -39,8 +41,8 @@ export function LecturerSchedule() {
   }
   useEffect(() => { void load(); }, [semester, academicYear, course, section]);
   async function openClass(item: Meeting) {
-    setSelected(item); setStudents([]);
-    try { const response = await api<{ items: typeof students }>(`/lecturer/schedule/${item.offering_id}/students`); setStudents(response.items); }
+    setSelected(item); setStudents([]); setStudentCount(0);
+    try { const response = await api<{ items: typeof students; count: number }>(`/lecturer/schedule/${item.offering_id}/students`); setStudents(response.items); setStudentCount(response.count); }
     catch (reason) { setError(reason instanceof Error ? reason.message : "Không tải được danh sách lớp."); }
   }
   return <div className="lecturer-schedule-page"><PageTitle eyebrow="GIẢNG DẠY" title="Thời khóa biểu giảng dạy" description={data ? `${data.lecturer.full_name} · ${data.lecturer.code}` : "Các lớp học phần được phân công cho tài khoản của bạn."} />
@@ -50,7 +52,7 @@ export function LecturerSchedule() {
       <div className="lecturer-schedule-summary"><article><small>LỊCH HÔM NAY</small><strong>{data?.today.length ?? 0} buổi</strong><span>{data?.today[0] ? `${data.today[0].starts_at} · ${data.today[0].course_name}` : "Không có buổi dạy hôm nay"}</span></article><article><small>BUỔI TIẾP THEO</small><strong>{data?.next_class?.class_date ? dateLabel(data.next_class.class_date) : "Chưa có"}</strong><span>{data?.next_class ? `${data.next_class.course_name} · ${data.next_class.starts_at}` : "Không có lịch sắp tới"}</span></article><article><small>TRONG TUẦN</small><strong>{data?.week_count ?? 0} buổi</strong><span>Lịch theo các lớp được phân công</span></article></div>
       {data?.items.length ? <WeeklySchedule items={data.items} onSelect={item => void openClass(item as Meeting)} includeToday={false} /> : <div className="student-empty">Chưa có lớp học phần được phân công trong bộ lọc này.</div>}
     </>}
-    {selected && <div className="modal-backdrop" onClick={() => setSelected(null)}><section className="lecturer-roster-modal" role="dialog" aria-modal="true" onClick={e => e.stopPropagation()}><header><div><small>{selected.section_code}</small><h2>{selected.course_name} · {selected.section_name}</h2><p>{selected.weekday_label}, {dateLabel(selected.class_date)} · {selected.study_shift}, {selected.starts_at}–{selected.ends_at} · {selected.room}</p><p>{selected.lecturer} · {selected.delivery_mode} · {selected.semester_name} · {selected.academic_year}</p>{selected.note && <p>{selected.note}</p>}</div><button onClick={() => setSelected(null)} aria-label="Đóng">×</button></header><h3><UsersRound size={16} /> Danh sách sinh viên ({students.length})</h3>{students.length ? <div className="lecturer-roster-list">{students.map(row => <div key={row.student_number}><strong>{row.full_name}</strong><span>{row.student_number} · {row.class_name || "Chưa xếp lớp"}</span></div>)}</div> : <p className="student-empty">Lớp chưa có sinh viên đăng ký.</p>}</section></div>}
+    {selected && <div className="modal-backdrop" onClick={() => setSelected(null)}><section className="lecturer-roster-modal" role="dialog" aria-modal="true" onClick={e => e.stopPropagation()}><header><div><small>{selected.section_code}</small><h2>{selected.course_name} · {selected.section_name}</h2><p>{selected.weekday_label}, {dateLabel(selected.class_date)} · {selected.study_shift}, {selected.starts_at}–{selected.ends_at} · {selected.room}</p><p>{selected.lecturer} · {selected.delivery_mode} · {selected.semester_name} · {selected.academic_year}</p>{selected.note && <p>{selected.note}</p>}</div><button onClick={() => setSelected(null)} aria-label="Đóng">×</button></header><h3><UsersRound size={16} /> Danh sách sinh viên ({studentCount})</h3>{students.length ? <div className="lecturer-roster-list">{students.map(row => <div key={row.student_number}><strong>{row.full_name}</strong><span>{row.student_number} · {row.class_name || "Chưa xếp lớp"}</span></div>)}</div> : <p className="student-empty">Lớp chưa có sinh viên đăng ký.</p>}<Link className="button button-primary" href={`/lecturer/classes/${selected.offering_id}/students`}>Mở danh sách đầy đủ và thêm sinh viên</Link></section></div>}
   </div>;
 }
 
