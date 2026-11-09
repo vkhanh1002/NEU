@@ -4,6 +4,7 @@ import { FormEvent, useCallback, useEffect, useState } from "react";
 import { Award, BookOpen, CalendarDays, ClipboardList, Clock3, RefreshCw, Wallet } from "lucide-react";
 import { EmptyState, ErrorNotice, Loading, PageTitle, StatusBadge } from "@/components/ui";
 import { api } from "@/lib/api";
+import { WeeklySchedule } from "@/components/weekly-schedule";
 
 type ServiceKey = "schedule" | "exams" | "results" | "conduct" | "finance" | "assignments";
 type Row = Record<string, unknown>;
@@ -22,7 +23,6 @@ export function StudentServicesPage({ service }: { service: ServiceKey }) {
   const [payload, setPayload] = useState<Row>({});
   const [semesters, setSemesters] = useState<Semester[]>([]);
   const [semesterId, setSemesterId] = useState("");
-  const [scheduleView, setScheduleView] = useState<"week" | "today" | "list">("week");
   const [status, setStatus] = useState("");
   const [submissions, setSubmissions] = useState<Record<string, string>>({});
   const [busyId, setBusyId] = useState("");
@@ -72,11 +72,11 @@ export function StudentServicesPage({ service }: { service: ServiceKey }) {
   ];
   return <div className="module-page student-service-page">
     <PageTitle eyebrow={meta.eyebrow} title={meta.title} description={meta.description} action={<button className="button button-secondary" onClick={() => void load()}><RefreshCw size={15} /> Tải lại</button>} />
-    {service === "schedule" && <div className="module-toolbar student-toolbar"><div className="student-view-switch" role="tablist" aria-label="Cách xem thời khóa biểu"><button className={scheduleView === "week" ? "active" : ""} onClick={() => setScheduleView("week")}>Tuần</button><button className={scheduleView === "today" ? "active" : ""} onClick={() => setScheduleView("today")}>Hôm nay</button><button className={scheduleView === "list" ? "active" : ""} onClick={() => setScheduleView("list")}>Danh sách</button></div><label className="student-select-label">Học kỳ<select value={semesterId || "current"} onChange={event => setSemesterId(event.target.value)}><option value="current">Học kỳ hiện tại</option><option value="all">Tất cả học kỳ</option>{semesters.map(term => <option key={term.id} value={term.id}>{term.name}</option>)}</select></label></div>}
+    {service === "schedule" && <div className="module-toolbar student-toolbar"><label className="student-select-label">Học kỳ<select value={semesterId || "current"} onChange={event => setSemesterId(event.target.value)}><option value="current">Học kỳ hiện tại</option><option value="all">Tất cả học kỳ</option>{semesters.map(term => <option key={term.id} value={term.id}>{term.name}</option>)}</select></label></div>}
     {(service === "exams" || service === "results") && <div className="module-toolbar student-toolbar"><label className="student-select-label">Học kỳ<select value={semesterId || "current"} onChange={event => setSemesterId(event.target.value)}><option value="current">Học kỳ hiện tại</option><option value="all">Tất cả học kỳ</option>{semesters.map(term => <option key={term.id} value={term.id}>{term.name}</option>)}</select></label></div>}
     {error && <ErrorNotice message={error} />}{message && <div className="success-notice" role="status">{message}</div>}
     {loading ? <Loading label={`Đang tải ${meta.title.toLowerCase()}…`} /> : <>
-      {service === "schedule" && <ScheduleContent items={items} scheduleView={scheduleView} />}
+      {service === "schedule" && <WeeklySchedule items={items} />}
       {service === "exams" && <>{examRows.length ? <div className="student-data-table"><table><thead><tr><th>Trạng thái</th><th>Học phần</th><th>Ngày giờ</th><th>Phòng</th><th>Hình thức</th><th>Thời lượng</th></tr></thead><tbody>{examRows.map(row => <tr key={text(row.exam_id)}><td><StatusBadge>{text(row._state)}</StatusBadge></td><td><strong>{text(row.course_name)}</strong><small>{text(row.course_code)}</small></td><td>{formatDate(row.starts_at)}</td><td>{text(row.room)}</td><td>{text(row.exam_type)}</td><td>{text(row.duration_minutes)} phút</td></tr>)}</tbody></table></div> : <EmptyState icon={<Clock3 size={22} />} title="Chưa có lịch thi" description="Lịch thi sẽ được hiển thị sau khi học phần được cập nhật." />}</>}
       {service === "results" && <><div className="student-stat-grid"><Metric label="GPA" value={payload.gpa == null ? "—" : Number(payload.gpa).toFixed(2)} /><Metric label="Tín chỉ tích lũy" value={String(payload.credits_earned ?? 0)} /><Metric label="Học phần chưa đạt" value={String(records(payload.failed_courses).length)} /></div>{items.length ? <div className="student-data-table"><table><thead><tr><th>Học phần</th><th>Học kỳ</th><th>Chuyên cần</th><th>Giữa kỳ</th><th>Cuối kỳ</th><th>Tổng kết</th><th>Điểm chữ</th><th>Kết quả</th></tr></thead><tbody>{items.map(row => <tr key={text(row.id)}><td><strong>{text(row.course_name)}</strong><small>{text(row.course_code)} · {text(row.credits)} tín chỉ</small></td><td>{text(row.semester)}</td><td>{text(row.attendance_score)}</td><td>{text(row.midterm_score)}</td><td>{text(row.final_score)}</td><td>{text(row.total_score)}</td><td>{text(row.letter_grade)}</td><td><StatusBadge>{text(row.status)}</StatusBadge></td></tr>)}</tbody></table></div> : <EmptyState icon={<BookOpen size={22} />} title="Chưa có kết quả học tập" description="Kết quả sẽ xuất hiện sau khi điểm học phần được công bố." />}</>}
       {service === "conduct" && <>{items.length ? <div className="student-data-table"><table><thead><tr><th>Học kỳ</th><th>Điểm</th><th>Xếp loại</th><th>Trạng thái</th><th>Ngày đánh giá</th><th>Nhận xét</th></tr></thead><tbody>{items.map(row => <tr key={text(row.id)}><td>{text(row.semester)}</td><td><strong>{text(row.score)}/100</strong></td><td>{text(row.rating)}</td><td><StatusBadge>{text(row.status)}</StatusBadge></td><td>{formatDate(row.evaluated_at)}</td><td>{text(row.comment)}</td></tr>)}</tbody></table></div> : <EmptyState icon={<Award size={22} />} title="Chưa có kết quả rèn luyện" description="Lịch sử đánh giá sẽ hiển thị tại đây." />}</>}
@@ -88,23 +88,7 @@ export function StudentServicesPage({ service }: { service: ServiceKey }) {
 }
 
 function Metric({ label, value }: { label: string; value: string }) { return <article className="student-metric"><small>{label}</small><strong>{value}</strong></article>; }
-function ScheduleContent({ items, scheduleView }: { items: Row[]; scheduleView: "week" | "today" | "list" }) {
-  if (!items.length) return <EmptyState icon={<CalendarDays size={22} />} title="Chưa có lịch học" description="Không tìm thấy học phần trong học kỳ đã chọn." />;
-  const days = ["", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy", "Chủ nhật"];
-  const today = new Date().getDay() || 7;
-  const todayDate = localDateISO();
-  const visible = scheduleView === "today" ? items.filter(row => text(row.class_date) === todayDate) : items;
-  return <><div className="student-next-class"><CalendarDays size={17} /><span><strong>Buổi học sắp tới</strong><small>{describeNextClass(items)}</small></span></div>{scheduleView === "week" ? <div className="student-week-grid">{days.slice(1).map((day, index) => { const weekday = index + 1; const courses = items.filter(row => Number(row.weekday) === weekday); return <section key={day}><h2>{day}</h2>{courses.length ? courses.map(row => <article key={text(row.offering_id)}><time>{formatDate(text(row.class_date))} · {text(row.study_shift)}</time><strong>{text(row.course_name)}</strong><small>{text(row.course_code)} · {text(row.section_code)} · {text(row.starts_at)}–{text(row.ends_at)}</small><small>{text(row.lecturer)} · {text(row.room)}</small><small>{text(row.delivery_mode)}{row.note ? ` · ${text(row.note)}` : ""}</small></article>) : <p>Không có buổi học</p>}</section>; })}</div> : scheduleView === "today" && !visible.length ? <EmptyState icon={<CalendarDays size={22} />} title="Hôm nay không có buổi học" description="Bạn có thể chuyển sang xem thời khóa biểu cả tuần." /> : <div className="student-data-table"><table><thead><tr><th>Thứ / ngày / ca</th><th>Học phần</th><th>Giờ</th><th>Giảng viên</th><th>Phòng / hình thức</th><th>Học kỳ / ghi chú</th></tr></thead><tbody>{visible.map(row => <tr key={text(row.offering_id)}><td>{text(row.weekday_label)}<small>{formatDate(text(row.class_date))} · {text(row.study_shift)}</small></td><td><strong>{text(row.course_name)}</strong><small>{text(row.course_code)} · {text(row.section_name)} · {text(row.section_code)}</small></td><td>{text(row.starts_at)}–{text(row.ends_at)}</td><td>{text(row.lecturer)}</td><td>{text(row.room)} · {text(row.delivery_mode)}</td><td>{text(row.semester_name)}<small>{text(row.academic_year)}{row.note ? ` · ${text(row.note)}` : ""}</small></td></tr>)}</tbody></table></div>}</>;
-}
-function describeNextClass(items: Row[]) {
-  const today = localDateISO();
-  const upcoming = items.filter(row => text(row.class_date) >= today).sort((a, b) => text(a.class_date).localeCompare(text(b.class_date)) || text(a.starts_at).localeCompare(text(b.starts_at)))[0];
-  if (!upcoming) return "Chưa có buổi học sắp tới.";
-  return `${text(upcoming.weekday_label)}, ${formatDate(text(upcoming.class_date))} · ${text(upcoming.course_name)} · ${text(upcoming.study_shift)} ${text(upcoming.starts_at)} · ${text(upcoming.room)}`;
-}
-function daysLabel(day: number) { return day === 7 ? "Chủ nhật" : `Thứ ${day + 1}`; }
 function records(value: unknown): Row[] { return Array.isArray(value) ? value.filter((item): item is Row => typeof item === "object" && item !== null) : []; }
 function text(value: unknown): string { return value === null || value === undefined || value === "" ? "—" : String(value); }
-function localDateISO(value = new Date()): string { return `${value.getFullYear()}-${String(value.getMonth()+1).padStart(2,"0")}-${String(value.getDate()).padStart(2,"0")}`; }
 function formatDate(value: unknown): string { if (!value) return "—"; const raw = String(value); const dateOnly = /^(\d{4})-(\d{2})-(\d{2})$/.exec(raw); const date = dateOnly ? new Date(Number(dateOnly[1]),Number(dateOnly[2])-1,Number(dateOnly[3])) : new Date(raw); return Number.isNaN(date.getTime()) ? raw : date.toLocaleString("vi-VN"); }
 function money(value: unknown): string { return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND", maximumFractionDigits: 0 }).format(Number(value) || 0); }

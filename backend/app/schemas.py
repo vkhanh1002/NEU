@@ -49,11 +49,48 @@ class ApplicantCreate(BaseModel):
     email: EmailStr
     full_name: str = Field(min_length=2, max_length=180)
     password: str | None = Field(default=None, min_length=8, max_length=128)
-    phone: str = ""
+    phone: str = Field(default="", max_length=40)
     date_of_birth: date | None = None
-    address: str = ""
+    address: str = Field(default="", max_length=500)
     desired_major_id: str
-    admission_method: str = "Học bạ"
+    admission_method: str = Field(default="Học bạ", min_length=1, max_length=100)
+    details: dict[str, object] = Field(default_factory=dict, max_length=80)
+    preferences: list[str] = Field(default_factory=list, max_length=10)
+    confirmed: bool = False
+
+    @field_validator("details")
+    @classmethod
+    def bound_details(cls, value: dict[str, object]) -> dict[str, object]:
+        if len(value) > 80:
+            raise ValueError("Hồ sơ có quá nhiều trường thông tin.")
+        total_length = 0
+        for key, item in value.items():
+            if not isinstance(key, str) or len(key) > 120:
+                raise ValueError("Tên trường thông tin không hợp lệ.")
+            if isinstance(item, str):
+                total_length += len(item)
+                if len(item) > 2000:
+                    raise ValueError("Mỗi trường thông tin tối đa 2.000 ký tự.")
+            elif item is not None and not isinstance(item, (bool, int, float)):
+                raise ValueError("Giá trị chi tiết hồ sơ không hợp lệ.")
+        if total_length > 12000:
+            raise ValueError("Tổng nội dung chi tiết hồ sơ quá dài.")
+        return value
+
+    @field_validator("preferences")
+    @classmethod
+    def unique_preferences(cls, value: list[str]) -> list[str]:
+        if len(value) != len(set(value)):
+            raise ValueError("Nguyện vọng không được trùng ngành.")
+        return value
+
+
+class ApplicantPreferencePublic(BaseModel):
+    major_id: str
+    major_name: str
+    program_name: str
+    preference_order: int
+    admission_method: str
 
 
 class ApplicantStatusUpdate(BaseModel):
@@ -71,6 +108,8 @@ class ApplicantPublic(BaseModel):
     admission_method: str
     status: str
     review_note: str
+    details: dict[str, object] = Field(default_factory=dict)
+    preferences: list[ApplicantPreferencePublic] = Field(default_factory=list)
     created_at: datetime
     student_id: str | None
 

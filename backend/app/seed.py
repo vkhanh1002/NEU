@@ -43,18 +43,16 @@ COURSE_DATA = [
     ("MKT101", "Marketing căn bản", 3), ("MIS101", "Hệ thống thông tin quản lý", 3),
 ]
 
+LOCAL_TZ = timezone(timedelta(hours=7))
 NEWS_DATA = [
-    ("lap-ke-hoach-hoc-tap", "Cách lập kế hoạch học tập cho một học kỳ", "Học tập", "Một kế hoạch ngắn gọn giúp chia mục tiêu lớn thành các đầu việc có thể theo dõi.", "Bắt đầu bằng việc ghi lại các môn học, thời hạn và mục tiêu cá nhân. Chia nhiệm vụ theo tuần, dành thời gian ôn tập định kỳ và cập nhật kế hoạch khi lịch học thay đổi. Đây là gợi ý học tập chung; lịch và quy định cụ thể cần được tra cứu từ đơn vị phụ trách.", "photo-1523050854058-8df90110c9f1"),
-    ("doc-tai-lieu-hieu-qua", "Kỹ thuật đọc tài liệu và ghi chú chủ động", "Học tập", "Đọc có câu hỏi dẫn đường giúp người học tập trung vào ý chính và ghi nhớ tốt hơn.", "Trước khi đọc, hãy xác định điều cần tìm hiểu. Trong khi đọc, ghi lại luận điểm, dữ liệu cần kiểm tra và câu hỏi còn mở. Sau đó tóm tắt bằng lời của mình và đối chiếu với tài liệu gốc.", "photo-1456324504439-367cee3b3c32"),
-    ("ky-nang-thuyet-trinh", "Chuẩn bị một bài thuyết trình học thuật", "Kỹ năng", "Một cấu trúc rõ ràng giúp người nghe theo dõi luận điểm và phần minh chứng.", "Hãy xác định thông điệp chính, sắp xếp nội dung theo trình tự dễ hiểu, ghi nguồn cho số liệu và luyện tập trong thời lượng dự kiến. Kết thúc bằng phần tổng kết và dành thời gian tiếp nhận câu hỏi.", "photo-1516321318423-f06f85e504b3"),
-    ("tim-kiem-thong-tin", "Nhận biết và kiểm tra nguồn thông tin", "Kỹ năng", "Kiểm tra tác giả, ngày cập nhật và nguồn dẫn trước khi sử dụng thông tin.", "Khi tra cứu, ưu tiên tài liệu có cơ quan phát hành rõ ràng, kiểm tra thời điểm cập nhật và so sánh với nguồn độc lập. Với quy chế, lịch tuyển sinh hoặc học phí, hãy dùng thông báo được đơn vị có thẩm quyền công bố.", "photo-1453738773917-9c3eff1db985"),
-    ("chuan-bi-ho-so", "Chuẩn bị hồ sơ theo hướng dẫn của từng đợt", "Tuyển sinh", "Danh mục hồ sơ có thể thay đổi theo phương thức và thời điểm tiếp nhận.", "Người đăng ký nên đọc hướng dẫn của đợt tuyển sinh đang áp dụng, kiểm tra yêu cầu về định dạng và thời hạn trước khi gửi. Bài viết này không thay thế thông báo tuyển sinh hoặc tư vấn từ đơn vị phụ trách.", "photo-1434030216411-0b793f4b4173"),
-    ("hoi-dap-tu-van", "Cách chuẩn bị câu hỏi khi cần tư vấn ngành học", "Tuyển sinh", "Nêu rõ mối quan tâm giúp buổi tư vấn tập trung vào thông tin người học cần.", "Bạn có thể ghi lại lĩnh vực quan tâm, trải nghiệm học tập và câu hỏi về chương trình, môi trường học hoặc cơ hội nghề nghiệp. Những thông tin về chỉ tiêu, tổ hợp và điểm chuẩn cần được xác nhận theo tài liệu chính thức của từng năm.", "photo-1521737711867-e3b97375f902"),
-    ("ket-noi-cong-dong", "Xây dựng thói quen kết nối trong môi trường đại học", "Cộng đồng", "Chủ động tham gia hoạt động học thuật giúp người học mở rộng góc nhìn và kết nối.", "Bắt đầu từ một câu lạc bộ, buổi tọa đàm hoặc nhóm học tập phù hợp với lịch cá nhân. Hãy tìm thông tin hoạt động qua kênh của đơn vị tổ chức và cân nhắc mục tiêu, thời gian tham gia.", "photo-1523240795612-9a054b0db644"),
-    ("bao-ve-suc-khoe-hoc-duong", "Cân bằng thời gian học tập và nghỉ ngơi", "Đời sống sinh viên", "Một lịch sinh hoạt ổn định hỗ trợ duy trì sự tập trung trong thời gian học tập.", "Xen kẽ các phiên học với nghỉ ngắn, giữ lịch ngủ phù hợp và tìm hỗ trợ khi áp lực kéo dài. Mỗi người có nhịp sinh hoạt khác nhau; nên chọn cách điều chỉnh phù hợp với hoàn cảnh của mình.", "photo-1506126613408-eca07ce68773"),
-    ("su-dung-tro-ly-so", "Đặt câu hỏi hiệu quả với trợ lý học tập", "Công nghệ", "Nêu bối cảnh và kết quả mong muốn để nhận câu trả lời sát nhu cầu hơn.", "Hãy mô tả chủ đề, mức độ kiến thức và định dạng mong muốn. Với câu hỏi về quy định hoặc thông tin cá nhân, hãy kiểm tra nguồn tham khảo và đối chiếu với hệ thống hay đơn vị có thẩm quyền.", "photo-1516321318423-f06f85e504b3"),
-    ("ky-nang-lam-viec-nhom", "Phân công công việc trong dự án nhóm", "Kỹ năng", "Mục tiêu, đầu việc và thời hạn rõ ràng giúp nhóm phối hợp minh bạch.", "Thống nhất kết quả cần bàn giao, chia đầu việc theo năng lực và cập nhật tiến độ ở một nơi chung. Khi có bất đồng, quay lại tiêu chí đánh giá và trao đổi trực tiếp để thống nhất cách xử lý.", "photo-1528605248644-14dd04022da1"),
-    ("huong-dan-su-dung-cong-sinh-vien", "Quản lý thông tin học tập trên cổng sinh viên", "Hướng dẫn", "Kiểm tra hồ sơ, thời khóa biểu, kết quả và thông báo trong từng khu vực chức năng.", "Sau khi đăng nhập, mở từng mục trên thanh điều hướng để xem dữ liệu gắn với tài khoản. Nếu thông tin chưa chính xác hoặc chức năng không truy cập được, hãy gửi yêu cầu hỗ trợ và cung cấp mã hồ sơ thay vì chia sẻ mật khẩu.", "photo-1519389950473-47ba0277781c"),
+    ("khoa-bat-dong-san-70-nam", "Khoa Bất động sản và Kinh tế tài nguyên kỷ niệm 70 năm thành lập", "70 năm NEU", "Lễ kỷ niệm ngày 07/11/2026 nhìn lại hành trình từ ngành Kinh tế Nông nghiệp và các bước phát triển đào tạo của Khoa.", "Ngày 07/11/2026, Đại học Kinh tế Quốc dân tổ chức Lễ kỷ niệm 70 năm thành lập Khoa Bất động sản và Kinh tế tài nguyên (1956–2026). Khoa hiện đảm nhận 5 ngành học với 7 chương trình đại học, 4 chương trình thạc sĩ và 2 chương trình tiến sĩ. Tại buổi lễ, Khoa giới thiệu hai chương trình chất lượng cao bằng tiếng Anh: Kinh doanh Bất động sản và Kinh doanh Chuỗi giá trị Nông sản thực phẩm bền vững.", "https://neu.edu.vn/wp-content/uploads/2026/11/DSC_4281-Copy.webp", datetime(2026, 11, 7, 12, tzinfo=LOCAL_TZ), "https://neu.edu.vn/khoa-bat-dong-san-va-kinh-te-tai-nguyen-dai-hoc-kinh-te-quoc-dan-ky-niem-70-nam-thanh-lap/"),
+    ("doi-moi-quan-tri-phat-trien-doi-ngu-neu", "NEU trao đổi về phát triển đội ngũ và đổi mới quản trị đại học", "Hoạt động đào tạo", "Tọa đàm ngày 05/11/2026 nằm trong chuỗi hoạt động kỷ niệm 70 năm, tập trung vào đội ngũ giảng viên, nghiên cứu viên và cán bộ quản lý.", "Sáng 05/11/2026, Đại học Kinh tế Quốc dân tổ chức tọa đàm về xây dựng đội ngũ giảng viên, nghiên cứu viên và cán bộ quản lý giáo dục trong bối cảnh đổi mới toàn diện giáo dục đại học, kết hợp gặp mặt truyền thống các thế hệ viên chức làm công tác tổ chức cán bộ. Chương trình thuộc chuỗi hoạt động kỷ niệm 70 năm thành lập Đại học (1956–2026).", "https://neu.edu.vn/wp-content/uploads/2026/11/DSC_3935-Copy.webp", datetime(2026, 11, 6, 12, tzinfo=LOCAL_TZ), "https://neu.edu.vn/dai-hoc-kinh-te-quoc-dan-phat-trien-doi-ngu-nhan-luc-doi-moi-quan-tri-dai-hoc-trong-giai-doan-moi/"),
+    ("hop-tac-neu-thanh-hoa-giao-duc-so", "NEU và Đại học Thanh Hoa thúc đẩy hợp tác giáo dục trực tuyến", "Hợp tác quốc tế", "Hai đại học trao đổi về giáo dục trực tuyến, ứng dụng AI trong giảng dạy và chuyển đổi số trong giáo dục đại học.", "Ngày 03/11/2026, Đại học Kinh tế Quốc dân đón tiếp đoàn công tác Đại học Thanh Hoa do GS. Peng Gang, Phó Giám đốc Đại học Thanh Hoa, dẫn đầu. Buổi làm việc tiếp nối thỏa thuận hợp tác giáo dục ký kết tháng 3/2025; hai bên trao đổi cơ hội hợp tác về giáo dục trực tuyến, ứng dụng trí tuệ nhân tạo trong giảng dạy và chuyển đổi số.", "https://neu.edu.vn/wp-content/uploads/2026/11/DSC_3883-Copy.webp", datetime(2026, 11, 3, 12, tzinfo=LOCAL_TZ), "https://neu.edu.vn/dai-hoc-kinh-te-quoc-dan-va-dai-hoc-thanh-hoa-thuc-day-hop-tac-giao-duc-truc-tuyen-va-chuyen-doi-so-trong-dao-tao/"),
+    ("hoi-thao-cac-van-de-duong-dai-trong-phat-trien", "NEU tổ chức Hội thảo khoa học quốc gia về các vấn đề đương đại trong phát triển", "Nghiên cứu khoa học", "Hội thảo ngày 02/11/2026 do NEU phối hợp với Ủy ban Kinh tế và Tài chính tổ chức.", "Chiều 02/11/2026, Đại học Kinh tế Quốc dân phối hợp với Ủy ban Kinh tế và Tài chính tổ chức Hội thảo khoa học quốc gia với chủ đề “Các vấn đề đương đại trong phát triển”. Chương trình có sự tham dự của đại diện cơ quan trung ương, địa phương, chuyên gia, nhà khoa học, cán bộ giảng viên và sinh viên.", "https://neu.edu.vn/wp-content/uploads/2026/11/DSC_3806-Copy.webp", datetime(2026, 11, 2, 12, tzinfo=LOCAL_TZ), "https://neu.edu.vn/hoi-thao-khoa-hoc-quoc-gia-cac-van-de-duong-dai-trong-phat-trien/"),
+    ("khoa-thong-ke-70-nam", "Khoa Thống kê kỷ niệm 70 năm: Một cội nguồn – Vạn dặm tương lai", "70 năm NEU", "Lễ kỷ niệm ngày 01/11/2026 nhìn lại đóng góp đào tạo nhân lực thống kê và định hướng đổi mới trong kỷ nguyên dữ liệu.", "Ngày 01/11/2026, Đại học Kinh tế Quốc dân tổ chức Lễ kỷ niệm 70 năm thành lập Khoa Thống kê (1956–2026). Với chủ đề “Một cội nguồn – Vạn dặm tương lai”, sự kiện là dịp nhìn lại truyền thống đào tạo nhiều thế hệ nhân lực thống kê và khẳng định định hướng đổi mới, hội nhập của Khoa trong kỷ nguyên dữ liệu.", "https://neu.edu.vn/wp-content/uploads/2026/11/DSC_3092-Copy.webp", datetime(2026, 11, 1, 12, tzinfo=LOCAL_TZ), "https://neu.edu.vn/khoa-thong-ke-dai-hoc-kinh-te-quoc-dan-70-nam-kien-tao-tri-thuc-doi-moi-trong-ky-nguyen-du-lieu/"),
+    ("neu-chao-don-nghien-cuu-sinh-khoa-47", "NEU chào đón 165 nghiên cứu sinh khóa 47 và trao bằng cho 74 tân tiến sĩ", "Hoạt động đào tạo", "Lễ khai giảng nghiên cứu sinh và trao bằng tiến sĩ năm 2026 diễn ra ngày 01/11/2026.", "Chiều 01/11/2026, Đại học Kinh tế Quốc dân tổ chức Lễ khai giảng nghiên cứu sinh khóa 47 và trao bằng tiến sĩ năm 2026. Buổi lễ chào đón 165 tân nghiên cứu sinh và ghi nhận thành quả của 74 tân tiến sĩ.", "https://neu.edu.vn/wp-content/uploads/2026/11/DSC_3388-Copy.webp", datetime(2026, 11, 2, 12, tzinfo=LOCAL_TZ), "https://neu.edu.vn/dai-hoc-kinh-te-quoc-dan-chao-don-165-tan-nghien-cuu-sinh-khoa-47-va-trao-bang-cho-74-tan-tien-si-nam-2026/"),
+    ("khoa-qtkd-70-nam", "Khoa Quản trị kinh doanh kỷ niệm 70 năm thành lập", "70 năm NEU", "Dấu mốc 1956–2026 tôn vinh đóng góp của các thế hệ cán bộ, giảng viên, người học và mở ra chặng đường phát triển mới.", "Ngày 31/10/2026, Đại học Kinh tế Quốc dân tổ chức Lễ kỷ niệm 70 năm thành lập Khoa Quản trị kinh doanh (1956–2026). Sự kiện ghi dấu chặng đường xây dựng và phát triển của Khoa, đồng thời tôn vinh đóng góp của các thế hệ cán bộ, giảng viên và người học.", "https://neu.edu.vn/wp-content/uploads/2026/11/DSC_2550-Copy.webp", datetime(2026, 10, 31, 12, tzinfo=LOCAL_TZ), "https://neu.edu.vn/khoa-quan-tri-kinh-doanh-dai-hoc-kinh-te-quoc-dan-ky-niem-70-nam-thanh-lap-dau-an-mot-hanh-trinh/"),
+    ("khoi-dong-chuoi-su-kien-70-nam-neu", "NEU khởi động chuỗi sự kiện kỷ niệm 70 năm và công bố bộ nhận diện mới", "70 năm NEU", "Sự kiện ngày 25/01/2026 khởi động chuỗi hoạt động chào mừng dấu mốc 70 năm xây dựng và phát triển.", "Sáng 25/01/2026, Đại học Kinh tế Quốc dân khởi động chuỗi sự kiện kỷ niệm 70 năm thành lập và công bố bộ nhận diện thương hiệu mới. Chương trình mở đầu cho các hoạt động kết nối cộng đồng NEU qua nhiều thế hệ, hướng tới dấu mốc 1956–2026.", "https://neu.edu.vn/wp-content/uploads/2026/01/DSC_4530-Copy.webp", datetime(2026, 1, 25, 12, tzinfo=LOCAL_TZ), "https://dec.neu.edu.vn/khoi-dong-chuoi-su-kien-ky-niem-70-nam-thanh-lap-va-cong-bo-bo-nhan-dien-thuong-hieu-dai-hoc-kinh-te-quoc-dan"),
 ]
 
 
@@ -278,28 +276,39 @@ def seed_academic_news(db) -> None:
             db.add(User(email=email, full_name=applicant.full_name,
                         password_hash=hash_password("NEUApplicant2026!"), role="applicant"))
 
-    for index, (slug, title, category, summary, content, photo) in enumerate(NEWS_DATA):
+    for slug, title, category, summary, content, image_url, published_at, source_url in NEWS_DATA:
         if not db.scalar(select(NewsArticle.id).where(NewsArticle.slug == slug)):
             db.add(NewsArticle(
                 slug=slug, title=title, category=category, summary=summary, content=content,
-                image_url=f"https://images.unsplash.com/{photo}?auto=format&fit=crop&w=1200&q=80",
-                published_at=now - timedelta(days=index + 1), status="published",
+                image_url=image_url, source_url=source_url, published_at=published_at, status="published",
             ))
-
-    # These draft event records are kept for staff review and are not exposed as confirmed public events.
-    events = [
-        ("Trao đổi phương pháp tự học bậc đại học", "Học thuật", "Chia sẻ cách lập kế hoạch và tự đánh giá tiến độ học tập."),
-        ("Chuyên đề kỹ năng nghiên cứu", "Học thuật", "Thảo luận về cách tìm, đánh giá và trích dẫn nguồn học thuật."),
-        ("Tọa đàm định hướng nghề nghiệp", "Nghề nghiệp", "Trao đổi về cách tìm hiểu lĩnh vực nghề nghiệp và chuẩn bị kỹ năng."),
-        ("Sinh hoạt câu lạc bộ học tập", "Sinh viên", "Không gian kết nối nhóm học tập và chia sẻ kinh nghiệm."),
-        ("Hỏi đáp về thủ tục sinh viên", "Hỗ trợ người học", "Phiên hỏi đáp để tiếp nhận các câu hỏi về quy trình dịch vụ."),
+    official_events = [
+        ("Khởi động chuỗi sự kiện kỷ niệm 70 năm thành lập và công bố bộ nhận diện thương hiệu mới",
+         "70 năm NEU", "Sự kiện ngày 25/01/2026 mở đầu chuỗi hoạt động kỷ niệm 70 năm Đại học Kinh tế Quốc dân (1956–2026).",
+         datetime(2026, 1, 25, 0, 0, tzinfo=LOCAL_TZ), datetime(2026, 1, 26, 0, 0, tzinfo=LOCAL_TZ), True,
+         "https://dec.neu.edu.vn/khoi-dong-chuoi-su-kien-ky-niem-70-nam-thanh-lap-va-cong-bo-bo-nhan-dien-thuong-hieu-dai-hoc-kinh-te-quoc-dan"),
+        ("Khoa Quản trị kinh doanh kỷ niệm 70 năm thành lập",
+         "70 năm NEU", "Lễ kỷ niệm 70 năm thành lập Khoa Quản trị kinh doanh, giai đoạn 1956–2026.",
+         datetime(2026, 10, 31, 0, 0, tzinfo=LOCAL_TZ), datetime(2026, 11, 1, 0, 0, tzinfo=LOCAL_TZ), True,
+         "https://neu.edu.vn/khoa-quan-tri-kinh-doanh-dai-hoc-kinh-te-quoc-dan-ky-niem-70-nam-thanh-lap-dau-an-mot-hanh-trinh/"),
+        ("Khoa Thống kê kỷ niệm 70 năm thành lập",
+         "70 năm NEU", "Lễ kỷ niệm 70 năm thành lập Khoa Thống kê với chủ đề “Một cội nguồn – Vạn dặm tương lai”.",
+         datetime(2026, 11, 1, 0, 0, tzinfo=LOCAL_TZ), datetime(2026, 11, 2, 0, 0, tzinfo=LOCAL_TZ), True,
+         "https://neu.edu.vn/khoa-thong-ke-dai-hoc-kinh-te-quoc-dan-70-nam-kien-tao-tri-thuc-doi-moi-trong-ky-nguyen-du-lieu/"),
+        ("Khoa Bất động sản và Kinh tế tài nguyên kỷ niệm 70 năm thành lập",
+         "70 năm NEU", "Lễ kỷ niệm 70 năm thành lập Khoa Bất động sản và Kinh tế tài nguyên (1956–2026).",
+         datetime(2026, 11, 7, 0, 0, tzinfo=LOCAL_TZ), datetime(2026, 11, 8, 0, 0, tzinfo=LOCAL_TZ), True,
+         "https://neu.edu.vn/khoa-bat-dong-san-va-kinh-te-tai-nguyen-dai-hoc-kinh-te-quoc-dan-ky-niem-70-nam-thanh-lap/"),
+        ("Lễ kỷ niệm 70 năm thành lập Đại học Kinh tế Quốc dân (1956–2026) và đón nhận Huân chương Lao động hạng Nhất",
+         "70 năm NEU", "Sự kiện chính thức ngày 11/11/2026. Trang sự kiện NEU công bố thời gian 08:30–23:00; chưa nêu địa điểm trên trang.",
+         datetime(2026, 11, 11, 8, 30, tzinfo=LOCAL_TZ), datetime(2026, 11, 11, 23, 0, tzinfo=LOCAL_TZ), False,
+         "https://neu.edu.vn/su-kien/le-ky-niem-70-nam-thanh-lap-dai-hoc-kinh-te-quoc-dan-1956-2026-va-don-nhan-huan-chuong-lao-dong-hang-nhat/"),
     ]
-    for index, (title, category, summary) in enumerate(events):
+    for title, category, summary, starts_at, ends_at, is_all_day, source_url in official_events:
         if not db.scalar(select(UniversityEvent.id).where(UniversityEvent.title == title)):
-            start = now + timedelta(days=14 + index * 7)
-            db.add(UniversityEvent(title=title, category=category, summary=summary,
-                                   location="Địa điểm sẽ được cập nhật sau khi phê duyệt lịch.",
-                                   starts_at=start, ends_at=start + timedelta(hours=2), status="draft"))
+            db.add(UniversityEvent(title=title, category=category, summary=summary, location="",
+                                   starts_at=starts_at, ends_at=ends_at, is_all_day=is_all_day,
+                                   source_url=source_url, status="published"))
 
 
 def seed_data() -> None:

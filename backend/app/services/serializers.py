@@ -7,6 +7,14 @@ def applicant_public(applicant: Applicant) -> dict:
         "phone": applicant.phone, "desired_major_id": applicant.desired_major_id,
         "major_name": applicant.major.name, "admission_method": applicant.admission_method,
         "status": applicant.status, "review_note": applicant.review_note,
+        "details": applicant.details or {},
+        "preferences": [{"major_id": row.major_id, "major_name": row.major.name,
+                         "program_name": row.program_name or row.major.name,
+                         "preference_order": row.preference_order, "admission_method": row.admission_method}
+                        for row in applicant.preferences]
+        or [{"major_id": applicant.desired_major_id, "major_name": applicant.major.name,
+             "program_name": applicant.major.name, "preference_order": 1,
+             "admission_method": applicant.admission_method}],
         "created_at": applicant.created_at, "student_id": applicant.student_id,
     }
 

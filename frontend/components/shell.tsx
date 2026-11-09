@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Bot, Bell, BookOpen, CheckCheck, ChevronDown, ChevronLeft, ChevronRight, CircleHelp, GraduationCap, LayoutDashboard, LogIn, Menu, Search, UsersRound, BriefcaseBusiness, UserRound, X, ClipboardList, CalendarDays, Award, Wallet, FileCheck2, Send, Sparkles, ShieldCheck } from "lucide-react";
+import { Bell, BookOpen, Camera, CheckCheck, ChevronDown, ChevronLeft, ChevronRight, CircleHelp, GraduationCap, LayoutDashboard, LogIn, Menu, Search, UsersRound, BriefcaseBusiness, UserRound, X, ClipboardList, CalendarDays, Award, Wallet, FileCheck2, Send, Sparkles, ShieldCheck, Newspaper } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { api } from "@/lib/api";
 import { DEMO_ACCOUNTS, DemoRole } from "@/lib/demo-accounts";
 import { GuestChat } from "@/features/guest-chat";
+import { NeuMark } from "@/components/neu-mark";
+import { NeuAssistantMascot } from "@/components/neu-assistant-mascot";
 
 type NavigationLink = { label: string; href: string; icon: typeof LayoutDashboard; roles?: string[] };
 const publicNavigation: { title: string; links: NavigationLink[] }[] = [
@@ -26,6 +28,7 @@ const studentNavigation: { title: string; links: NavigationLink[] }[] = [
     { label: "Tiến độ học tập", href: "/", icon: LayoutDashboard },
     { label: "Thông tin cá nhân", href: "/profiles", icon: UsersRound },
     { label: "Thời khóa biểu", href: "/student/schedule", icon: CalendarDays },
+    { label: "Lịch sử điểm danh", href: "/student/attendance", icon: ClipboardList },
     { label: "Lịch thi", href: "/student/exams", icon: CalendarDays },
     { label: "Kết quả học tập", href: "/student/results", icon: Award },
     { label: "Kết quả rèn luyện", href: "/student/conduct", icon: FileCheck2 },
@@ -41,6 +44,11 @@ const lecturerNavigation: { title: string; links: NavigationLink[] }[] = [
   { title: "GIẢNG DẠY", links: [
     { label: "Dashboard", href: "/", icon: LayoutDashboard },
     { label: "Thời khóa biểu giảng dạy", href: "/lecturer/schedule", icon: CalendarDays },
+    { label: "Lớp học phần", href: "/lecturer/classes", icon: UsersRound },
+    { label: "Điểm danh", href: "/lecturer/attendance", icon: Camera },
+    { label: "Yêu cầu điểm danh bù", href: "/lecturer/attendance/requests", icon: ClipboardList },
+    { label: "Kết quả học tập", href: "/lecturer/grades", icon: Award },
+    { label: "Trợ lý học thuật", href: "/assistant", icon: Sparkles },
   ] },
 ];
 const navigation: { title: string; links: NavigationLink[] }[] = [
@@ -54,6 +62,8 @@ const navigation: { title: string; links: NavigationLink[] }[] = [
   { title: "DỊCH VỤ NGƯỜI HỌC", links: [
     { label: "Yêu cầu hỗ trợ", href: "/support", icon: CircleHelp, roles: ["super_admin", "student", "support_staff"] },
     { label: "Kho tri thức", href: "/admin", icon: BookOpen, roles: ["super_admin"] },
+    { label: "Tin tức và sự kiện", href: "/admin/content", icon: Newspaper, roles: ["super_admin"] },
+    { label: "Giám sát điểm danh", href: "/admin/attendance", icon: ShieldCheck, roles: ["super_admin"] },
   ] },
   { title: "NHÂN SỰ", links: [{ label: "Tổng quan nhân sự", href: "/personnel", icon: UserRound, roles: ["super_admin", "hr_staff"] }] },
 ];
@@ -88,7 +98,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
     const timer = window.setInterval(() => { void refresh(); }, 30_000);
     return () => { live = false; window.clearInterval(timer); };
   }, [user?.id]);
-  const title = [...publicNavigation, ...studentNavigation, ...navigation].flatMap(group => group.links).find(link => link.href === pathname)?.label ?? "NEU";
+  const title = [...publicNavigation, ...studentNavigation, ...lecturerNavigation, ...navigation].flatMap(group => group.links).find(link => link.href === pathname)?.label ?? "NEU";
   const search = (event: React.FormEvent) => {
     event.preventDefault();
     if (!query.trim()) return;
@@ -102,8 +112,11 @@ export function Shell({ children }: { children: React.ReactNode }) {
   const pathRoles: Record<string, string[]> = {
     "/profiles": ["super_admin", "student", "support_staff", "academic_staff"],
     "/personnel": ["super_admin", "hr_staff"], "/personnel/lecturers": ["super_admin", "hr_staff"],
-    "/personnel/employees": ["super_admin", "hr_staff"], "/admin": ["super_admin"],
-    "/lecturer/schedule": ["lecturer"],
+    "/personnel/employees": ["super_admin", "hr_staff"], "/admin": ["super_admin"], "/admin/content": ["super_admin"],
+    "/lecturer/schedule": ["lecturer"], "/lecturer/classes": ["lecturer"],
+    "/lecturer/attendance": ["lecturer"], "/lecturer/attendance/requests": ["lecturer"],
+    "/lecturer/grades": ["lecturer"],
+    "/admin/attendance": ["super_admin"],
     "/support": ["super_admin", "student", "support_staff"],
     "/assistant": ["super_admin", "student", "applicant", "lecturer", "support_staff", "admission_staff", "hr_staff", "academic_staff"],
   };
@@ -117,7 +130,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
     {mobileOpen && <button className="mobile-scrim" onClick={() => setMobileOpen(false)} aria-label="Đóng menu" />}
     <aside className={`sidebar ${mobileOpen ? "mobile-open" : ""}`}>
       <div className="sidebar-brand-row"><Link href="/" className="brand" onClick={() => setMobileOpen(false)}>
-        <div className="brand-mark"><GraduationCap size={21} strokeWidth={2.3} /></div>
+        <div className="brand-mark"><NeuMark /></div>
         <div className="brand-name"><strong>NEU</strong><small>ĐẠI HỌC KINH TẾ QUỐC DÂN</small></div>
       </Link><button className="mobile-close" onClick={() => setMobileOpen(false)} aria-label="Đóng"><X size={18} /></button></div>
       <div className="workspace-picker"><div className="campus-avatar">N</div><div className="workspace-name"><strong>Đại học Kinh tế Quốc dân</strong><small>Cổng thông tin NEU</small></div><ChevronDown size={15} /></div>
@@ -145,9 +158,9 @@ export function Shell({ children }: { children: React.ReactNode }) {
         </div>
       </header>
       <div className="page-content">{(restrictedRoles && (!user || !restrictedRoles.includes(user.role))) ? <div className="public-home-loading">Đang chuyển đến khu vực phù hợp với tài khoản…</div> : children}</div>
-      {pathname !== "/assistant" && (user ? <Link href="/assistant" className="floating-assistant" aria-label="Mở trợ lý NEU"><span className="floating-glow" /><Bot size={22} /><span>Hỏi trợ lý</span></Link> : <>
+      {pathname !== "/assistant" && (user ? <Link href="/assistant" className="floating-assistant" aria-label="Mở trợ lý NEU" title="Trò chuyện với trợ lý NEU AI"><span className="floating-glow" /><NeuAssistantMascot mood="greeting" size={35} /><span>Hỏi trợ lý</span></Link> : <>
         <GuestChat open={guestChatOpen} onClose={() => setGuestChatOpen(false)} />
-        <button className="floating-assistant" aria-label="Mở trợ lý tư vấn" onClick={() => setGuestChatOpen(current => !current)}><span className="floating-glow" /><Bot size={22} /><span>Hỏi tư vấn</span></button>
+        <button className="floating-assistant" aria-label="Mở trợ lý tư vấn" title="Hỏi NEU AI về tuyển sinh và dịch vụ công khai" aria-expanded={guestChatOpen} onClick={() => setGuestChatOpen(current => !current)}><span className="floating-glow" /><NeuAssistantMascot mood={guestChatOpen ? "reply" : "greeting"} size={35} /><span>Hỏi tư vấn</span></button>
       </>)}
     </main>
     {loginOpen && <LoginDialog onClose={() => setLoginOpen(false)} />}
@@ -184,7 +197,7 @@ function LoginDialog({ onClose }: { onClose: () => void }) {
         : role === "super_admin" ? <ShieldCheck size={14} />
           : role === "support_staff" ? <CircleHelp size={14} /> : <ClipboardList size={14} />;
   return <div className="modal-backdrop" role="presentation" onClick={onClose}><section className="login-modal" role="dialog" aria-modal="true" aria-labelledby="login-title" onClick={event => event.stopPropagation()}>
-    <button className="modal-close" onClick={onClose} aria-label="Đóng"><X size={18} /></button><div className="login-brand"><div className="brand-mark"><GraduationCap size={20} /></div><span>NEU</span></div>
+    <button className="modal-close" onClick={onClose} aria-label="Đóng"><X size={18} /></button><div className="login-brand"><div className="brand-mark"><NeuMark /></div><span>NEU</span></div>
     <div className="eyebrow">CHÀO MỪNG BẠN TRỞ LẠI</div><h2 id="login-title">Đăng nhập NEU</h2><p className="muted-text">Đăng nhập để truy cập các nghiệp vụ theo vai trò của bạn.</p>
     <form onSubmit={submit} className="form-stack"><label>Email<input type="email" value={email} onChange={event => { setEmail(event.target.value); setSelectedDemoRole(null); }} required autoComplete="username" /></label><label>Mật khẩu<input type="password" value={password} onChange={event => { setPassword(event.target.value); setSelectedDemoRole(null); }} required autoComplete="current-password" /></label>
       {error && <div className="inline-error" role="alert">{error}</div>}<button className="button button-primary full-width" disabled={busy}>{busy ? "Đang đăng nhập…" : "Đăng nhập"}</button></form>

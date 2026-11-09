@@ -75,8 +75,41 @@ class Applicant(TimestampMixin, Base):
     admission_method: Mapped[str] = mapped_column(String(100), default="Học bạ", nullable=False)
     status: Mapped[str] = mapped_column(String(40), default="Mới tiếp nhận", index=True, nullable=False)
     review_note: Mapped[str] = mapped_column(Text, default="", nullable=False)
+    details: Mapped[dict] = mapped_column(JSON, default=dict, nullable=False)
     student_id: Mapped[str | None] = mapped_column(ForeignKey("students.id"), nullable=True, unique=True)
     major: Mapped[Major] = relationship()
+    preferences: Mapped[list["ApplicantPreference"]] = relationship(cascade="all, delete-orphan", order_by="ApplicantPreference.preference_order")
+    documents: Mapped[list["ApplicantDocument"]] = relationship(cascade="all, delete-orphan", order_by="ApplicantDocument.created_at")
+
+
+class ApplicantPreference(TimestampMixin, Base):
+    __tablename__ = "applicant_preferences"
+    __table_args__ = (UniqueConstraint("applicant_id", "preference_order", name="uq_applicant_preference_order"),
+                      UniqueConstraint("applicant_id", "major_id", name="uq_applicant_preference_major"))
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    applicant_id: Mapped[str] = mapped_column(ForeignKey("applicants.id", ondelete="CASCADE"), index=True, nullable=False)
+    major_id: Mapped[str] = mapped_column(ForeignKey("majors.id"), index=True, nullable=False)
+    preference_order: Mapped[int] = mapped_column(Integer, nullable=False)
+    program_name: Mapped[str] = mapped_column(String(180), default="", nullable=False)
+    admission_method: Mapped[str] = mapped_column(String(100), default="", nullable=False)
+    major: Mapped[Major] = relationship()
+
+
+class ApplicantDocument(TimestampMixin, Base):
+    __tablename__ = "applicant_documents"
+    __table_args__ = (Index("ix_applicant_documents_applicant_status", "applicant_id", "status"),)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    applicant_id: Mapped[str] = mapped_column(ForeignKey("applicants.id", ondelete="CASCADE"), index=True, nullable=False)
+    uploaded_by: Mapped[str] = mapped_column(ForeignKey("users.id"), nullable=False)
+    document_type: Mapped[str] = mapped_column(String(100), nullable=False)
+    filename: Mapped[str] = mapped_column(String(255), nullable=False)
+    media_type: Mapped[str] = mapped_column(String(120), nullable=False)
+    size_bytes: Mapped[int] = mapped_column(Integer, nullable=False)
+    content: Mapped[bytes] = deferred(mapped_column(LargeBinary, nullable=False))
+    status: Mapped[str] = mapped_column(String(30), default="Chờ kiểm tra", index=True, nullable=False)
+    review_note: Mapped[str] = mapped_column(String(1000), default="", nullable=False)
+    reviewed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    reviewed_by: Mapped[str | None] = mapped_column(ForeignKey("users.id"), nullable=True)
 
 
 class Student(TimestampMixin, Base):
@@ -241,6 +274,7 @@ class NewsArticle(TimestampMixin, Base):
     summary: Mapped[str] = mapped_column(String(600), nullable=False)
     content: Mapped[str] = mapped_column(Text, nullable=False)
     image_url: Mapped[str] = mapped_column(String(500), default="", nullable=False)
+    source_url: Mapped[str] = mapped_column(String(500), default="", nullable=False)
     published_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     status: Mapped[str] = mapped_column(String(30), default="draft", index=True, nullable=False)
 
@@ -254,7 +288,76 @@ class UniversityEvent(TimestampMixin, Base):
     location: Mapped[str] = mapped_column(String(180), nullable=False)
     starts_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True, nullable=False)
     ends_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    is_all_day: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    source_url: Mapped[str] = mapped_column(String(500), default="", nullable=False)
     status: Mapped[str] = mapped_column(String(30), default="published", nullable=False)
+
+
+class AttendanceSession(TimestampMixin, Base):
+    __tablename__ = "attendance_sessions"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    offering_id: Mapped[str] = mapped_column(ForeignKey("course_offerings.id", ondelete="CASCADE"), index=True, nullable=False)
+    opened_by: Mapped[str] = mapped_column(ForeignKey("users.id"), nullable=False)
+    starts_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc, nullable=False)
+    closed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    status: Mapped[str] = mapped_column(String(20), default="open", index=True, nullable=False)
+
+
+class AttendanceRecord(TimestampMixin, Base):
+    __tablename__ = "attendance_records"
+    __table_args__ = (UniqueConstraint("session_id", "student_id", name="uq_attendance_session_student"),)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    session_id: Mapped[str] = mapped_column(ForeignKey("attendance_sessions.id", ondelete="CASCADE"), index=True, nullable=False)
+    student_id: Mapped[str] = mapped_column(ForeignKey("students.id", ondelete="CASCADE"), index=True, nullable=False)
+    status: Mapped[str] = mapped_column(String(20), default="absent", nullable=False)
+    marked_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    marked_by: Mapped[str | None] = mapped_column(ForeignKey("users.id"), nullable=True)
+    session: Mapped[AttendanceSession] = relationship()
+    student: Mapped[Student] = relationship()
+
+
+class AttendanceEvidence(TimestampMixin, Base):
+    __tablename__ = "attendance_evidence"
+    __table_args__ = (UniqueConstraint("session_id", "student_id", name="uq_attendance_evidence_session_student"),)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    session_id: Mapped[str] = mapped_column(ForeignKey("attendance_sessions.id", ondelete="CASCADE"), index=True, nullable=False)
+    student_id: Mapped[str] = mapped_column(ForeignKey("students.id", ondelete="CASCADE"), index=True, nullable=False)
+    storage_path: Mapped[str] = mapped_column(String(500), nullable=False)
+    media_type: Mapped[str] = mapped_column(String(80), nullable=False)
+    received_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc, nullable=False)
+
+
+class AttendanceMakeupRequest(TimestampMixin, Base):
+    __tablename__ = "attendance_makeup_requests"
+    __table_args__ = (UniqueConstraint("record_id", name="uq_attendance_makeup_record"),)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    record_id: Mapped[str] = mapped_column(ForeignKey("attendance_records.id", ondelete="CASCADE"), index=True, nullable=False)
+    evidence_id: Mapped[str] = mapped_column(ForeignKey("attendance_evidence.id"), nullable=False)
+    submitted_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc, nullable=False)
+    status: Mapped[str] = mapped_column(String(20), default="pending", index=True, nullable=False)
+    reviewed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    reviewed_by: Mapped[str | None] = mapped_column(ForeignKey("users.id"), nullable=True)
+    review_reason: Mapped[str] = mapped_column(String(1000), default="", nullable=False)
+    evidence: Mapped[AttendanceEvidence] = relationship()
+
+
+class AttendanceAuditLog(TimestampMixin, Base):
+    __tablename__ = "attendance_audit_logs"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    session_id: Mapped[str] = mapped_column(ForeignKey("attendance_sessions.id", ondelete="CASCADE"), index=True, nullable=False)
+    record_id: Mapped[str | None] = mapped_column(ForeignKey("attendance_records.id", ondelete="SET NULL"), index=True, nullable=True)
+    actor_id: Mapped[str] = mapped_column(ForeignKey("users.id"), nullable=False)
+    action: Mapped[str] = mapped_column(String(40), nullable=False)
+    details: Mapped[dict] = mapped_column(JSON, default=dict, nullable=False)
+
+
+class CourseGradeAudit(TimestampMixin, Base):
+    __tablename__ = "course_grade_audit"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    enrollment_id: Mapped[str] = mapped_column(ForeignKey("course_enrollments.id", ondelete="CASCADE"), index=True, nullable=False)
+    actor_id: Mapped[str] = mapped_column(ForeignKey("users.id"), nullable=False)
+    previous_values: Mapped[dict] = mapped_column(JSON, default=dict, nullable=False)
+    new_values: Mapped[dict] = mapped_column(JSON, default=dict, nullable=False)
 
 
 class Personnel(TimestampMixin, Base):

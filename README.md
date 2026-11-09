@@ -15,6 +15,14 @@ docker compose logs --tail=100 backend
 
 Khi `db` và `backend` báo `healthy`, mở http://localhost:3000. API: http://localhost:8000; OpenAPI: http://localhost:8000/docs. Compose tự chạy Alembic đến revision mới nhất rồi chạy seed; các lần seed lặp lại không tạo trùng các mã ổn định. Nếu sửa `.env`, chạy lại `docker compose up --build -d` để recreate container. Dùng `docker compose down` để dừng. Tránh `docker compose down -v` vì sẽ xóa dữ liệu database.
 
+## Cấu hình production trên Render
+
+- Frontend (Docker): đặt `NEXT_PUBLIC_API_URL` thành URL công khai của Backend, có cả tiền tố `/api/v1` (ví dụ `https://<backend>.onrender.com/api/v1`) rồi rebuild/deploy frontend. Next.js đóng gói biến `NEXT_PUBLIC_*` vào bundle lúc build; đổi biến khi runtime không đổi URL đã đóng gói.
+- Backend: đặt `CORS_ORIGINS` thành origin frontend chính xác (ví dụ `https://<frontend>.onrender.com`, không thêm đường dẫn `/api/v1`). Nếu có nhiều origin, phân cách bằng dấu phẩy.
+- Backend cũng cần `DATABASE_URL` trỏ tới PostgreSQL bền vững và `SECRET_KEY` riêng của môi trường production. Không dùng `localhost` làm API URL hoặc database host trên Render; không commit giá trị bí mật.
+
+Docker Compose local đặt sẵn `NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1` và `CORS_ORIGINS=http://localhost:3000`. Có thể ghi đè hai biến này trong `.env`.
+
 ## Tài khoản kiểm thử cục bộ
 
 Seed mới tạo các tài khoản dưới đây nếu chưa tồn tại. Bốn tài khoản cũ `@study.edu.vn` sẽ được chuyển sang địa chỉ NEU tương ứng; mật khẩu tự đặt được giữ nguyên. Tài khoản cũ còn dùng mật khẩu mặc định sẽ được đổi sang mật khẩu NEU bên dưới.
@@ -72,7 +80,11 @@ Các kiểm thử API dùng SQLite và không cần database production. Có th�
 
 - Guest: đúng ba mục **Giới thiệu**, **Tuyển sinh**, **Tin tức và sự kiện**; chatbot tuyển sinh dùng API tra cứu công khai có giới hạn tần suất và lịch sử phiên riêng.
 - Student: tiến độ, hồ sơ cá nhân, lịch học, lịch thi, kết quả/GPA, rèn luyện, tài chính, bài tập, thông báo và yêu cầu hỗ trợ.
-- Lecturer: thời khóa biểu riêng theo hồ sơ giảng viên, lọc theo học kỳ/năm học/môn/lớp, xem danh sách sinh viên trong lớp được phân công.
+- Lecturer: dashboard theo dữ liệu phân công, thời khóa biểu, lớp học phần, danh sách sinh viên, nhập điểm các trường hiện có với lịch sử trước/sau, phiên điểm danh và duyệt yêu cầu điểm danh bù.
+- Smart Attendance: phiên và lượt điểm danh dùng chung giữa giảng viên/sinh viên; ảnh chụp trực tiếp được nhận trong lúc phiên mở, yêu cầu chỉ gửi sau khi kết thúc, duyệt Muộn/Vắng có audit log. Ảnh lưu ở Docker volume riêng `neu_attendance_uploads`, tách biệt volume PostgreSQL.
+- Thương hiệu: logo, ảnh nền sảnh và favicon lấy từ ảnh người dùng cung cấp trong `frontend/public/brand/`.
 - Student và giảng viên đọc cùng bản ghi lớp học phần; cấu hình ca học tập trung tại `backend/app/services/schedule.py`. Giờ ca hiện là khung tham khảo, không thay thế lịch chính thức đã được trường xác nhận.
 - Staff: nghiệp vụ theo vai trò; kiểm tra quyền ở backend.
-- Database: migration `0001`–`0006`; có liên kết tài khoản giảng viên, ghi chú lớp học phần, phạm vi tri thức công khai và phiên Guest Chat. Nâng cấp không xóa dữ liệu hiện có.
+- Database: migration `0001`–`0014`; nâng cấp applicant details, news provenance, Smart Attendance và audit điểm theo migration bổ sung, không xóa dữ liệu hiện có.
+
+Xem [hướng dẫn demo Smart Attendance](docs/smart-attendance-demo.md) để chạy luồng camera và duyệt yêu cầu bằng các tài khoản mẫu.

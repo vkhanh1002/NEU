@@ -1,15 +1,25 @@
 from datetime import date, datetime, timedelta
+from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel, Field
 from sqlalchemy import select
 from sqlalchemy.orm import Session, joinedload
 
 from app.api.deps import current_user
 from app.core.database import get_db
-from app.models import CourseEnrollment, CourseOffering, Personnel, Semester, Student, User
+from app.models import CourseEnrollment, CourseGradeAudit, CourseOffering, Personnel, Semester, Student, User
 from app.services.schedule import serialize_schedule
 
 router = APIRouter(prefix="/lecturer", tags=["Lecturer academic services"])
+
+
+class GradeUpdate(BaseModel):
+    attendance_score: float | None = Field(default=None, ge=0, le=10)
+    midterm_score: float | None = Field(default=None, ge=0, le=10)
+    final_score: float | None = Field(default=None, ge=0, le=10)
+    total_score: float | None = Field(default=None, ge=0, le=10)
+    letter_grade: Literal["", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "F"] | None = None
 
 
 def current_lecturer(user: User, db: Session) -> Personnel:
@@ -88,3 +98,60 @@ def lecturer_offering_students(offering_id: str, user: User = Depends(current_us
                    "email": row.email, "class_name": row.class_name} for row in rows],
         "count": len(rows),
     }
+
+
+def _owned_offering(offering_id: str, user: User, db: Session) -> CourseOffering:
+    lecturer = current_lecturer(user, db)
+    offering = db.scalar(select(CourseOffering).where(
+        CourseOffering.id == offering_id, CourseOffering.lecturer_id == lecturer.id,
+    ).options(joinedload(CourseOffering.course)))
+    if not offering:
+        raise HTTPException(status_code=404, detail="Không tìm thấy lớp học phần được phân công.")
+    return offering
+
+
+@router.get("/classes/{offering_id}/grades")
+def lecturer_class_grades(offering_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    offering = _owned_offering(offering_id, user, db)
+    rows = db.scalars(select(CourseEnrollment).join(Student).where(CourseEnrollment.offering_id == offering.id)
+                      .options(joinedload(CourseEnrollment.student)).order_by(Student.student_number)).all()
+    return {"offering": {"id": offering.id, "course_code": offering.course.code,
+                          "course_name": offering.course.name, "section": offering.section},
+            "items": [{"student_id": row.student_id, "student_number": row.student.student_number,
+                       "full_name": row.student.full_name, "class_name": row.student.class_name,
+                       "attendance_score": row.attendance_score, "midterm_score": row.midterm_score,
+                       "final_score": row.final_score, "total_score": row.total_score,
+                       "letter_grade": row.letter_grade} for row in rows]}
+
+
+@router.patch("/classes/{offering_id}/grades/{student_id}")
+def update_lecturer_grade(offering_id: str, student_id: str, body: GradeUpdate,
+                          user: User = Depends(current_user), db: Session = Depends(get_db)):
+    offering = _owned_offering(offering_id, user, db)
+    updates = body.model_dump(exclude_unset=True)
+    if not updates:
+        raise HTTPException(status_code=422, detail="Nhập ít nhất một trường điểm cần cập nhật.")
+    row = db.scalar(select(CourseEnrollment).where(CourseEnrollment.offering_id == offering.id,
+                                                    CourseEnrollment.student_id == student_id))
+    if row is None:
+        raise HTTPException(status_code=404, detail="Sinh viên không thuộc lớp học phần này.")
+    keys = ("attendance_score", "midterm_score", "final_score", "total_score", "letter_grade")
+    before = {key: getattr(row, key) for key in keys}
+    for key, value in updates.items():
+        setattr(row, key, value)
+    after = {key: getattr(row, key) for key in keys}
+    db.add(CourseGradeAudit(enrollment_id=row.id, actor_id=user.id,
+                            previous_values=before, new_values=after))
+    db.commit()
+    return {"student_id": row.student_id, **after, "updated_at": row.updated_at}
+
+
+@router.get("/classes/{offering_id}/grades/audit")
+def lecturer_grade_history(offering_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    offering = _owned_offering(offering_id, user, db)
+    rows = db.scalars(select(CourseGradeAudit).join(CourseEnrollment)
+                      .where(CourseEnrollment.offering_id == offering.id)
+                      .order_by(CourseGradeAudit.created_at.desc()).limit(200)).all()
+    return {"items": [{"id": row.id, "student_number": db.get(Student, db.get(CourseEnrollment, row.enrollment_id).student_id).student_number,
+                       "actor_id": row.actor_id, "previous_values": row.previous_values,
+                       "new_values": row.new_values, "created_at": row.created_at} for row in rows]}

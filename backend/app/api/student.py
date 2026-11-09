@@ -260,7 +260,8 @@ def list_news(category: str | None = None, q: str | None = None,
     rows = db.scalars(query.order_by(NewsArticle.published_at.desc()).offset((page - 1) * page_size).limit(page_size)).all()
     categories = db.scalars(select(NewsArticle.category).where(NewsArticle.status == "published").distinct().order_by(NewsArticle.category)).all()
     return {"items": [{"slug": row.slug, "title": row.title, "category": row.category, "summary": row.summary,
-                       "image_url": row.image_url, "published_at": row.published_at, "status": row.status} for row in rows],
+                       "image_url": row.image_url, "source_url": row.source_url,
+                       "published_at": row.published_at, "status": row.status} for row in rows],
             "categories": categories, "page": page, "page_size": page_size, "total": total,
             "pages": (total + page_size - 1) // page_size}
 
@@ -272,7 +273,37 @@ def news_detail(slug: str, db: Session = Depends(get_db)):
     if not row:
         raise HTTPException(status_code=404, detail="Không tìm thấy bài viết.")
     return {"slug": row.slug, "title": row.title, "category": row.category, "summary": row.summary,
-            "content": row.content, "image_url": row.image_url, "published_at": row.published_at, "status": row.status}
+            "content": row.content, "image_url": row.image_url, "source_url": row.source_url,
+            "published_at": row.published_at, "status": row.status}
+
+
+@news_router.get("/events/list")
+def list_public_events(state: str = Query("upcoming", pattern="^(upcoming|ongoing|past|all)$"),
+                       month: str | None = Query(None, pattern=r"^\d{4}-\d{2}$"),
+                       db: Session = Depends(get_db)):
+    from app.models import UniversityEvent
+    now = datetime.now(timezone.utc)
+    query = select(UniversityEvent).where(UniversityEvent.status == "published")
+    if state == "upcoming":
+        query = query.where(UniversityEvent.starts_at > now)
+    elif state == "ongoing":
+        query = query.where(UniversityEvent.starts_at <= now, UniversityEvent.ends_at >= now)
+    elif state == "past":
+        query = query.where(UniversityEvent.ends_at < now)
+    if month:
+        try:
+            year, month_number = (int(part) for part in month.split("-"))
+            month_start = datetime(year, month_number, 1, tzinfo=timezone.utc)
+            month_end = datetime(year + (month_number == 12), 1 if month_number == 12 else month_number + 1, 1, tzinfo=timezone.utc)
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail="Tháng cần có định dạng YYYY-MM hợp lệ.") from exc
+        query = query.where(UniversityEvent.starts_at < month_end, UniversityEvent.ends_at >= month_start)
+    ordering = UniversityEvent.starts_at.desc() if state == "past" else UniversityEvent.starts_at.asc()
+    rows = db.scalars(query.order_by(ordering).limit(100)).all()
+    return {"items": [{"id": row.id, "title": row.title, "category": row.category, "summary": row.summary,
+                       "location": row.location, "starts_at": row.starts_at, "ends_at": row.ends_at,
+                       "is_all_day": row.is_all_day, "source_url": row.source_url} for row in rows],
+            "state": state, "month": month, "count": len(rows)}
 
 
 @news_router.get("/events/upcoming")
@@ -281,4 +312,5 @@ def upcoming_events(db: Session = Depends(get_db)):
     rows = db.scalars(select(UniversityEvent).where(UniversityEvent.status == "published",
                       UniversityEvent.ends_at >= datetime.now(timezone.utc)).order_by(UniversityEvent.starts_at).limit(20)).all()
     return {"items": [{"id": row.id, "title": row.title, "category": row.category, "summary": row.summary,
-                       "location": row.location, "starts_at": row.starts_at, "ends_at": row.ends_at} for row in rows]}
+                       "location": row.location, "starts_at": row.starts_at, "ends_at": row.ends_at,
+                       "is_all_day": row.is_all_day, "source_url": row.source_url} for row in rows]}

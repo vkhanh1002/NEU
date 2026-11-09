@@ -16,7 +16,8 @@ target_metadata = Base.metadata
 
 
 def run_migrations_offline():
-    context.configure(url=settings.database_url, target_metadata=target_metadata, literal_binds=True, dialect_opts={"paramstyle": "named"})
+    context.configure(url=settings.database_url, target_metadata=target_metadata, literal_binds=True,
+                      dialect_opts={"paramstyle": "named"}, version_num_length=128)
     with context.begin_transaction():
         context.run_migrations()
 
@@ -26,7 +27,7 @@ def run_migrations_online():
     with connectable.connect() as connection:
         if connection.dialect.name == "postgresql":
             connection.exec_driver_sql("CREATE EXTENSION IF NOT EXISTS vector")
-        context.configure(connection=connection, target_metadata=target_metadata)
+        context.configure(connection=connection, target_metadata=target_metadata, version_num_length=128)
         with context.begin_transaction():
             context.run_migrations()
 

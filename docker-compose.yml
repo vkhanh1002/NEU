@@ -20,6 +20,7 @@ services:
     build: ./backend
     volumes:
       - ./knowledge_base:/app/knowledge_base:ro
+      - neu_attendance_uploads:/app/data/attendance
     environment:
       DATABASE_URL: postgresql+psycopg://study:${DB_PASSWORD:-study}@db:5432/study
       SECRET_KEY: ${STUDY_SECRET_KEY:-local-demo-only-change-before-deployment}
@@ -35,7 +36,7 @@ services:
       AI_RETRY_DELAY_SECONDS: ${AI_RETRY_DELAY_SECONDS:-0.2}
       RAG_MIN_SCORE: ${RAG_MIN_SCORE:-0.12}
       RAG_MAX_CONTEXT_CHARS: ${RAG_MAX_CONTEXT_CHARS:-8000}
-      CORS_ORIGINS: http://localhost:3000
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
     ports:
       - "8000:8000"
     depends_on:
@@ -52,9 +53,9 @@ services:
     build:
       context: ./frontend
       args:
-        NEXT_PUBLIC_API_URL: http://localhost:8000/api/v1
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000/api/v1}
     environment:
-      NEXT_PUBLIC_API_URL: http://localhost:8000/api/v1
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000/api/v1}
     ports:
       - "3000:3000"
     depends_on:
@@ -64,3 +65,4 @@ services:
 
 volumes:
   study_postgres:
+  neu_attendance_uploads:

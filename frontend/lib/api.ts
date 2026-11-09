@@ -1,4 +1,4 @@
-export const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api/v1";
+export const API_BASE = (process.env.NEXT_PUBLIC_API_URL?.trim() || "http://localhost:8000/api/v1").replace(/\/+$/, "");
 
 export class ApiError extends Error {
   status: number;
@@ -45,7 +45,7 @@ export async function authenticatedFetch(path: string, options: RequestInit = {}
   }
   let response: Response;
   try { response = await send(token); }
-  catch { throw new ApiError("Không thể kết nối API. Hãy kiểm tra backend và Docker Compose.", 0); }
+  catch { throw new ApiError("Không thể kết nối tới máy chủ NEU. Kiểm tra kết nối mạng rồi thử lại; thông tin đang nhập vẫn được giữ.", 0); }
   if (response.status === 401 && browser && path !== "/auth/login" && path !== "/auth/refresh") {
     const refreshToken = window.sessionStorage.getItem("study_refresh_token");
     if (refreshToken) {

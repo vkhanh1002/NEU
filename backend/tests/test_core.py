@@ -97,6 +97,92 @@ def test_role_protected_route_rejects_anonymous_request(client):
     assert response.status_code == 401
 
 
+def test_guest_can_submit_application_and_duplicate_email_is_rejected(client, database):
+    from app.models import ApplicantPreference
+
+    faculty = Faculty(name="Khoa tuyển sinh công khai")
+    database.add(faculty)
+    database.flush()
+    major = Major(code="GUEST01", name="Ngành tuyển sinh", faculty_id=faculty.id,
+                  admission_status="Đang tuyển sinh", is_demo=True)
+    database.add(major)
+    database.commit()
+
+    payload = {
+        "email": "guest-candidate@example.com",
+        "full_name": "Thí sinh khách",
+        "password": "StrongPass2026!",
+        "phone": "0901234567",
+        "address": "Hà Nội",
+        "desired_major_id": major.id,
+        "admission_method": "Học bạ",
+        "details": {"high_school": "Trường THPT"},
+        "preferences": [major.id],
+        "confirmed": True,
+    }
+
+    # A stale token must not turn this public intake endpoint into a login-only route.
+    created = client.post("/api/v1/admissions/applications", json=payload,
+                          headers={"Authorization": "Bearer stale-session-token"})
+    assert created.status_code == 201, created.text
+    assert created.json()["email"] == payload["email"]
+    assert created.json()["details"] == payload["details"]
+    applicant = database.scalar(select(Applicant).where(Applicant.email == payload["email"]))
+    assert applicant is not None
+    assert applicant.details == payload["details"]
+    assert database.scalar(select(User).where(User.email == payload["email"])) is not None
+    assert database.scalar(select(ApplicantPreference).where(ApplicantPreference.applicant_id == applicant.id)) is not None
+
+    duplicate = client.post("/api/v1/admissions/applications", json=payload)
+    assert duplicate.status_code == 409
+    assert database.scalar(select(Applicant.id).where(Applicant.email == payload["email"])) == applicant.id
+
+
+def test_guest_application_requires_confirmation_and_valid_email(client, database):
+    faculty = Faculty(name="Khoa xác thực hồ sơ")
+    database.add(faculty)
+    database.flush()
+    major = Major(code="GUEST02", name="Ngành xét tuyển", faculty_id=faculty.id)
+    database.add(major)
+    database.commit()
+    payload = {
+        "email": "valid-candidate@example.com",
+        "full_name": "Ứng viên",
+        "password": "StrongPass2026!",
+        "desired_major_id": major.id,
+        "confirmed": False,
+    }
+    response = client.post("/api/v1/admissions/applications", json=payload)
+    assert response.status_code == 422
+    assert database.scalar(select(Applicant.id)) is None
+    payload["email"] = "invalid-email"
+    payload["confirmed"] = True
+    response = client.post("/api/v1/admissions/applications", json=payload)
+    assert response.status_code == 422
+    assert database.scalar(select(Applicant.id)) is None
+
+
+def test_logged_in_applicant_can_submit_without_creating_another_account(client, database):
+    faculty = Faculty(name="Khoa tài khoản thí sinh")
+    database.add(faculty)
+    database.flush()
+    major = Major(code="AUTH01", name="Ngành có tài khoản", faculty_id=faculty.id)
+    candidate = User(email="logged-candidate@example.com", full_name="Thí sinh đã đăng nhập",
+                     password_hash=hash_password("StrongPass2026!"), role="applicant")
+    database.add_all([major, candidate])
+    database.commit()
+    headers = {"Authorization": f"Bearer {create_token(candidate.id)}"}
+    response = client.post("/api/v1/admissions/applications", headers=headers, json={
+        "email": candidate.email,
+        "full_name": candidate.full_name,
+        "desired_major_id": major.id,
+        "confirmed": True,
+    })
+    assert response.status_code == 201, response.text
+    assert response.json()["email"] == candidate.email
+    assert database.scalar(select(User.id).where(User.email == candidate.email)) == candidate.id
+
+
 def test_dashboard_requires_staff_role():
     with pytest.raises(HTTPException) as anonymous:
         current_user(credentials=None, db=None)

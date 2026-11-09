@@ -4,6 +4,7 @@
 node_modules/
 .next/
 .next-verify/
+frontend/build*-verify*/
 *.tsbuildinfo
 coverage/
 __pycache__/

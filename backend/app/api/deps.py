@@ -35,11 +35,11 @@ def optional_current_user(
     try:
         user_id = decode_token(credentials.credentials)
     except jwt.InvalidTokenError:
-        raise HTTPException(status_code=401, detail="Phiên đăng nhập không hợp lệ hoặc đã hết hạn.") from None
+        # Optional-auth endpoints must remain usable as public endpoints when
+        # a browser sends a stale session token along with an anonymous request.
+        return None
     user = db.get(User, user_id)
-    if not user or not user.is_active:
-        raise HTTPException(status_code=401, detail="Tài khoản không hoạt động.")
-    return user
+    return user if user and user.is_active else None
 
 
 def require_roles(*roles: str):

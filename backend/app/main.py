@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import academics, assistant, auth, dashboard, lecturer, notifications, personnel, support, student
+from app.api import academics, assistant, attendance, auth, content_admin, dashboard, lecturer, notifications, personnel, support, student
 from app.core.config import settings
 
 app = FastAPI(
@@ -19,13 +19,16 @@ app.add_middleware(
 app.include_router(auth.router, prefix=settings.api_prefix)
 app.include_router(dashboard.router, prefix=settings.api_prefix)
 app.include_router(academics.router, prefix=settings.api_prefix)
+app.include_router(academics.document_router, prefix=settings.api_prefix)
 app.include_router(support.router, prefix=settings.api_prefix)
 app.include_router(assistant.router, prefix=settings.api_prefix)
 app.include_router(notifications.router, prefix=settings.api_prefix)
 app.include_router(personnel.router, prefix=settings.api_prefix)
 app.include_router(student.router, prefix=settings.api_prefix)
 app.include_router(lecturer.router, prefix=settings.api_prefix)
+app.include_router(attendance.router, prefix=settings.api_prefix)
 app.include_router(student.news_router, prefix=settings.api_prefix)
+app.include_router(content_admin.router, prefix=settings.api_prefix)
 
 
 @app.get("/health")

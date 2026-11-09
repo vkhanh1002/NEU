@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ArrowRight, CalendarDays, CircleHelp, FileText, GraduationCap, Plus, UsersRound } from "lucide-react";
+import { ArrowRight, CalendarDays, Camera, CircleHelp, FileText, GraduationCap, Plus, UsersRound } from "lucide-react";
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";
 import { ErrorNotice, Loading, PageTitle, StatusBadge } from "@/components/ui";
@@ -40,6 +40,10 @@ export function Dashboard() {
     academic_staff: [{ label: "Hồ sơ sinh viên", description: "Tra cứu thông tin người học", href: "/profiles", icon: UsersRound, color: "blue" }],
     lecturer: [
       { label: "Thời khóa biểu giảng dạy", description: "Xem các lớp học phần được phân công", href: "/lecturer/schedule", icon: CalendarDays, color: "blue" },
+      { label: "Lớp học phần", description: "Danh sách lớp và sinh viên", href: "/lecturer/classes", icon: UsersRound, color: "green" },
+      { label: "Điểm danh", description: "Mở phiên và điểm danh trực tiếp", href: "/lecturer/attendance", icon: Camera, color: "blue" },
+      { label: "Yêu cầu điểm danh bù", description: "Xem minh chứng và xử lý yêu cầu", href: "/lecturer/attendance/requests", icon: FileText, color: "green" },
+      { label: "Kết quả học tập", description: "Cập nhật điểm và xem lịch sử", href: "/lecturer/grades", icon: GraduationCap, color: "blue" },
       { label: "Trợ lý học thuật", description: "Tra cứu tài liệu và hướng dẫn", href: "/assistant", icon: CircleHelp, color: "green" },
     ],
   };

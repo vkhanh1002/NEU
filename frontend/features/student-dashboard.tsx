@@ -20,6 +20,7 @@ type Overview = {
 type Notices = { items: { id: string; title: string; message: string; href: string; created_at: string; read_at: string | null }[]; unread_count: number };
 const learningLinks = [
   { label: "Thời khóa biểu", detail: "Lịch học theo tuần", href: "/student/schedule", icon: CalendarDays },
+  { label: "Lịch sử điểm danh", detail: "Chuyên cần và minh chứng", href: "/student/attendance", icon: ClipboardList },
   { label: "Lịch thi", detail: "Lịch thi và phòng thi", href: "/student/exams", icon: Clock3 },
   { label: "Kết quả học tập", detail: "Điểm số và tín chỉ", href: "/student/results", icon: BookOpen },
   { label: "Kết quả rèn luyện", detail: "Theo dõi đánh giá học kỳ", href: "/student/conduct", icon: Award },
